@@ -3,6 +3,7 @@ package gov.va.api.health.providerdirectory.api.datatypes;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import gov.va.api.health.providerdirectory.api.Fhir;
 import gov.va.api.health.providerdirectory.api.elements.Meta;
+import gov.va.api.health.providerdirectory.api.resources.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
