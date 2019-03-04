@@ -207,7 +207,7 @@ public class PractitionerRole implements DomainResource {
 
     @Pattern(regexp = Fhir.TIME)
     String availableEndTime;
-    
+
     public enum DaysOfWeek {
       mon,
       tue,
