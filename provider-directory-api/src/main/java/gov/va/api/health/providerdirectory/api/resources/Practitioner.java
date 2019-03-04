@@ -168,7 +168,7 @@ public class Practitioner implements DomainResource {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   @AllArgsConstructor
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public class PractitionerHumanName implements Element {
+  public static class PractitionerHumanName implements Element {
     @Pattern(regexp = Fhir.ID)
     String id;
     @Valid List<Extension> extension;
