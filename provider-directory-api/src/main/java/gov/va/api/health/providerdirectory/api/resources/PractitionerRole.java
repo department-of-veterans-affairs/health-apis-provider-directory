@@ -40,7 +40,7 @@ import java.util.List;
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Schema(
-  description = "http://hl7.org/fhir/practitionerrole.html"
+  description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html"
 )
 public class PractitionerRole implements DomainResource {
   @NotBlank String resourceType;
