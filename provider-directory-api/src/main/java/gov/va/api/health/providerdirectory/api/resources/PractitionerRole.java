@@ -201,9 +201,13 @@ public class PractitionerRole implements DomainResource {
 
     DaysOfWeek daysOfWeek;
     Boolean allDay;
-    // need availableStartTime  -> if allDay == false
-    // need availableEndTime    -> if allDay == false
 
+    @Pattern(regexp = Fhir.TIME)
+    String availableStartTime;
+
+    @Pattern(regexp = Fhir.TIME)
+    String availableEndTime;
+    
     public enum DaysOfWeek {
       mon,
       tue,
