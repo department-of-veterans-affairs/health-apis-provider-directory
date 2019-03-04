@@ -97,7 +97,6 @@ public class Practitioner implements DomainResource {
   }
 
   @Data
-  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Practitioner.Entry.EntryBuilder.class)
@@ -119,7 +118,6 @@ public class Practitioner implements DomainResource {
   }
 
   @Data
-  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Practitioner.Bundle.BundleBuilder.class)

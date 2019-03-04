@@ -11,8 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Data
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Schema(description = "http://hl7.org/fhir/DSTU2/datatypes.html#Coding")
 public class Coding {
