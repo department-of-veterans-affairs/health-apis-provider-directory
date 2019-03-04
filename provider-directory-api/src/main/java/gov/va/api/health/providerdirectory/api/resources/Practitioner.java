@@ -70,7 +70,7 @@ public class Practitioner implements DomainResource {
 
   boolean active;
 
-  @Valid PractitionerHumanName name;
+  @NotNull @Valid PractitionerHumanName name;
 
   @Valid List<ContactPoint> telecom;
 
@@ -82,8 +82,6 @@ public class Practitioner implements DomainResource {
   String birthDate;
 
   @Valid List<Attachment> photo;
-
-  @Valid List<PractitionerRole> practitionerRole;
 
   @Valid List<Qualification> qualification;
 
