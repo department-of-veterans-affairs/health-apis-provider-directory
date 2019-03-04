@@ -100,7 +100,6 @@ public class Practitioner implements DomainResource {
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Practitioner.Entry.EntryBuilder.class)
-  @Schema(name = "PractitionerEntry", example = "SWAGGER_EXAMPLE_PRACTITIONER_BUNDLE")
   public static class Entry extends AbstractEntry<Practitioner> {
     @Builder
     public Entry(
