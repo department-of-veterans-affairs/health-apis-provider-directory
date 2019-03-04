@@ -80,6 +80,7 @@ public class Location implements DomainResource {
 
     @Valid CodeableConcept type;
 
+    // Need to ensure List is size 1 or more in transformer
     @Valid @NotNull List<ContactPoint> telecom;
 
     @Valid @NotNull LocationAddress address;
@@ -156,9 +157,10 @@ public class Location implements DomainResource {
         @Pattern(regexp = Fhir.ID)
         String id;
         @Valid List<Extension> extension;
-        gov.va.api.health.providerdirectory.api.datatypes.Address.AddressUse use;
-        gov.va.api.health.providerdirectory.api.datatypes.Address.AddressType type;
+        Address.AddressUse use;
+        Address.AddressType type;
         @NotNull String text;
+        // Need to ensure Line is of range 0..2 in transformer
         List<String> line;
         String city;
         String district;
