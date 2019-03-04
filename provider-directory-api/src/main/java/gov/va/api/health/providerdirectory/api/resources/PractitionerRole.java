@@ -84,9 +84,9 @@ public class PractitionerRole implements DomainResource {
   @Valid Reference partOf;
   @Valid List<OrganizationContact> contact;
 
-  PractitionerAvailableTime availableTime;
+  List<PractitionerAvailableTime> availableTime;
 
-  PractitionerNotAvailable notAvailable;
+  List<PractitionerNotAvailable> notAvailable;
 
   String availabilityExceptions;
 
