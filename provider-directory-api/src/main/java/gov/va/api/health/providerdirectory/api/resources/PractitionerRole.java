@@ -80,10 +80,6 @@ public class PractitionerRole implements DomainResource {
 
   @Valid List<PractitionerContactPoint> telecom;
 
-  @Valid List<Address> address;
-  @Valid Reference partOf;
-  @Valid List<OrganizationContact> contact;
-
   List<PractitionerAvailableTime> availableTime;
 
   List<PractitionerNotAvailable> notAvailable;
