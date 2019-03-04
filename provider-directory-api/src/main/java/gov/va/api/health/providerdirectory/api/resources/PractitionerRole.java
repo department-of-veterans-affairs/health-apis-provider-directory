@@ -86,12 +86,16 @@ public class PractitionerRole implements DomainResource {
 
   PractitionerAvailableTime availableTime;
 
+  PractitionerNotAvailable notAvailable;
+
+  String availabilityExceptions;
+
+  @Valid List<Reference> endpoint;
+
   @Data
-  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = PractitionerRole.Bundle.BundleBuilder.class)
-  @Schema(name = "OrganizationBundle", example = "SWAGGER_EXAMPLE_ORGANIZATION_BUNDLE")
   public static class Bundle extends AbstractBundle<PractitionerRole.Entry> {
     @Builder
     public Bundle(
@@ -110,11 +114,9 @@ public class PractitionerRole implements DomainResource {
   }
 
   @Data
-  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = PractitionerRole.Entry.EntryBuilder.class)
-  @Schema(name = "OrganizationEntry")
   public static class Entry extends AbstractEntry<PractitionerRole> {
     @Builder
     public Entry(
@@ -136,7 +138,7 @@ public class PractitionerRole implements DomainResource {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   @AllArgsConstructor
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public static class practitionerContactPoint{
+  public static class PractitionerContactPoint{
     @Pattern(regexp = Fhir.ID)
     String id;
 
@@ -174,6 +176,22 @@ public class PractitionerRole implements DomainResource {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   @AllArgsConstructor
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+  public static class PractitionerNotAvailable implements BackboneElement {
+    @Pattern(regexp = Fhir.ID)
+    String id;
+
+    @Valid List<Extension> modifierExtension;
+    @Valid List<Extension> extension;
+
+    @NotNull String description;
+    @Valid Period during;
+  }
+
+  @Data
+  @Builder
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  @AllArgsConstructor
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   public static class PractitionerAvailableTime implements BackboneElement {
     @Pattern(regexp = Fhir.ID)
     String id;
@@ -182,9 +200,9 @@ public class PractitionerRole implements DomainResource {
     @Valid List<Extension> extension;
 
     DaysOfWeek daysOfWeek;
-    @Valid HumanName name;
-    @Valid List<ContactPoint> telecom;
-    @Valid Address address;
+    Boolean allDay;
+    // need availableStartTime  -> if allDay == false
+    // need availableEndTime    -> if allDay == false
 
     public enum DaysOfWeek {
       mon,
