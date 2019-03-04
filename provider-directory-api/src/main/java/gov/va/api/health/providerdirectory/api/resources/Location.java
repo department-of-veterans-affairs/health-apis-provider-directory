@@ -152,7 +152,7 @@ public class Location implements DomainResource {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public class LocationAddress implements Element {
+    public static class LocationAddress implements Element {
         @Pattern(regexp = Fhir.ID)
         String id;
         @Valid List<Extension> extension;
