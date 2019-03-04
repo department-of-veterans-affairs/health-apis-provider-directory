@@ -53,7 +53,6 @@ public class OperationOutcome implements DomainResource {
 
   @Valid List<Extension> extension;
 
-  @NotEmpty @Valid List<Issue> issue;
 
   @Data
   @Builder

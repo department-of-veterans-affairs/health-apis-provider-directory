@@ -2,7 +2,6 @@ package gov.va.api.health.providerdirectory.api.bundle;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import gov.va.api.health.providerdirectory.api.Fhir;
 import gov.va.api.health.providerdirectory.api.datatypes.Signature;
 import gov.va.api.health.providerdirectory.api.elements.Meta;
@@ -38,8 +37,7 @@ public abstract class AbstractBundle<N extends AbstractEntry<?>> implements Reso
   @Pattern(regexp = Fhir.CODE)
   protected String language;
 
-  @NotNull
-  protected BundleType type;
+  @NotNull protected BundleType type;
 
   @Min(0)
   protected Integer total;

@@ -11,7 +11,7 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-public interface LocationAPI {
+public interface LocationApi {
     @Operation(
             summary = "Location Read",
             description =
