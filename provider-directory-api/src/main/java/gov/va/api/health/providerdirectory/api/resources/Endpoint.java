@@ -34,6 +34,7 @@ import org.junit.validator.AnnotationsValidator;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
@@ -82,8 +83,7 @@ public class Endpoint implements DomainResource {
 
   @Valid Period period;
 
-  // transformer will need to check to ensure at least one item is in list
-  @Valid @NotNull List<CodeableConcept> payloadType;
+  @Valid @NotEmpty List<CodeableConcept> payloadType;
 
   @Pattern(regexp = Fhir.CODE)
   String payloadMimeType;
