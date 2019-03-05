@@ -1,22 +1,19 @@
 package gov.va.api.health.providerdirectory.api.resources;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.va.api.health.providerdirectory.api.Fhir;
 import gov.va.api.health.providerdirectory.api.bundle.AbstractBundle;
 import gov.va.api.health.providerdirectory.api.bundle.AbstractEntry;
 import gov.va.api.health.providerdirectory.api.bundle.BundleLink;
-import gov.va.api.health.providerdirectory.api.datatypes.Address;
-import gov.va.api.health.providerdirectory.api.datatypes.Attachment;
 import gov.va.api.health.providerdirectory.api.datatypes.CodeableConcept;
+import gov.va.api.health.providerdirectory.api.datatypes.Coding;
 import gov.va.api.health.providerdirectory.api.datatypes.ContactPoint;
-import gov.va.api.health.providerdirectory.api.datatypes.HumanName;
 import gov.va.api.health.providerdirectory.api.datatypes.Identifier;
 import gov.va.api.health.providerdirectory.api.datatypes.Period;
 import gov.va.api.health.providerdirectory.api.datatypes.Signature;
 import gov.va.api.health.providerdirectory.api.datatypes.SimpleResource;
-import gov.va.api.health.providerdirectory.api.elements.BackboneElement;
-import gov.va.api.health.providerdirectory.api.elements.Element;
 import gov.va.api.health.providerdirectory.api.elements.Extension;
 import gov.va.api.health.providerdirectory.api.elements.Meta;
 import gov.va.api.health.providerdirectory.api.elements.Narrative;
@@ -28,6 +25,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -43,9 +41,9 @@ import java.util.List;
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Schema(
-  description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html"
+  description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html"
 )
-public class Practitioner implements DomainResource {
+public class Endpoint implements DomainResource {
   @NotBlank String resourceType;
 
   @Pattern(regexp = Fhir.ID)
@@ -67,39 +65,46 @@ public class Practitioner implements DomainResource {
 
   @Valid List<Extension> modifierExtension;
 
-  @NotEmpty @Valid List<PractitionerIdentifier> identifier;
+  @Valid List<Identifier> identifier;
 
-  boolean active;
+  @NotNull Status status;
 
-  @NotNull @Valid PractitionerHumanName name;
+  @Valid @NotNull Coding connectionType;
 
-  @Valid List<ContactPoint> telecom;
+  @NotNull String name;
 
-  @Valid List<Address> address;
+  @NotNull @Valid Reference managingOrganization;
 
-  Gender gender;
+  @Valid List<ContactPoint> contact;
 
-  @Pattern(regexp = Fhir.DATE)
-  String birthDate;
+  @Valid Period period;
 
-  @Valid List<Attachment> photo;
+  @Valid @NotEmpty List<CodeableConcept> payloadType;
 
-  @Valid List<Qualification> qualification;
+  @Pattern(regexp = Fhir.CODE)
+  String payloadMimeType;
 
-  @Valid List<CodeableConcept> communication;
+  @NotNull @Pattern(regexp = Fhir.URI)
+  String address;
 
-  public enum Gender {
-    male,
-    female,
-    other,
-    unknown
+  List<String> header;
+
+
+  public enum Status {
+    active,
+    suspended,
+    error,
+    off,
+    @JsonProperty("entered-in-error")
+    entered_in_error,
+    test
   }
 
   @Data
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  @JsonDeserialize(builder = Practitioner.Entry.EntryBuilder.class)
-  public static class Entry extends AbstractEntry<Practitioner> {
+  @JsonDeserialize(builder = Endpoint.Entry.EntryBuilder.class)
+  public static class Entry extends AbstractEntry<Endpoint> {
     @Builder
     public Entry(
         @Pattern(regexp = Fhir.ID) String id,
@@ -107,7 +112,7 @@ public class Practitioner implements DomainResource {
         @Valid List<Extension> modifierExtension,
         @Valid List<BundleLink> link,
         @Pattern(regexp = Fhir.URI) String fullUrl,
-        @Valid Practitioner resource,
+        @Valid Endpoint resource,
         @Valid Search search,
         @Valid Request request,
         @Valid Response response) {
@@ -118,8 +123,8 @@ public class Practitioner implements DomainResource {
   @Data
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  @JsonDeserialize(builder = Practitioner.Bundle.BundleBuilder.class)
-  @Schema(name = "Practitioner")
+  @JsonDeserialize(builder = Endpoint.Bundle.BundleBuilder.class)
+  @Schema(name = "Endpoint")
   public static class Bundle extends AbstractBundle<Entry> {
     @Builder
     public Bundle(
@@ -137,92 +142,4 @@ public class Practitioner implements DomainResource {
     }
   }
 
-  @Data
-  @Builder
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  @AllArgsConstructor
-  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public static class Qualification implements BackboneElement {
-    @Pattern(regexp = Fhir.ID)
-    String id;
-
-    @Valid List<Extension> extension;
-
-    @Valid List<Extension> modifierExtension;
-
-    @Valid List<Identifier> identifier;
-
-    @Valid @NotNull CodeableConcept code;
-
-    @Valid Period period;
-
-    @Valid Reference issuer;
-  }
-
-  @Data
-  @Builder
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  @AllArgsConstructor
-  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public static class PractitionerHumanName implements Element {
-    @Pattern(regexp = Fhir.ID)
-    String id;
-    @Valid List<Extension> extension;
-    HumanName.NameUse use;
-    String text;
-    @NotNull String family;
-    List<String> given;
-    List<String> prefix;
-    List<String> suffix;
-    @Valid Period period;
-  }
-
-  @Data
-  @Builder
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  @AllArgsConstructor
-  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public static class PractitionerIdentifier {
-    @Pattern(regexp = Fhir.ID)
-    String id;
-
-    @Valid List<Extension> extension;
-
-    Identifier.IdentifierUse use;
-
-    @Valid CodeableConcept type;
-
-    @Pattern(regexp = Fhir.URI)
-    @NotNull String system;
-
-    @NotNull String value;
-    @Valid Period period;
-    @Valid Reference assigner;
-  }
-
-  @Data
-  @Builder
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  @AllArgsConstructor
-  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public static class PractitionerRole implements BackboneElement {
-    @Pattern(regexp = Fhir.ID)
-    String id;
-
-    @Valid List<Extension> extension;
-
-    @Valid List<Extension> modifierExtension;
-
-    @Valid Reference managingOrganization;
-
-    @Valid CodeableConcept role;
-
-    @Valid List<CodeableConcept> specialty;
-
-    @Valid Period period;
-
-    @Valid List<Reference> location;
-
-    @Valid List<Reference> healthcareService;
-  }
 }
