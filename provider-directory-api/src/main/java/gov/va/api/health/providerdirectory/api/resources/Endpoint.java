@@ -1,23 +1,19 @@
 package gov.va.api.health.providerdirectory.api.resources;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.va.api.health.providerdirectory.api.Fhir;
 import gov.va.api.health.providerdirectory.api.bundle.AbstractBundle;
 import gov.va.api.health.providerdirectory.api.bundle.AbstractEntry;
 import gov.va.api.health.providerdirectory.api.bundle.BundleLink;
-import gov.va.api.health.providerdirectory.api.datatypes.Address;
-import gov.va.api.health.providerdirectory.api.datatypes.Attachment;
 import gov.va.api.health.providerdirectory.api.datatypes.CodeableConcept;
 import gov.va.api.health.providerdirectory.api.datatypes.Coding;
 import gov.va.api.health.providerdirectory.api.datatypes.ContactPoint;
-import gov.va.api.health.providerdirectory.api.datatypes.HumanName;
 import gov.va.api.health.providerdirectory.api.datatypes.Identifier;
 import gov.va.api.health.providerdirectory.api.datatypes.Period;
 import gov.va.api.health.providerdirectory.api.datatypes.Signature;
 import gov.va.api.health.providerdirectory.api.datatypes.SimpleResource;
-import gov.va.api.health.providerdirectory.api.elements.BackboneElement;
-import gov.va.api.health.providerdirectory.api.elements.Element;
 import gov.va.api.health.providerdirectory.api.elements.Extension;
 import gov.va.api.health.providerdirectory.api.elements.Meta;
 import gov.va.api.health.providerdirectory.api.elements.Narrative;
@@ -29,7 +25,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.junit.validator.AnnotationsValidator;
+
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -99,7 +95,8 @@ public class Endpoint implements DomainResource {
     suspended,
     error,
     off,
-    enteredinerror,  // having issues with dashes
+    @JsonProperty("entered-in-error")
+    entered_in_error,
     test
   }
 
