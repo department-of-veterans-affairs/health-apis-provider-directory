@@ -68,7 +68,7 @@ public class Endpoint implements DomainResource {
 
   @Valid List<Extension> modifierExtension;
 
-  @NotNull @Valid List<Identifier> identifier;
+  @Valid List<Identifier> identifier;
 
   @NotNull Status status;
 
