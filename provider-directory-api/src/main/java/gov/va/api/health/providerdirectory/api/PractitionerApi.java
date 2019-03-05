@@ -1,6 +1,8 @@
 package gov.va.api.health.providerdirectory.api;
 
-import gov.va.api.health.providerdirectory.api.resources.Location;
+import gov.va.api.health.providerdirectory.api.datatypes.Identifier;
+import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
+import gov.va.api.health.providerdirectory.api.resources.Practitioner;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -8,29 +10,128 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
 public interface PractitionerApi {
     @Operation(
-            summary = "Location Read",
+            summary = "Practitioner Read",
             description =
-                    "location link",
-            tags = {"Location"}
+                    "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html",
+            tags = {"Practitioner"}
     )
     @GET
-    @Path("Location/{id}")
+    @Path("Practitioner/{id}")
     @ApiResponse(
             responseCode = "200",
             description = "Record found",
             content =
             @Content(
                     mediaType = "application/json+fhir",
-                    schema = @Schema(implementation = Location.class)
+                    schema = @Schema(implementation = Practitioner.class)
             )
     )
-    Location LocationRead(
+    @ApiResponse(
+            responseCode = "400",
+            description = "Not found",
+            content =
+            @Content(
+                    mediaType = "application/json+fhir",
+                    schema = @Schema(implementation = OperationOutcome.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Bad request",
+            content =
+            @Content(
+                    mediaType = "application/json+fhir",
+                    schema = @Schema(implementation = OperationOutcome.class)
+            )
+    )
+    Practitioner practitionerRead(
             @Parameter(in = ParameterIn.PATH, name = "id", required = true) String id);
 
+    @Operation(
+            summary = "Practitioner Search By Identifier",
+            description =
+                    "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html",
+            tags = {"Practitioner"}
+    )
+    @GET
+    @Path("Practitioner")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Record found",
+            content =
+            @Content(
+                    mediaType = "application/json+fhir",
+                    schema = @Schema(implementation = Practitioner.Bundle.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Not found",
+            content =
+            @Content(
+                    mediaType = "application/json+fhir",
+                    schema = @Schema(implementation = OperationOutcome.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Bad request",
+            content =
+            @Content(
+                    mediaType = "application/json+fhir",
+                    schema = @Schema(implementation = OperationOutcome.class)
+            )
+    )
+    Practitioner.Bundle practitionerSearchByIdentifier(
+            @Parameter(in = ParameterIn.QUERY, required = true, name = "identifier") Identifier id,
+            @Parameter(in = ParameterIn.QUERY, required = true, name = "code") String code,
+            @Parameter(in = ParameterIn.QUERY, name = "page") @DefaultValue("1") int page,
+            @Parameter(in = ParameterIn.QUERY, name = "_count") @DefaultValue("15") int count);
 
+    @Operation(
+            summary = "Practitioner Search By Family and Given",
+            description =
+                    "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html",
+            tags = {"Practitioner"}
+    )
+    @GET
+    @Path("Practitioner")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Record found",
+            content =
+            @Content(
+                    mediaType = "application/json+fhir",
+                    schema = @Schema(implementation = Practitioner.Bundle.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Not found",
+            content =
+            @Content(
+                    mediaType = "application/json+fhir",
+                    schema = @Schema(implementation = OperationOutcome.class)
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Bad request",
+            content =
+            @Content(
+                    mediaType = "application/json+fhir",
+                    schema = @Schema(implementation = OperationOutcome.class)
+            )
+    )
+    Practitioner.Bundle practitionerSearchByName(
+            @Parameter(in = ParameterIn.QUERY, required = true, name = "family") String family,
+            @Parameter(in = ParameterIn.QUERY, required = true, name = "given") String given,
+            @Parameter(in = ParameterIn.QUERY, name = "page") @DefaultValue("1") int page,
+            @Parameter(in = ParameterIn.QUERY, name = "_count") @DefaultValue("15") int count);
 }
