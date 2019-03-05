@@ -30,6 +30,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
@@ -61,10 +62,10 @@ public class Organization implements DomainResource {
   @Valid List<Extension> modifierExtension;
   @Valid List<Extension> extension;
 
-  // Transformer will need to check to ensure at least one element is in list for hte following 3 fields.
-  @Valid @NotNull List<OrganizationIdentifier> identifier;
-  @Valid @NotNull List<ContactPoint> telecom;
-  @Valid @NotNull List<OrganizationAddress> address;
+
+  @Valid @NotEmpty List<OrganizationIdentifier> identifier;
+  @Valid @NotEmpty List<ContactPoint> telecom;
+  @Valid @NotEmpty List<OrganizationAddress> address;
 
 
   @NotNull Boolean active;
