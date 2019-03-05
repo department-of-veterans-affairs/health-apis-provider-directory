@@ -25,6 +25,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
@@ -39,9 +40,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(
-        description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html"
-)
+@Schema(description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html")
 public class Location implements DomainResource {
     @NotBlank String resourceType;
 
@@ -80,8 +79,7 @@ public class Location implements DomainResource {
 
     @Valid CodeableConcept type;
 
-    // Need to ensure List is size 1 or more in transformer
-    @Valid @NotNull List<ContactPoint> telecom;
+    @Valid @NotEmpty List<ContactPoint> telecom;
 
     @Valid @NotNull LocationAddress address;
 

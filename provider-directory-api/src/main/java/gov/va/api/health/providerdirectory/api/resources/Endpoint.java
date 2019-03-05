@@ -26,7 +26,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -40,9 +39,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(
-  description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html"
-)
+@Schema(description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html")
 public class Endpoint implements DomainResource {
   @NotBlank String resourceType;
 

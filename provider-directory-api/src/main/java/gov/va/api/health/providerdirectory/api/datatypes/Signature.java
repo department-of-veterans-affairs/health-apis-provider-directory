@@ -5,6 +5,7 @@ import gov.va.api.health.providerdirectory.api.Fhir;
 import gov.va.api.health.providerdirectory.api.elements.Element;
 import gov.va.api.health.providerdirectory.api.elements.Extension;
 import gov.va.api.health.providerdirectory.api.elements.Reference;
+import gov.va.api.health.providerdirectory.api.validation.ExactlyOneOf;
 import gov.va.api.health.providerdirectory.api.validation.ZeroOrOneOf;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -19,8 +20,9 @@ import java.util.List;
 @Data
 @Builder
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/datatypes.html#Signature")
-@ZeroOrOneOf(fields = {"whoUri", "whoReference"})
+@Schema(description = "http://hl7.org/fhir/STU3/datatypes.html#Signature")
+@ExactlyOneOf(fields = {"whoUri", "whoReference"})
+@ZeroOrOneOf(fields = {"onBehalfOfUri", "onBehalfOfReference"})
 public class Signature implements Element {
   @Pattern(regexp = Fhir.ID)
   String id;
@@ -38,11 +40,14 @@ public class Signature implements Element {
 
   @Valid Reference whoReference;
 
-  @NotEmpty
+  @Pattern(regexp = Fhir.URI)
+  String onBehalfOfUri;
+
+  @Valid Reference onBehalfOfReference;
+
   @Pattern(regexp = Fhir.CODE)
   String contentType;
 
-  @NotEmpty
   @Pattern(regexp = Fhir.BASE64)
   String blob;
 }

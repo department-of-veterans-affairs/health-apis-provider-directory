@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/datatypes.html#Ratio")
+@Schema(description = "http://hl7.org/fhir/STU3/datatypes.html#Ratio")
 public class Ratio implements Element {
   @Pattern(regexp = Fhir.ID)
   String id;

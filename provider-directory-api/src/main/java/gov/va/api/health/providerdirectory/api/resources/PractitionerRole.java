@@ -154,24 +154,6 @@ public class PractitionerRole implements DomainResource {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   @AllArgsConstructor
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public static class OrganizationContact implements BackboneElement {
-    @Pattern(regexp = Fhir.ID)
-    String id;
-
-    @Valid List<Extension> modifierExtension;
-    @Valid List<Extension> extension;
-
-    @Valid CodeableConcept purpose;
-    @Valid HumanName name;
-    @Valid List<ContactPoint> telecom;
-    @Valid Address address;
-  }
-
-  @Data
-  @Builder
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  @AllArgsConstructor
-  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   public static class PractitionerNotAvailable implements BackboneElement {
     @Pattern(regexp = Fhir.ID)
     String id;
