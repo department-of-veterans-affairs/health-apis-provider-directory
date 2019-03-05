@@ -82,6 +82,7 @@ public class Endpoint implements DomainResource {
 
   @Valid Period period;
 
+  // transformer will need to check to ensure at least one item is in list
   @Valid @NotNull List<CodeableConcept> payloadType;
 
   @Pattern(regexp = Fhir.CODE)
