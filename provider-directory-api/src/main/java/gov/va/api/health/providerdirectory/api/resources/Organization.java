@@ -60,17 +60,21 @@ public class Organization implements DomainResource {
   @Valid List<SimpleResource> contained;
   @Valid List<Extension> modifierExtension;
   @Valid List<Extension> extension;
+
+  // Transformer will need to check to ensure at least one element is in list for hte following 3 fields.
   @Valid @NotNull List<OrganizationIdentifier> identifier;
+  @Valid @NotNull List<ContactPoint> telecom;
+  @Valid @NotNull List<OrganizationAddress> address;
+
 
   @NotNull Boolean active;
   @Valid List<CodeableConcept> type;
   @NotNull String name;
   List<String> alias;
-  @Valid @NotNull List<ContactPoint> telecom;
-  @Valid @NotNull List<OrganizationAddress> address;
+
   @Valid Reference partOf;
   @Valid List<OrganizationContact> contact;
-  @Valid Reference endpoint;
+  @Valid List<Reference> endpoint;
 
   @Data
   @EqualsAndHashCode(callSuper = true)
