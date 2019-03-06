@@ -1,6 +1,5 @@
 package gov.va.api.health.providerdirectory.api;
 
-import gov.va.api.health.providerdirectory.api.datatypes.Identifier;
 import gov.va.api.health.providerdirectory.api.resources.Endpoint;
 import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
 import io.swagger.v3.oas.annotations.Operation;
