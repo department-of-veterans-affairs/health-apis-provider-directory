@@ -33,7 +33,7 @@ public interface OrganizationApi {
             )
     )
     @ApiResponse(
-            responseCode = "400",
+            responseCode = "404",
             description = "Not found",
             content =
             @Content(
@@ -42,7 +42,7 @@ public interface OrganizationApi {
             )
     )
     @ApiResponse(
-            responseCode = "404",
+            responseCode = "400",
             description = "Bad request",
             content =
             @Content(
@@ -71,7 +71,7 @@ public interface OrganizationApi {
             )
     )
     @ApiResponse(
-            responseCode = "400",
+            responseCode = "404",
             description = "Not found",
             content =
             @Content(
@@ -80,7 +80,7 @@ public interface OrganizationApi {
             )
     )
     @ApiResponse(
-            responseCode = "404",
+            responseCode = "400",
             description = "Bad request",
             content =
             @Content(
@@ -89,10 +89,9 @@ public interface OrganizationApi {
             )
     )
     Organization.Bundle organizationSearch(
-            @Parameter(in = ParameterIn.QUERY, name = "identifier") Identifier identifier,
+            @Parameter(in = ParameterIn.QUERY, name = "identifier") String identifier,
             @Parameter(in = ParameterIn.QUERY, name = "address") String address,
             @Parameter(in = ParameterIn.QUERY, name = "name") String name,
-            @Parameter(in = ParameterIn.QUERY, name = "code") String code,
             @Parameter(in = ParameterIn.QUERY, name = "page") @DefaultValue("1") int page,
             @Parameter(in = ParameterIn.QUERY, name = "_count") @DefaultValue("15") int count);
 }
