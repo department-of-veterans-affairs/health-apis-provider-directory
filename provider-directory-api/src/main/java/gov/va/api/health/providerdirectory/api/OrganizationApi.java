@@ -16,7 +16,7 @@ import javax.ws.rs.Path;
 
 public interface OrganizationApi {
     @Operation(
-            summary = "Organization Role Read",
+            summary = "Organization Read",
             description =
                     "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-organization.html",
             tags = {"Organization"}
