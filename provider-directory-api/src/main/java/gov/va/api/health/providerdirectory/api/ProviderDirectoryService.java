@@ -37,6 +37,7 @@ public interface ProviderDirectoryService
                 PractitionerRoleApi,
                 PractitionerApi{
 
+
     class ArgonautServiceException extends RuntimeException {
         ArgonautServiceException(String message) {
             super(message);
@@ -57,3 +58,4 @@ public interface ProviderDirectoryService
         }
     }
 }
+
