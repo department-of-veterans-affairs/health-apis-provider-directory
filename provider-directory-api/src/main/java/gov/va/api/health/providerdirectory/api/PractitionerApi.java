@@ -1,6 +1,5 @@
 package gov.va.api.health.providerdirectory.api;
 
-import gov.va.api.health.providerdirectory.api.datatypes.Identifier;
 import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +32,7 @@ public interface PractitionerApi {
             )
     )
     @ApiResponse(
-            responseCode = "400",
+            responseCode = "404",
             description = "Not found",
             content =
             @Content(
@@ -42,7 +41,7 @@ public interface PractitionerApi {
             )
     )
     @ApiResponse(
-            responseCode = "404",
+            responseCode = "400",
             description = "Bad request",
             content =
             @Content(
@@ -71,7 +70,7 @@ public interface PractitionerApi {
             )
     )
     @ApiResponse(
-            responseCode = "400",
+            responseCode = "404",
             description = "Not found",
             content =
             @Content(
@@ -80,7 +79,7 @@ public interface PractitionerApi {
             )
     )
     @ApiResponse(
-            responseCode = "404",
+            responseCode = "400",
             description = "Bad request",
             content =
             @Content(
@@ -89,8 +88,7 @@ public interface PractitionerApi {
             )
     )
     Practitioner.Bundle practitionerSearch(
-            @Parameter(in = ParameterIn.QUERY, name = "identifier") Identifier id,
-            @Parameter(in = ParameterIn.QUERY, name = "code") String code,
+            @Parameter(in = ParameterIn.QUERY, name = "identifier") String identifier,
             @Parameter(in = ParameterIn.QUERY, name = "family") String family,
             @Parameter(in = ParameterIn.QUERY, name = "given") String given,
             @Parameter(in = ParameterIn.QUERY, name = "page") @DefaultValue("1") int page,
