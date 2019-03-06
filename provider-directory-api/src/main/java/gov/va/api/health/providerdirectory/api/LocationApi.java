@@ -48,7 +48,7 @@ public interface LocationApi {
                     schema = @Schema(implementation = OperationOutcome.class)
             )
     )
-    Location LocationRead(
+    Location locationRead(
             @Parameter(in = ParameterIn.PATH, name = "id", required = true) String id);
 
     @Operation(

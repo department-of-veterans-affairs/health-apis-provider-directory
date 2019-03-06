@@ -32,7 +32,10 @@ import javax.ws.rs.Path;
 @Path("/")
 public interface ProviderDirectoryService
         extends LocationApi,
-                PractitionerApi {
+                OrganizationApi,
+                EndpointApi,
+                PractitionerRoleApi,
+                PractitionerApi{
 
     class ArgonautServiceException extends RuntimeException {
         ArgonautServiceException(String message) {
