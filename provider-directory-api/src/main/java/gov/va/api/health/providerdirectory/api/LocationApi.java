@@ -87,7 +87,7 @@ public interface LocationApi {
                     schema = @Schema(implementation = OperationOutcome.class)
             )
     )
-    Location.Bundle locationSearchByIdentifier(
+    Location.Bundle locationSearch(
             @Parameter(in = ParameterIn.QUERY, name = "address") String address,
             @Parameter(in = ParameterIn.QUERY, name = "name") String name,
             @Parameter(in = ParameterIn.QUERY, name = "identifier") Identifier id,

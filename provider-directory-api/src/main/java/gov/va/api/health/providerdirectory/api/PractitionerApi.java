@@ -88,7 +88,7 @@ public interface PractitionerApi {
                     schema = @Schema(implementation = OperationOutcome.class)
             )
     )
-    Practitioner.Bundle practitionerSearchByName(
+    Practitioner.Bundle practitionerSearch(
             @Parameter(in = ParameterIn.QUERY, name = "identifier") Identifier id,
             @Parameter(in = ParameterIn.QUERY, name = "code") String code,
             @Parameter(in = ParameterIn.QUERY, name = "family") String family,
