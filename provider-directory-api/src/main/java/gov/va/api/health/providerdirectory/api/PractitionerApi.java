@@ -54,48 +54,7 @@ public interface PractitionerApi {
             @Parameter(in = ParameterIn.PATH, name = "id", required = true) String id);
 
     @Operation(
-            summary = "Practitioner Search By Identifier",
-            description =
-                    "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html",
-            tags = {"Practitioner"}
-    )
-    @GET
-    @Path("Practitioner")
-    @ApiResponse(
-            responseCode = "200",
-            description = "Record found",
-            content =
-            @Content(
-                    mediaType = "application/json+fhir",
-                    schema = @Schema(implementation = Practitioner.Bundle.class)
-            )
-    )
-    @ApiResponse(
-            responseCode = "400",
-            description = "Not found",
-            content =
-            @Content(
-                    mediaType = "application/json+fhir",
-                    schema = @Schema(implementation = OperationOutcome.class)
-            )
-    )
-    @ApiResponse(
-            responseCode = "404",
-            description = "Bad request",
-            content =
-            @Content(
-                    mediaType = "application/json+fhir",
-                    schema = @Schema(implementation = OperationOutcome.class)
-            )
-    )
-    Practitioner.Bundle practitionerSearchByIdentifier(
-            @Parameter(in = ParameterIn.QUERY, required = true, name = "identifier") Identifier id,
-            @Parameter(in = ParameterIn.QUERY, required = true, name = "code") String code,
-            @Parameter(in = ParameterIn.QUERY, name = "page") @DefaultValue("1") int page,
-            @Parameter(in = ParameterIn.QUERY, name = "_count") @DefaultValue("15") int count);
-
-    @Operation(
-            summary = "Practitioner Search By Family and Given",
+            summary = "Practitioner Search",
             description =
                     "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html",
             tags = {"Practitioner"}
@@ -130,8 +89,10 @@ public interface PractitionerApi {
             )
     )
     Practitioner.Bundle practitionerSearchByName(
-            @Parameter(in = ParameterIn.QUERY, required = true, name = "family") String family,
-            @Parameter(in = ParameterIn.QUERY, required = true, name = "given") String given,
+            @Parameter(in = ParameterIn.QUERY, name = "identifier") Identifier id,
+            @Parameter(in = ParameterIn.QUERY, name = "code") String code,
+            @Parameter(in = ParameterIn.QUERY, name = "family") String family,
+            @Parameter(in = ParameterIn.QUERY, name = "given") String given,
             @Parameter(in = ParameterIn.QUERY, name = "page") @DefaultValue("1") int page,
             @Parameter(in = ParameterIn.QUERY, name = "_count") @DefaultValue("15") int count);
 }
