@@ -1,6 +1,5 @@
 package gov.va.api.health.providerdirectory.api;
 
-import gov.va.api.health.providerdirectory.api.datatypes.Identifier;
 import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
 import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +32,7 @@ public interface PractitionerRoleApi {
             )
     )
     @ApiResponse(
-            responseCode = "400",
+            responseCode = "404",
             description = "Not found",
             content =
             @Content(
@@ -42,7 +41,7 @@ public interface PractitionerRoleApi {
             )
     )
     @ApiResponse(
-            responseCode = "404",
+            responseCode = "400",
             description = "Bad request",
             content =
             @Content(
@@ -71,7 +70,7 @@ public interface PractitionerRoleApi {
             )
     )
     @ApiResponse(
-            responseCode = "400",
+            responseCode = "404",
             description = "Not found",
             content =
             @Content(
@@ -80,7 +79,7 @@ public interface PractitionerRoleApi {
             )
     )
     @ApiResponse(
-            responseCode = "404",
+            responseCode = "400",
             description = "Bad request",
             content =
             @Content(
@@ -89,8 +88,7 @@ public interface PractitionerRoleApi {
             )
     )
     PractitionerRole.Bundle practitionerRoleSearch(
-            @Parameter(in = ParameterIn.QUERY, name = "identifier") Identifier identifier,
-            @Parameter(in = ParameterIn.QUERY, name = "code") String code,
+            @Parameter(in = ParameterIn.QUERY, name = "identifier") String identifier,
             @Parameter(in = ParameterIn.QUERY, name = "specialty") String specialty,
             @Parameter(in = ParameterIn.QUERY, name = "family") String family,
             @Parameter(in = ParameterIn.QUERY, name = "given") String given,
