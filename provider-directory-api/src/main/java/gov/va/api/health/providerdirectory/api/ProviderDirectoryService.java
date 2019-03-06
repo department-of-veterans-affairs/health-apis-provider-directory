@@ -34,7 +34,9 @@ public interface ProviderDirectoryService
         extends LocationApi,
                 OrganizationApi,
                 EndpointApi,
-                PractitionerRoleApi {
+                PractitionerRoleApi,
+                PractitionerApi{
+
 
     class ArgonautServiceException extends RuntimeException {
         ArgonautServiceException(String message) {
