@@ -17,44 +17,44 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ProviderDirectoryHomeController {
 
-    private static final YAMLMapper MAPPER = new YAMLMapper();
+  private static final YAMLMapper MAPPER = new YAMLMapper();
 
-    private final Resource openapi;
+  private final Resource openapi;
 
-    @Autowired
-    public ProviderDirectoryHomeController(@Value("classpath:/openapi.yaml") Resource openapi) {
-        this.openapi = openapi;
+  @Autowired
+  public ProviderDirectoryHomeController(@Value("classpath:/openapi.yaml") Resource openapi) {
+    this.openapi = openapi;
+  }
+
+  /** The OpenAPI specific content in yaml form. */
+  @SuppressWarnings("WeakerAccess")
+  @Bean
+  public String openapiContent() throws IOException {
+    try (InputStream is = openapi.getInputStream()) {
+      return StreamUtils.copyToString(is, Charset.defaultCharset());
     }
+  }
 
-    /** The OpenAPI specific content in yaml form. */
-    @SuppressWarnings("WeakerAccess")
-    @Bean
-    public String openapiContent() throws IOException {
-        try (InputStream is = openapi.getInputStream()) {
-            return StreamUtils.copyToString(is, Charset.defaultCharset());
-        }
-    }
+  /**
+   * Provide access to the OpenAPI as JSON via RESTful interface. This is also used as the /
+   * redirect.
+   */
+  @GetMapping(
+    value = {"/", "/openapi.json", "/api/openapi.json"},
+    produces = "application/json"
+  )
+  @ResponseBody
+  public Object openapiJson() throws IOException {
+    return ProviderDirectoryHomeController.MAPPER.readValue(openapiContent(), Object.class);
+  }
 
-    /**
-     * Provide access to the OpenAPI as JSON via RESTful interface. This is also used as the /
-     * redirect.
-     */
-    @GetMapping(
-            value = {"/", "/openapi.json", "/api/openapi.json"},
-            produces = "application/json"
-    )
-    @ResponseBody
-    public Object openapiJson() throws IOException {
-        return ProviderDirectoryHomeController.MAPPER.readValue(openapiContent(), Object.class);
-    }
-
-    /** Provide access to the OpenAPI yaml via RESTful interface. */
-    @GetMapping(
-            value = {"/openapi.yaml", "/api/openapi.yaml"},
-            produces = "application/vnd.oai.openapi"
-    )
-    @ResponseBody
-    public String openapiYaml() throws IOException {
-        return openapiContent();
-    }
+  /** Provide access to the OpenAPI yaml via RESTful interface. */
+  @GetMapping(
+    value = {"/openapi.yaml", "/api/openapi.yaml"},
+    produces = "application/vnd.oai.openapi"
+  )
+  @ResponseBody
+  public String openapiYaml() throws IOException {
+    return openapiContent();
+  }
 }
