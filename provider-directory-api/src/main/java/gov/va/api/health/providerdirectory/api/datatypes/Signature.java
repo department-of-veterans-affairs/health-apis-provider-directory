@@ -7,14 +7,13 @@ import gov.va.api.health.providerdirectory.api.elements.Extension;
 import gov.va.api.health.providerdirectory.api.elements.Reference;
 import gov.va.api.health.providerdirectory.api.validation.ZeroOrOneOf;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Data;
-
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.List;
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder

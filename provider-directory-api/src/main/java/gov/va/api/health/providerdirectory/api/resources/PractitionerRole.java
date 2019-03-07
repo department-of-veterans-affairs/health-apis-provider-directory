@@ -20,6 +20,12 @@ import gov.va.api.health.providerdirectory.api.elements.Meta;
 import gov.va.api.health.providerdirectory.api.elements.Narrative;
 import gov.va.api.health.providerdirectory.api.elements.Reference;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,20 +33,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Schema(
-  description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html"
+  description =
+      "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html"
 )
 public class PractitionerRole implements DomainResource {
   @NotBlank String resourceType;
@@ -134,7 +134,7 @@ public class PractitionerRole implements DomainResource {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   @AllArgsConstructor
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public static class PractitionerContactPoint{
+  public static class PractitionerContactPoint {
     @Pattern(regexp = Fhir.ID)
     String id;
 
@@ -213,7 +213,5 @@ public class PractitionerRole implements DomainResource {
       sat,
       sun
     }
-
   }
-
 }

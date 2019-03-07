@@ -6,10 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import gov.va.api.health.providerdirectory.api.Fhir;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Pattern;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)

@@ -5,14 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.va.api.health.providerdirectory.api.Fhir;
 import gov.va.api.health.providerdirectory.api.elements.BackboneElement;
 import gov.va.api.health.providerdirectory.api.elements.Extension;
-import lombok.Builder;
-import lombok.Data;
-
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.List;
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder

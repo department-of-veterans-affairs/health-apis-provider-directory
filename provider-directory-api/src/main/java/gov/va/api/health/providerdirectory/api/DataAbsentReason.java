@@ -1,12 +1,12 @@
 package gov.va.api.health.providerdirectory.api;
 
+import static java.util.Collections.singletonList;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gov.va.api.health.providerdirectory.api.elements.Extension;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-
-import static java.util.Collections.singletonList;
 
 /** This class provides data absent reasons. */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

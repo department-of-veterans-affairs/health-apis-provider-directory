@@ -1,13 +1,12 @@
 package gov.va.api.health.providerdirectory.api;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.Instant;
+import javax.xml.datatype.DatatypeFactory;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
-
-import javax.xml.datatype.DatatypeFactory;
-import java.time.Instant;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Fhir {

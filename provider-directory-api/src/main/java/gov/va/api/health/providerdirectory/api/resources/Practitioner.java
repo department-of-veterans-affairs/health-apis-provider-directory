@@ -22,20 +22,19 @@ import gov.va.api.health.providerdirectory.api.elements.Meta;
 import gov.va.api.health.providerdirectory.api.elements.Narrative;
 import gov.va.api.health.providerdirectory.api.elements.Reference;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -167,6 +166,7 @@ public class Practitioner implements DomainResource {
   public static class PractitionerHumanName implements Element {
     @Pattern(regexp = Fhir.ID)
     String id;
+
     @Valid List<Extension> extension;
     HumanName.NameUse use;
     String text;
@@ -193,7 +193,8 @@ public class Practitioner implements DomainResource {
     @Valid CodeableConcept type;
 
     @Pattern(regexp = Fhir.URI)
-    @NotNull String system;
+    @NotNull
+    String system;
 
     @NotNull String value;
     @Valid Period period;
