@@ -1,36 +1,61 @@
 package gov.va.api.health.providerdirectory.api;
 
-import gov.va.api.health.providerdirectory.api.resources.Location;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import javax.ws.rs.Path;
 
-public interface ProviderDirectoryService {
-    @Operation(
-            summary = "Location Read",
-            description =
-                    "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-location.html",
-            tags = {"Location"}
-    )
-    @GET
-    @Path("Location/{id}")
-    @ApiResponse(
-            responseCode = "200",
-            description = "Record found",
-            content =
-            @Content(
-                    mediaType = "application/json+fhir",
-                    schema = @Schema(implementation = Location.class)
-            )
-    )
+@OpenAPIDefinition(
+        info =
+        @Info(
+                title = "Argonaut Provider Directory",
+                version = "v1",
+                description =
+                        "FHIR (Fast Healthcare Interoperability Resources) specification defines a set of"
+                                + " \"Resources\" that represent granular clinical concepts."
+                                + " This service is compliant with the FHIR Argonaut Data Query Implementation"
+                                + " Guide."
+        ),
+        servers = {
+                @Server(
+                        url = "https://dev-api.va.gov/services/argonaut/v0/",
+                        description = "Development server"
+                )
+        },
+        externalDocs =
+        @ExternalDocumentation(
+                description = "Argonaut Data Query Implementation Guide",
+                url = "http://www.fhir.org/guides/argonaut/pd/index.html"
+        )
+)
+@Path("/")
+public interface ProviderDirectoryService
+        extends LocationApi,
+                OrganizationApi,
+                EndpointApi,
+                PractitionerRoleApi,
+                PractitionerApi{
 
-    Location LocationRead(
-            @Parameter(in = ParameterIn.PATH, name = "id", required = true) String id);
 
+    class ArgonautServiceException extends RuntimeException {
+        ArgonautServiceException(String message) {
+            super(message);
+        }
+    }
+
+    class SearchFailed extends ArgonautServiceException {
+        @SuppressWarnings("WeakerAccess")
+        public SearchFailed(String id, String reason) {
+            super(id + " Reason: " + reason);
+        }
+    }
+
+    class UnknownResource extends ArgonautServiceException {
+        @SuppressWarnings("WeakerAccess")
+        public UnknownResource(String id) {
+            super(id);
+        }
+    }
 }
+

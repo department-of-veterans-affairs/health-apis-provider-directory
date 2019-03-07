@@ -1,7 +1,7 @@
 package gov.va.api.health.providerdirectory.api;
 
 import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
-import gov.va.api.health.providerdirectory.api.resources.Organization;
+import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -13,22 +13,22 @@ import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
-public interface OrganizationApi {
+public interface PractitionerRoleApi {
     @Operation(
-            summary = "Organization Read",
+            summary = "Practitioner Role Read",
             description =
-                    "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-organization.html",
-            tags = {"Organization"}
+                    "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html",
+            tags = {"Practitioner Role"}
     )
     @GET
-    @Path("Organization/{id}")
+    @Path("PractitionerRole/{id}")
     @ApiResponse(
             responseCode = "200",
             description = "Record found",
             content =
             @Content(
                     mediaType = "application/json+fhir",
-                    schema = @Schema(implementation = Organization.class)
+                    schema = @Schema(implementation = PractitionerRole.class)
             )
     )
     @ApiResponse(
@@ -49,24 +49,24 @@ public interface OrganizationApi {
                     schema = @Schema(implementation = OperationOutcome.class)
             )
     )
-    Organization organizationRead(
+    PractitionerRole practitionerRoleRead(
             @Parameter(in = ParameterIn.PATH, name = "id", required = true) String id);
 
     @Operation(
-            summary = "Organization Search",
+            summary = "Practitioner Role Search",
             description =
-                    "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-organization.html",
-            tags = {"Organization"}
+                    "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html",
+            tags = {"Practitioner Role"}
     )
     @GET
-    @Path("Organization")
+    @Path("PractitionerRole")
     @ApiResponse(
             responseCode = "200",
             description = "Record found",
             content =
             @Content(
                     mediaType = "application/json+fhir",
-                    schema = @Schema(implementation = Organization.Bundle.class)
+                    schema = @Schema(implementation = PractitionerRole.Bundle.class)
             )
     )
     @ApiResponse(
@@ -87,10 +87,11 @@ public interface OrganizationApi {
                     schema = @Schema(implementation = OperationOutcome.class)
             )
     )
-    Organization.Bundle organizationSearch(
+    PractitionerRole.Bundle practitionerRoleSearch(
             @Parameter(in = ParameterIn.QUERY, name = "identifier") String identifier,
-            @Parameter(in = ParameterIn.QUERY, name = "address") String address,
-            @Parameter(in = ParameterIn.QUERY, name = "name") String name,
+            @Parameter(in = ParameterIn.QUERY, name = "specialty") String specialty,
+            @Parameter(in = ParameterIn.QUERY, name = "family") String family,
+            @Parameter(in = ParameterIn.QUERY, name = "given") String given,
             @Parameter(in = ParameterIn.QUERY, name = "page") @DefaultValue("1") int page,
             @Parameter(in = ParameterIn.QUERY, name = "_count") @DefaultValue("15") int count);
 }
