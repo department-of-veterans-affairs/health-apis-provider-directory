@@ -26,6 +26,7 @@
             <plugin>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-maven-plugin</artifactId>
+                <version>2.0.5</version>
                 <executions>
                     <execution>
                         <id>provider-directory-swag</id>
