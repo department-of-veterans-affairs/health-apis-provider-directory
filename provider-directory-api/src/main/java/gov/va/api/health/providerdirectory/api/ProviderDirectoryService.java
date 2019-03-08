@@ -14,7 +14,7 @@ import javax.ws.rs.Path;
                 description =
                         "FHIR (Fast Healthcare Interoperability Resources) specification defines a set of"
                                 + " \"Resources\" that represent granular clinical concepts."
-                                + " This service is compliant with the FHIR Argonaut Data Query Implementation"
+                                + " This service is compliant with the FHIR Argonaut Provider Directory Implementation"
                                 + " Guide."
         ),
         servers = {
@@ -25,7 +25,7 @@ import javax.ws.rs.Path;
         },
         externalDocs =
         @ExternalDocumentation(
-                description = "Argonaut Data Query Implementation Guide",
+                description = "Argonaut Provider Directory Implementation Guide",
                 url = "http://www.fhir.org/guides/argonaut/pd/index.html"
         )
 )
