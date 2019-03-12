@@ -19,6 +19,13 @@ import gov.va.api.health.providerdirectory.api.elements.Meta;
 import gov.va.api.health.providerdirectory.api.elements.Narrative;
 import gov.va.api.health.providerdirectory.api.elements.Reference;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,20 +33,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html")
+@Schema(
+  description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html"
+)
 public class Endpoint implements DomainResource {
   @NotBlank String resourceType;
 
@@ -81,11 +82,11 @@ public class Endpoint implements DomainResource {
   @Pattern(regexp = Fhir.CODE)
   String payloadMimeType;
 
-  @NotNull @Pattern(regexp = Fhir.URI)
+  @NotNull
+  @Pattern(regexp = Fhir.URI)
   String address;
 
   List<String> header;
-
 
   public enum Status {
     active,
@@ -138,5 +139,4 @@ public class Endpoint implements DomainResource {
       super(resourceType, id, meta, implicitRules, language, type, total, link, entry, signature);
     }
   }
-
 }

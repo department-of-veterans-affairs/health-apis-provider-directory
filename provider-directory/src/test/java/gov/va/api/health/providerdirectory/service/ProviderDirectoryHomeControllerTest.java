@@ -6,9 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.nio.charset.StandardCharsets;
-
 import gov.va.api.health.providerdirectory.service.controller.ProviderDirectoryHomeController;
+import java.nio.charset.StandardCharsets;
 import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;

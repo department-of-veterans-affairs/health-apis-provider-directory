@@ -9,27 +9,23 @@ import gov.va.api.health.providerdirectory.api.elements.Extension;
 import gov.va.api.health.providerdirectory.api.elements.Meta;
 import gov.va.api.health.providerdirectory.api.elements.Narrative;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(
-  description = "https://www.hl7.org/fhir/STU3/operationoutcome.html"
-)
+@Schema(description = "https://www.hl7.org/fhir/STU3/operationoutcome.html")
 public class OperationOutcome implements DomainResource {
 
   @Pattern(regexp = Fhir.ID)
@@ -51,7 +47,6 @@ public class OperationOutcome implements DomainResource {
   @Valid List<Extension> modifierExtension;
 
   @Valid List<Extension> extension;
-
 
   @Data
   @Builder

@@ -5,7 +5,6 @@ import gov.va.api.health.providerdirectory.api.datatypes.SimpleResource;
 import gov.va.api.health.providerdirectory.api.elements.Extension;
 import gov.va.api.health.providerdirectory.api.elements.Narrative;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.List;
 
 @SuppressWarnings({"WeakerAccess", "unused"})

@@ -1,13 +1,12 @@
 package gov.va.api.health.providerdirectory.api.validation;
 
-import lombok.SneakyThrows;
-import org.springframework.beans.BeanUtils;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import lombok.SneakyThrows;
+import org.springframework.beans.BeanUtils;
 
 public abstract class AbstractSetFieldCounter<A extends Annotation>
     implements ConstraintValidator<A, Object> {

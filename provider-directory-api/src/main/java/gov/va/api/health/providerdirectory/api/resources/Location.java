@@ -40,151 +40,153 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html")
+@Schema(
+  description = "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html"
+)
 public class Location implements DomainResource {
-    @NotBlank String resourceType;
+  @NotBlank String resourceType;
 
+  @Pattern(regexp = Fhir.ID)
+  String id;
+
+  @Valid Meta meta;
+
+  @Pattern(regexp = Fhir.URI)
+  String implicitRules;
+
+  @Pattern(regexp = Fhir.CODE)
+  String language;
+
+  @Valid Narrative text;
+
+  @Valid List<SimpleResource> contained;
+
+  @Valid List<Extension> extension;
+
+  @Valid List<Extension> modifierExtension;
+
+  @Valid List<Identifier> identifier;
+
+  @NotNull Status status;
+
+  Coding operationalStatus;
+
+  @NotNull String name;
+
+  List<String> alias;
+
+  String description;
+
+  Mode mode;
+
+  @Valid CodeableConcept type;
+
+  @Valid @NotEmpty List<ContactPoint> telecom;
+
+  @Valid @NotNull LocationAddress address;
+
+  @Valid CodeableConcept physicalType;
+
+  @Valid Position position;
+
+  @Valid @NotNull Reference managingOrganization;
+
+  @Valid Reference partOf;
+
+  @Valid List<Reference> endpoint;
+
+  public enum Mode {
+    instance,
+    kind
+  }
+
+  public enum Status {
+    active,
+    suspended,
+    inactive
+  }
+
+  @Data
+  @EqualsAndHashCode(callSuper = true)
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+  @JsonDeserialize(builder = Location.Bundle.BundleBuilder.class)
+  public static class Bundle extends AbstractBundle<Location.Entry> {
+    @Builder
+    public Bundle(
+        @NotBlank String resourceType,
+        @Pattern(regexp = Fhir.ID) String id,
+        @Valid Meta meta,
+        @Pattern(regexp = Fhir.URI) String implicitRules,
+        @Pattern(regexp = Fhir.CODE) String language,
+        @NotNull BundleType type,
+        @Min(0) Integer total,
+        @Valid List<BundleLink> link,
+        @Valid List<Location.Entry> entry,
+        @Valid Signature signature) {
+      super(resourceType, id, meta, implicitRules, language, type, total, link, entry, signature);
+    }
+  }
+
+  @Data
+  @EqualsAndHashCode(callSuper = true)
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+  @JsonDeserialize(builder = Location.Entry.EntryBuilder.class)
+  @Schema(name = "LocationEntry")
+  public static class Entry extends AbstractEntry<Location> {
+    @Builder
+    public Entry(
+        @Pattern(regexp = Fhir.ID) String id,
+        @Valid List<Extension> extension,
+        @Valid List<Extension> modifierExtension,
+        @Valid List<BundleLink> link,
+        @Pattern(regexp = Fhir.URI) String fullUrl,
+        @Valid Location resource,
+        @Valid Search search,
+        @Valid Request request,
+        @Valid Response response) {
+      super(id, extension, modifierExtension, link, fullUrl, resource, search, request, response);
+    }
+  }
+
+  @Data
+  @Builder
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  @AllArgsConstructor
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+  public static class LocationAddress implements Element {
     @Pattern(regexp = Fhir.ID)
     String id;
 
-    @Valid Meta meta;
+    @Valid List<Extension> extension;
+    Address.AddressUse use;
+    Address.AddressType type;
+    @NotNull String text;
+    @NotEmpty List<String> line;
+    String city;
+    String district;
+    String state;
+    String postalCode;
+    String country;
+    @Valid Period period;
+  }
 
-    @Pattern(regexp = Fhir.URI)
-    String implicitRules;
-
-    @Pattern(regexp = Fhir.CODE)
-    String language;
-
-    @Valid Narrative text;
-
-    @Valid List<SimpleResource> contained;
+  @Data
+  @Builder
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  @AllArgsConstructor
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+  public static class Position implements BackboneElement {
+    @Pattern(regexp = Fhir.ID)
+    String id;
 
     @Valid List<Extension> extension;
 
     @Valid List<Extension> modifierExtension;
 
-    @Valid List<Identifier> identifier;
+    @NotNull double longitude;
 
-    @NotNull Status status;
+    @NotNull double latitude;
 
-    Coding operationalStatus;
-
-    @NotNull String name;
-
-    List<String> alias;
-
-    String description;
-
-    Mode mode;
-
-    @Valid CodeableConcept type;
-
-    @Valid @NotEmpty List<ContactPoint> telecom;
-
-    @Valid @NotNull LocationAddress address;
-
-    @Valid CodeableConcept physicalType;
-
-    @Valid Position position;
-
-    @Valid @NotNull Reference managingOrganization;
-
-    @Valid Reference partOf;
-
-    @Valid List<Reference> endpoint;
-
-    public enum Mode {
-        instance,
-        kind
-    }
-
-    public enum Status {
-        active,
-        suspended,
-        inactive
-    }
-
-    @Data
-    @EqualsAndHashCode(callSuper = true)
-    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    @JsonDeserialize(builder = Location.Bundle.BundleBuilder.class)
-    public static class Bundle extends AbstractBundle<Location.Entry> {
-        @Builder
-        public Bundle(
-                @NotBlank String resourceType,
-                @Pattern(regexp = Fhir.ID) String id,
-                @Valid Meta meta,
-                @Pattern(regexp = Fhir.URI) String implicitRules,
-                @Pattern(regexp = Fhir.CODE) String language,
-                @NotNull BundleType type,
-                @Min(0) Integer total,
-                @Valid List<BundleLink> link,
-                @Valid List<Location.Entry> entry,
-                @Valid Signature signature) {
-            super(resourceType, id, meta, implicitRules, language, type, total, link, entry, signature);
-        }
-    }
-
-    @Data
-    @EqualsAndHashCode(callSuper = true)
-    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    @JsonDeserialize(builder = Location.Entry.EntryBuilder.class)
-    @Schema(name = "LocationEntry")
-    public static class Entry extends AbstractEntry<Location> {
-        @Builder
-        public Entry(
-                @Pattern(regexp = Fhir.ID) String id,
-                @Valid List<Extension> extension,
-                @Valid List<Extension> modifierExtension,
-                @Valid List<BundleLink> link,
-                @Pattern(regexp = Fhir.URI) String fullUrl,
-                @Valid Location resource,
-                @Valid Search search,
-                @Valid Request request,
-                @Valid Response response) {
-            super(id, extension, modifierExtension, link, fullUrl, resource, search, request, response);
-        }
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    @AllArgsConstructor
-    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public static class LocationAddress implements Element {
-        @Pattern(regexp = Fhir.ID)
-        String id;
-        @Valid List<Extension> extension;
-        Address.AddressUse use;
-        Address.AddressType type;
-        @NotNull String text;
-        // Need to ensure Line is of range 0..2 in transformer
-        List<String> line;
-        String city;
-        String district;
-        String state;
-        String postalCode;
-        String country;
-        @Valid Period period;
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    @AllArgsConstructor
-    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public static class  Position implements BackboneElement {
-        @Pattern(regexp = Fhir.ID)
-        String id;
-
-        @Valid List<Extension> extension;
-
-        @Valid List<Extension> modifierExtension;
-
-        @NotNull double longitude;
-
-        @NotNull double latitude;
-
-        double altitude;
-    }
+    double altitude;
+  }
 }

@@ -8,9 +8,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Schema(description = "http://hl7.org/fhir/STU3/datatypes.html#Coding")
 public class Coding {

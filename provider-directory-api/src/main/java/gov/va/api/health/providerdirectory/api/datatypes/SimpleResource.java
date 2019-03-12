@@ -5,14 +5,13 @@ import gov.va.api.health.providerdirectory.api.Fhir;
 import gov.va.api.health.providerdirectory.api.elements.Meta;
 import gov.va.api.health.providerdirectory.api.resources.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
 @Data
 @Builder
