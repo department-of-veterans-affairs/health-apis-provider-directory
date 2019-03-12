@@ -28,8 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Schema(
-  description = "https://www.hl7.org/fhir/operationoutcome.html",
-  example = "SWAGGER_EXAMPLE_OPERATION_OUTCOME"
+  description = "https://www.hl7.org/fhir/STU3/operationoutcome.html"
 )
 public class OperationOutcome implements DomainResource {
 
@@ -61,7 +60,7 @@ public class OperationOutcome implements DomainResource {
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @Schema(
     description =
-        "https://www.hl7.org/fhir/operationoutcome-definitions.html#OperationOutcome.issue"
+        "https://www.hl7.org/fhir/STU3/operationoutcome-definitions.html#OperationOutcome.issue"
   )
   public static class Issue implements BackboneElement {
     @Pattern(regexp = Fhir.ID)
@@ -71,11 +70,10 @@ public class OperationOutcome implements DomainResource {
 
     @Valid List<Extension> extension;
 
-    @NotNull OperationOutcome.Issue.IssueSeverity severity;
+    @NotNull IssueSeverity severity;
 
     @NotBlank
     @Pattern(regexp = Fhir.CODE)
-    @Schema(description = "http://hl7.org/fhir/DSTU2/valueset-issue-type.html")
     String code;
 
     @Valid CodeableConcept details;

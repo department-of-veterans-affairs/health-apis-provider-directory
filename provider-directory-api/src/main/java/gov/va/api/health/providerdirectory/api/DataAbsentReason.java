@@ -15,7 +15,7 @@ public final class DataAbsentReason {
   /**
    * Create a new Extension that indicates a field is absent because for the given reason.
    *
-   * <p>See https://www.hl7.org/fhir/DSTU2/valueset-data-absent-reason.html
+   * <p>See https://www.hl7.org/fhir/STU3/valueset-data-absent-reason.html
    */
   public static Extension of(@NonNull String value) {
     return Extension.builder()
@@ -31,7 +31,7 @@ public final class DataAbsentReason {
   /**
    * Create a new Extension that indicates a field is absent because for the given reason.
    *
-   * <p>See https://www.hl7.org/fhir/DSTU2/valueset-data-absent-reason.html
+   * <p>See https://www.hl7.org/fhir/STU3/valueset-data-absent-reason.html
    */
   public static Extension of(@NonNull Reason reason) {
     return of(reason.value());
@@ -48,12 +48,16 @@ public final class DataAbsentReason {
     unsupported,
     astext,
     error,
-    NaN;
+    NaN,
+    @JsonProperty("not-performed")
+    not_performed;
 
     private String value() {
       switch (this) {
         case not_asked:
           return "not-asked";
+        case not_performed:
+          return "not-performed";
         default:
           return toString();
       }

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Data
@@ -21,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/datatypes.html#Timing")
+@Schema(description = "http://hl7.org/fhir/STU3/datatypes.html#Timing")
 public class Timing implements Element {
   @Pattern(regexp = Fhir.ID)
   String id;
@@ -62,6 +63,16 @@ public class Timing implements Element {
     a
   }
 
+  public enum DaysOfWeek {
+    mon,
+    tue,
+    wed,
+    thu,
+    fri,
+    sat,
+    sun
+  }
+
   @Data
   @Builder
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -77,6 +88,7 @@ public class Timing implements Element {
     @Valid Period boundsPeriod;
     @Valid List<Extension> extension;
     Integer count;
+    Integer countMax;
     Double duration;
     Double durationMax;
     @Valid UnitsOfTime durationUnits;
@@ -85,6 +97,9 @@ public class Timing implements Element {
     Double period;
     Double periodMax;
     @Valid UnitsOfTime periodUnits;
+    DaysOfWeek daysOfWeek;
     EventTiming when;
+    @PositiveOrZero Integer offset;
+
   }
 }

@@ -24,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/bundle.html")
+@Schema(description = "http://hl7.org/fhir/STU3/bundle.html")
 public abstract class AbstractEntry<T extends Resource> implements BackboneElement {
   @Pattern(regexp = Fhir.ID)
   protected String id;
@@ -58,7 +58,7 @@ public abstract class AbstractEntry<T extends Resource> implements BackboneEleme
 
   @Data
   @Builder
-  @Schema(description = "http://hl7.org/fhir/DSTU2/bundle.html")
+  @Schema(description = "http://hl7.org/fhir/STU3/bundle.html")
   public static class Request implements BackboneElement {
     @Pattern(regexp = Fhir.ID)
     protected final String id;
@@ -83,7 +83,7 @@ public abstract class AbstractEntry<T extends Resource> implements BackboneEleme
 
   @Data
   @Builder
-  @Schema(description = "http://hl7.org/fhir/DSTU2/bundle.html")
+  @Schema(description = "http://hl7.org/fhir/STU3/bundle.html")
   public static class Response implements BackboneElement {
     @Pattern(regexp = Fhir.ID)
     protected final String id;
@@ -103,7 +103,7 @@ public abstract class AbstractEntry<T extends Resource> implements BackboneEleme
 
   @Data
   @Builder
-  @Schema(description = "http://hl7.org/fhir/DSTU2/bundle.html")
+  @Schema(description = "http://hl7.org/fhir/STU3/bundle.html")
   public static class Search implements BackboneElement {
     @Pattern(regexp = Fhir.ID)
     final String id;

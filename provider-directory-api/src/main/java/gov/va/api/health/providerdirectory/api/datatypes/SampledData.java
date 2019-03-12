@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -17,13 +18,13 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/datatypes.html#SampledData")
+@Schema(description = "http://hl7.org/fhir/STU3/datatypes.html#SampledData")
 public class SampledData {
   @Valid @NotNull SimpleQuantity origin;
   @NotNull double period;
   double factor;
   double lowerLimit;
   double upperLimit;
-  @NotNull Integer dimensions;
+  @NotNull @Min(1) Integer dimensions;
   @NotBlank String data;
 }
