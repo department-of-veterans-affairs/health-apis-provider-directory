@@ -2,6 +2,7 @@ package gov.va.api.health.providerdirectory.api.elements;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import gov.va.api.health.providerdirectory.api.Fhir;
+import gov.va.api.health.providerdirectory.api.datatypes.Identifier;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import javax.validation.Valid;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/references.html")
+@Schema(description = "http://hl7.org/fhir/STU3/references.html")
 public class Reference implements Element {
   @Pattern(regexp = Fhir.ID)
   String id;
@@ -25,4 +26,5 @@ public class Reference implements Element {
   @Valid List<Extension> extension;
   String reference;
   String display;
+  @Valid Identifier identifier;
 }

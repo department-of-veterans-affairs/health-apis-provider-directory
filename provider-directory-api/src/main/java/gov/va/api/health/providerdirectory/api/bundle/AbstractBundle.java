@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/bundle.html")
+@Schema(description = "http://hl7.org/fhir/STU3/bundle.html")
 public abstract class AbstractBundle<N extends AbstractEntry<?>> implements Resource {
   @NotBlank protected String resourceType;
 

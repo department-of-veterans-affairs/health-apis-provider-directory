@@ -25,6 +25,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
@@ -80,8 +81,7 @@ public class Location implements DomainResource {
 
   @Valid CodeableConcept type;
 
-  // Need to ensure List is size 1 or more in transformer
-  @Valid @NotNull List<ContactPoint> telecom;
+  @Valid @NotEmpty List<ContactPoint> telecom;
 
   @Valid @NotNull LocationAddress address;
 
@@ -161,8 +161,7 @@ public class Location implements DomainResource {
     Address.AddressUse use;
     Address.AddressType type;
     @NotNull String text;
-    // Need to ensure Line is of range 0..2 in transformer
-    List<String> line;
+    @NotEmpty List<String> line;
     String city;
     String district;
     String state;

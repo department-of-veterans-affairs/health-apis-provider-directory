@@ -9,7 +9,7 @@ import java.util.List;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "https://www.hl7.org/fhir/domainresource.html")
+@Schema(description = "https://www.hl7.org/fhir/STU3/domainresource.html")
 public interface DomainResource extends Resource {
   List<SimpleResource> contained();
 

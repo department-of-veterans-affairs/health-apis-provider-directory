@@ -9,7 +9,7 @@ import gov.va.api.health.providerdirectory.api.validation.ZeroOrOneOf;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/datatypes.html#Annotation")
+@Schema(description = "http://hl7.org/fhir/STU3/datatypes.html#Annotation")
 @ZeroOrOneOf(
   fields = {"authorReference", "authorString"},
   message = "Only one author value may be specified"
@@ -38,5 +38,5 @@ public class Annotation implements Element {
   @Pattern(regexp = Fhir.DATETIME)
   String time;
 
-  @NotBlank String text;
+  @NotNull String text;
 }

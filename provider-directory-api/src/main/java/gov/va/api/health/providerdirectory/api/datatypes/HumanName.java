@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/datatypes.html#HumanName")
+@Schema(description = "http://hl7.org/fhir/STU3/datatypes.html#HumanName")
 public class HumanName implements Element {
   @Pattern(regexp = Fhir.ID)
   String id;
@@ -28,7 +28,7 @@ public class HumanName implements Element {
 
   NameUse use;
   String text;
-  List<String> family;
+  String family;
   List<String> given;
   List<String> prefix;
   List<String> suffix;

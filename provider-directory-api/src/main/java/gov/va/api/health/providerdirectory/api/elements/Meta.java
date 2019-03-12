@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/resource.html#meta")
+@Schema(description = "http://hl7.org/fhir/STU3/resource.html#Meta")
 public class Meta implements Element {
   @Pattern(regexp = Fhir.ID)
   String id;

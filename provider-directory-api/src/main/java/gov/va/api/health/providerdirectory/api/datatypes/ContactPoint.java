@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "http://hl7.org/fhir/DSTU2/datatypes.html#ContactPoint")
+@Schema(description = "http://hl7.org/fhir/STU3/datatypes.html#ContactPoint")
 public class ContactPoint implements Element {
   @Pattern(regexp = Fhir.ID)
   String id;
@@ -40,6 +40,8 @@ public class ContactPoint implements Element {
     fax,
     email,
     pager,
+    url,
+    sms,
     other
   }
 
