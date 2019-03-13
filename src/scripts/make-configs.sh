@@ -110,4 +110,9 @@ sendMoarSpams() {
 
 makeConfig provider-directory $PROFILE
 
+configValue provider-directory $PROFILE well-known.capabilities "context-standalone-patient, launch-ehr, permission-offline, permission-patient"
+configValue provider-directory $PROFILE well-known.response-type-supported "code, refresh_token"
+configValue provider-directory $PROFILE well-known.scopes-supported "patient/DiagnosticReport.read, patient/Patient.read, offline_access"
+
+
 checkForUnsetValues provider-directory $PROFILE
