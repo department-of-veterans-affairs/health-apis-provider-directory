@@ -1,0 +1,223 @@
+{
+    "id" : "health-api-argonaut-capability",
+    "resourceType" : "CapabilityStatement",
+    "version" : "1.4.0",
+    "name" : "API Management Platform | Health - Argonaut Provider Directory",
+    "status" : "draft",
+    "date" : "2019-03-19T12:26:29Z",
+    "publisher" : "Department of Veterans Affairs",
+    "contact" : [
+        {
+            "name" : "Jason Glanville",
+            "telecom" : [
+                {
+                    "system" : "email",
+                    "value" : "Jason.Glanville@va.gov"
+                }
+            ]
+        }
+    ],
+    "description" : "Read and search support Argonaut Provider Directory.",
+    "kind" : "capability",
+    "software" : {
+        "name" : "provider-directory"
+    },
+    "fhirVersion" : "1.0.2",
+    "acceptUnknown" : "no",
+    "format" : [
+        "application/json+fhir",
+        "application/json",
+        "application/fhir+json"
+    ],
+    "rest" : [
+        {
+            "mode" : "server",
+            "security" : {
+                "extension" : [
+                    {
+                        "url" : "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris",
+                        "extension" : [
+                            {
+                                "url" : "token",
+                                "valueUri" : "https://fake.va.gov"
+                            },
+                            {
+                                "url" : "authorize",
+                                "valueUri" : "https://fake.va.gov"
+                            }
+                        ]
+                    }
+                ],
+                "cors" : true,
+                "service" : [
+                    {
+                        "coding" : [
+                            {
+                                "system" : "http://hl7.org/fhir/restful-security-service",
+                                "code" : "SMART-on-FHIR",
+                                "display" : "SMART-on-FHIR"
+                            }
+                        ]
+                    }
+                ],
+                "description" : "http://docs.smarthealthit.org/"
+            },
+            "resource" : [
+                {
+                    "type" : "Location",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "address",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "identifier",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "name",
+                            "type" : "string"
+                        }
+                    ]
+                },
+                {
+                    "type" : "Endpoint",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "identifier",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "organization",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "name",
+                            "type" : "string"
+                        }
+                    ]
+                },
+                {
+                    "type" : "Organization",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-organization.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "identifier",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "address",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "name",
+                            "type" : "string"
+                        }
+                    ]
+                },
+                {
+                    "type" : "Practitioner",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "family",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "given",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "identifier",
+                            "type" : "string"
+                        }
+                    ]
+                },
+                {
+                    "type" : "PractitionerRole",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "identifier",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "family",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "given",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "specialty",
+                            "type" : "string"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
