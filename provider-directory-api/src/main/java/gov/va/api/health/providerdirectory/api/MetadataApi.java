@@ -11,7 +11,7 @@ import javax.ws.rs.Path;
 
 public interface MetadataApi {
   @Operation(
-    summary = "Conformance",
+    summary = "Capability",
     description = "http://hl7.org/fhir/STU3/capabilitystatement.html",
     tags = "Metadata"
   )
