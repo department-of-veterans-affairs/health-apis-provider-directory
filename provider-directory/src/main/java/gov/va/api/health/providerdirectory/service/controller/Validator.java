@@ -14,42 +14,44 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import lombok.NoArgsConstructor;
 
-/** This support utility provides the mechanism need to for Provider Directory `$validate` endpoint. */
+/**
+ * This support utility provides the mechanism need to for Provider Directory `$validate` endpoint.
+ */
 @NoArgsConstructor(staticName = "create")
 public class Validator {
-    /**
-     * Return a new "all ok" validation response. This is the payload that indicates the validated
-     * bundle is valid.
-     */
-    public static OperationOutcome ok() {
-        return OperationOutcome.builder()
-                .resourceType("OperationOutcome")
-                .id("allok")
-                .text(
-                        Narrative.builder()
-                                .status(NarrativeStatus.additional)
-                                .div("<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>ALL OK</p></div>")
-                                .build())
-                .issue(
-                        Collections.singletonList(
-                                Issue.builder()
-                                        .severity(IssueSeverity.information)
-                                        .code("informational")
-                                        .details(CodeableConcept.builder().text("ALL OK").build())
-                                        .build()))
-                .build();
-    }
+  /**
+   * Return a new "all ok" validation response. This is the payload that indicates the validated
+   * bundle is valid.
+   */
+  public static OperationOutcome ok() {
+    return OperationOutcome.builder()
+        .resourceType("OperationOutcome")
+        .id("allok")
+        .text(
+            Narrative.builder()
+                .status(NarrativeStatus.additional)
+                .div("<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>ALL OK</p></div>")
+                .build())
+        .issue(
+            Collections.singletonList(
+                Issue.builder()
+                    .severity(IssueSeverity.information)
+                    .code("informational")
+                    .details(CodeableConcept.builder().text("ALL OK").build())
+                    .build()))
+        .build();
+  }
 
-    /**
-     * Return an operation outcome if bundle is valid, otherwise throw a constraint violation
-     * exception.
-     */
-    public <B extends AbstractBundle<?>> OperationOutcome validate(B bundle) {
-        Set<ConstraintViolation<B>> violations =
-                Validation.buildDefaultValidatorFactory().getValidator().validate(bundle);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException("Bundle is not valid", violations);
-        }
-        return ok();
+  /**
+   * Return an operation outcome if bundle is valid, otherwise throw a constraint violation
+   * exception.
+   */
+  public <B extends AbstractBundle<?>> OperationOutcome validate(B bundle) {
+    Set<ConstraintViolation<B>> violations =
+        Validation.buildDefaultValidatorFactory().getValidator().validate(bundle);
+    if (!violations.isEmpty()) {
+      throw new ConstraintViolationException("Bundle is not valid", violations);
     }
+    return ok();
+  }
 }

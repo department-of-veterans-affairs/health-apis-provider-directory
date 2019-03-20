@@ -1,14 +1,15 @@
 package gov.va.api.health.providerdirectory.service.controller;
 
-import java.lang.annotation.Documented;
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE_USE;
-import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -19,12 +20,12 @@ import javax.validation.Payload;
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 public @interface DateTimeParameter {
-    /** Required by constraint validation framework. */
-    Class<?>[] groups() default {};
+  /** Required by constraint validation framework. */
+  Class<?>[] groups() default {};
 
-    /** The validation error message. */
-    String message() default "Must be array of date/time search parameters";
+  /** The validation error message. */
+  String message() default "Must be array of date/time search parameters";
 
-    /** Required by constraint validation framework. */
-    Class<? extends Payload>[] payload() default {};
+  /** Required by constraint validation framework. */
+  Class<? extends Payload>[] payload() default {};
 }
