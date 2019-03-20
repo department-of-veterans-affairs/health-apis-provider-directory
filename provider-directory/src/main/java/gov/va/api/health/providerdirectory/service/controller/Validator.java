@@ -14,7 +14,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import lombok.NoArgsConstructor;
 
-/** This support utility provides the mechanism need to for Argonaut `$validate` endpoint. */
+/** This support utility provides the mechanism need to for Provider Directory `$validate` endpoint. */
 @NoArgsConstructor(staticName = "create")
 public class Validator {
     /**
