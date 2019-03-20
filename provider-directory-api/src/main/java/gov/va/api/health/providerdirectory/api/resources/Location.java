@@ -107,6 +107,7 @@ public class Location implements DomainResource {
   }
 
   @Data
+  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Location.Bundle.BundleBuilder.class)
@@ -128,6 +129,7 @@ public class Location implements DomainResource {
   }
 
   @Data
+  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Location.Entry.EntryBuilder.class)

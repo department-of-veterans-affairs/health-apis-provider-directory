@@ -99,6 +99,7 @@ public class Endpoint implements DomainResource {
   }
 
   @Data
+  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Endpoint.Entry.EntryBuilder.class)
@@ -119,6 +120,7 @@ public class Endpoint implements DomainResource {
   }
 
   @Data
+  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Endpoint.Bundle.BundleBuilder.class)

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.AccessLevel;
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-@Schema(description = "https://www.hl7.org/fhir/STU3/operationoutcome.html")
+@Schema(description = "https://www.hl7.org/fhir/operationoutcome.html")
 public class OperationOutcome implements DomainResource {
 
   @Pattern(regexp = Fhir.ID)
@@ -48,6 +49,8 @@ public class OperationOutcome implements DomainResource {
 
   @Valid List<Extension> extension;
 
+  @NotEmpty @Valid List<Issue> issue;
+
   @Data
   @Builder
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -65,10 +68,11 @@ public class OperationOutcome implements DomainResource {
 
     @Valid List<Extension> extension;
 
-    @NotNull IssueSeverity severity;
+    @NotNull OperationOutcome.Issue.IssueSeverity severity;
 
     @NotBlank
     @Pattern(regexp = Fhir.CODE)
+    @Schema(description = "http://hl7.org/fhir/STU3/valueset-issue-type.html")
     String code;
 
     @Valid CodeableConcept details;
