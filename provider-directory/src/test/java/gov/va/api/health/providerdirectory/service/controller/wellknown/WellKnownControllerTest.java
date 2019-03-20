@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.providerdirectory.api.information.WellKnown;
+import gov.va.api.health.providerdirectory.service.controller.capabilitystatement.CapabilityStatementProperties;
 import lombok.SneakyThrows;
 import org.junit.Test;
 
@@ -12,8 +13,8 @@ public class WellKnownControllerTest {
 
   private WellKnown actual() {
     return WellKnown.builder()
-        .tokenEndpoint("unset")
-        .authorizationEndpoint("unset")
+        .tokenEndpoint("https://fake.pd/token")
+        .authorizationEndpoint("https://fake.pd/authorize")
         .capabilities(
             asList(
                 "context-standalone-patient",
@@ -23,6 +24,16 @@ public class WellKnownControllerTest {
         .responseTypeSupported(asList("code", "refresh-token"))
         .scopesSupported(
             asList("patient/DiagnosticReport.read", "patient/Patient.read", "offline_access"))
+        .build();
+  }
+
+  private CapabilityStatementProperties conformanceProperties() {
+    return CapabilityStatementProperties.builder()
+        .security(
+            CapabilityStatementProperties.SecurityProperties.builder()
+                .authorizeEndpoint("https://fake.pd/authorize")
+                .tokenEndpoint("https://fake.pd/token")
+                .build())
         .build();
   }
 
@@ -36,7 +47,8 @@ public class WellKnownControllerTest {
   @Test
   @SneakyThrows
   public void read() {
-    WellKnownController controller = new WellKnownController(wellKnownProperties());
+    WellKnownController controller =
+        new WellKnownController(wellKnownProperties(), conformanceProperties());
     try {
       assertThat(pretty(controller.read())).isEqualTo(pretty(actual()));
     } catch (AssertionError e) {
