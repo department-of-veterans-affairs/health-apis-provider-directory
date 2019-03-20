@@ -76,6 +76,7 @@ public class Organization implements DomainResource {
   @Valid List<Reference> endpoint;
 
   @Data
+  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Organization.Bundle.BundleBuilder.class)
@@ -97,6 +98,7 @@ public class Organization implements DomainResource {
   }
 
   @Data
+  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Organization.Entry.EntryBuilder.class)

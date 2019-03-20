@@ -95,9 +95,11 @@ public class Practitioner implements DomainResource {
   }
 
   @Data
+  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Practitioner.Entry.EntryBuilder.class)
+  @Schema(name = "PractitionerEntry")
   public static class Entry extends AbstractEntry<Practitioner> {
     @Builder
     public Entry(
@@ -115,11 +117,12 @@ public class Practitioner implements DomainResource {
   }
 
   @Data
+  @NoArgsConstructor
   @EqualsAndHashCode(callSuper = true)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   @JsonDeserialize(builder = Practitioner.Bundle.BundleBuilder.class)
-  @Schema(name = "Practitioner")
-  public static class Bundle extends AbstractBundle<Entry> {
+  @Schema(name = "PractitionerBundle")
+  public static class Bundle extends AbstractBundle<Practitioner.Entry> {
     @Builder
     public Bundle(
         @NotBlank String resourceType,
