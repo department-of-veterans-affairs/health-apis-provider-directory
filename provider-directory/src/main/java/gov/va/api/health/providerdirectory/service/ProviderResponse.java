@@ -10,11 +10,11 @@ import lombok.Data;
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ProviderResponse {
-  /** Map to Identifier Value* */
+  /* Map to Identifier Value. */
   private String providerIdentifier;
-  /** Map to Identifier System */
+  /* Map to Identifier System. */
   private String providerIdentifierType;
-  /** Map to Family and Given Name* */
+  /* Map to Family and Given Name. */
   private String name;
 
   private String qualityRankingTotalScore;
@@ -25,7 +25,7 @@ public class ProviderResponse {
   private String secondaryDirectMessagingAddress;
   private String emrSystem;
   private String emrSytemOther;
-  /** Msp to Address */
+  /* Msp to Address. */
   private String address;
 
   private String addressStreet;
@@ -34,13 +34,13 @@ public class ProviderResponse {
   private String addressPostalCode;
   private String addressCounty;
   private String addressCountry;
-  /** Map to active* */
+  /* Map to active. */
   private String providerStatusReason;
 
   private Boolean primaryCarePhysician;
   private Boolean isAcceptingNewPatients;
   private String providerEthnicity;
-  /** Map to provider gender */
+  /* Map to provider gender. */
   private String providerGender;
 
   private String religion;
@@ -63,7 +63,7 @@ public class ProviderResponse {
   private Boolean contactMethodEmail;
   private Boolean contactMethodFax;
   private Boolean contactMethodVirtuPro;
-  private Boolean contactMethodHSRM;
+  private Boolean contactMethodHsrm;
   private Boolean contactMethodPhone;
   private Boolean contactMethodMail;
   private Boolean contactMethodRefDoc;
@@ -73,7 +73,7 @@ public class ProviderResponse {
   private Boolean mails;
   private Boolean phoneCalls;
   private Boolean faxes;
-  private Boolean preferredMeansReceivingReferralHSRM;
+  private Boolean preferredMeansReceivingReferralHsrm;
   private Boolean preferredMeansReceivingReferralSecuredEmail;
   private Boolean preferredMeansReceivingReferralMail;
   private String preferredMeansReceivingReferralDirectMessaging;

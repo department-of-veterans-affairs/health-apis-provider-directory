@@ -10,7 +10,7 @@ import lombok.Data;
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ProviderContacts {
-  /** Not sure what should map to telecom */
+  /* Not sure what should map to telecom. */
   private String fullName;
 
   private String companyName;
@@ -39,7 +39,7 @@ public class ProviderContacts {
   private String gender;
   private String maritalStatus;
   private String spousePartnerName;
-  /** Map to birthday */
+  /* Map to birthday. */
   private String birthday;
 
   private String anniversary;
