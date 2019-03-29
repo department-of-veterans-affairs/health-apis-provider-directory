@@ -1,5 +1,7 @@
 package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
+
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
@@ -86,18 +88,10 @@ public class PractitionerController {
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-    ResponseEntity<String> entity =
-        restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
-    String body = entity.getBody();
-    log.error(
-        "PPMS API response: "
-            + objectMapper()
-                .writerWithDefaultPrettyPrinter()
-                .writeValueAsString(objectMapper().readTree(body)));
-    ProviderResponse responseObject = objectMapper().readValue(body, ProviderResponse.class);
-    log.error(
-        "response object: "
-            + objectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(responseObject));
+
+    ResponseEntity<ProviderResponse> entity =
+            restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
+    ProviderResponse responseObject = entity.getBody();
     return responseObject;
   }
 
@@ -157,7 +151,7 @@ public class PractitionerController {
       @RequestParam("identifier") String identifier,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
-    // ProviderResponse providerResponse = ppmsProvider(identifier);
+    ProviderResponse providerResponse = ppmsProvider(identifier);
     return bundle(
         Parameters.builder()
             .add("identifier", identifier)
