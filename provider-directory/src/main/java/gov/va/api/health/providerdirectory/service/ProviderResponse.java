@@ -28,41 +28,7 @@ public final class ProviderResponse {
   @AllArgsConstructor(access = AccessLevel.PRIVATE)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   public static final class Value {
-    @JsonProperty("Status")
-    private String status;
 
-    @JsonProperty("TotalResults")
-    private int totalResults;
-
-    @JsonProperty("ReturnedResults")
-    private int returnedResults;
-
-    @JsonProperty("PageNumber")
-    private int pageNumber;
-
-    @JsonProperty("TotalPages")
-    private int totalPages;
-
-    @JsonProperty("Timestamp")
-    private String timestamp;
-
-    @JsonProperty("TimeToReturnResultsPPMS")
-    private long timeToReturnResultsPPMS;
-
-    @JsonProperty("TimeToMapReturnedResults")
-    private long timeToMapReturnedResults;
-
-    @JsonProperty("Providers")
-    private List<Provider> providers;
-  }
-
-  @Data
-  @Builder
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  @AllArgsConstructor(access = AccessLevel.PRIVATE)
-  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public static final class Provider {
-    /* Map to Identifier Value. */
     @JsonProperty("ProviderIdentifier")
     private Integer providerIdentifier;
 
@@ -254,4 +220,5 @@ public final class ProviderResponse {
     @JsonProperty("TerminationDate")
     private String terminationDate;
   }
+
 }
