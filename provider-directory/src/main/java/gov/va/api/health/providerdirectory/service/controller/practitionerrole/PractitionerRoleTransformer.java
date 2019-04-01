@@ -1,3 +1,13 @@
 package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
-public class PractitionerRoleTransformer {}
+import org.springframework.stereotype.Service;
+
+import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
+
+@Service
+public class PractitionerRoleTransformer implements PractitionerRoleController.Transformer {
+  @Override
+  public PractitionerRole apply(PpmsPractitionerRole ppms) {
+    return null;
+  }
+}
