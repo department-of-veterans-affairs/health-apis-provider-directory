@@ -1,55 +1,143 @@
 package gov.va.api.health.providerdirectory.service;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
+import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties
 public class ProviderContacts {
-  /* Not sure what should map to telecom. */
-  private String fullName;
 
-  private String companyName;
-  private Boolean isVeteran;
-  private String contactRole;
-  private String emergencyResponderIndicator;
-  private Boolean isOtherPartyContact;
-  private String providerName;
-  private String businessPhone;
-  private String mobilePhone;
-  private String email;
-  private String fax;
-  private String preferredMethodOfContact;
-  private String deliveryStatus;
-  private String address;
-  private String addressStreet1;
-  private String addressStreet2;
-  private String addressCity;
-  private String addressState;
-  private String addressZip;
-  private String addressCountryRegion;
-  private Boolean isAddressActive;
-  private Boolean isMailingAddress;
-  private String addressInvalidReason;
-  private String countryCodeName;
-  private String gender;
-  private String maritalStatus;
-  private String spousePartnerName;
-  /* Map to birthday. */
-  private String birthday;
+  @JsonProperty("@odata.context")
+  private String odataContext;
+  private List<Value> value;
 
-  private String anniversary;
-  private String dateOfDeath;
-  private Boolean allowEmail;
-  private Boolean allowFollowEmail;
-  private Boolean allowBulkEmail;
-  private Boolean allowPhone;
-  private Boolean allowFax;
-  private Boolean allowMail;
-  private Boolean isTextingAcceptable;
-  private String personalNotes;
+  @Data
+  @Builder
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  @AllArgsConstructor(access = AccessLevel.PRIVATE)
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+  public static final class Value {
+    /* Not sure what should map to telecom. */
+    @JsonProperty("FullName")
+    private String fullName;
+
+    @JsonProperty("CompanyName")
+    private String companyName;
+
+    @JsonProperty("IsVeteran")
+    private Boolean isVeteran;
+
+    @JsonProperty("ContactRole")
+    private String contactRole;
+
+    @JsonProperty("EmergencyResponderIndicator")
+    private String emergencyResponderIndicator;
+
+    @JsonProperty("IsOtherPartyContact")
+    private Boolean isOtherPartyContact;
+
+    @JsonProperty("ProviderName")
+    private String providerName;
+
+    @JsonProperty("BusinessPhone")
+    private String businessPhone;
+
+    @JsonProperty("MobilePhone")
+    private String mobilePhone;
+
+    @JsonProperty("Email")
+    private String email;
+
+    @JsonProperty("Fax")
+    private String fax;
+
+    @JsonProperty("PreferredMethodOfContact")
+    private String preferredMethodOfContact;
+
+    @JsonProperty("DeliveryStatus")
+    private String deliveryStatus;
+
+    @JsonProperty("Address")
+    private String address;
+
+    @JsonProperty("AddressStreet1")
+    private String addressStreet1;
+
+    @JsonProperty("AddressStreet2")
+    private String addressStreet2;
+
+    @JsonProperty("AddressCity")
+    private String addressCity;
+
+    @JsonProperty("AddressState")
+    private String addressState;
+
+    @JsonProperty("AddressZip")
+    private String addressZip;
+
+    @JsonProperty("AddressCountryRegion")
+    private String addressCountryRegion;
+
+    @JsonProperty("IsAddressActive")
+    private Boolean isAddressActive;
+
+    @JsonProperty("IsMailingAddress")
+    private Boolean isMailingAddress;
+
+    @JsonProperty("AddressInvalidReason")
+    private String addressInvalidReason;
+
+    @JsonProperty("CountryCodeName")
+    private String countryCodeName;
+
+    @JsonProperty("Gender")
+    private String gender;
+
+    @JsonProperty("MaritalStatus")
+    private String maritalStatus;
+
+    @JsonProperty("SpousePartnerName")
+    private String spousePartnerName;
+    /* Map to birthday. */
+    @JsonProperty("Birthday")
+    private String birthday;
+
+    @JsonProperty("Anniversary")
+    private String anniversary;
+
+    @JsonProperty("DateOfDeath")
+    private String dateOfDeath;
+
+    @JsonProperty("AllowEmail")
+    private Boolean allowEmail;
+
+    @JsonProperty("AllowFollowEmail")
+    private Boolean allowFollowEmail;
+
+    @JsonProperty("AllowBulkEmail")
+    private Boolean allowBulkEmail;
+
+    @JsonProperty("AllowPhone")
+    private Boolean allowPhone;
+
+    @JsonProperty("AllowFax")
+    private Boolean allowFax;
+
+    @JsonProperty("AllowMail")
+    private Boolean allowMail;
+
+    @JsonProperty("IsTextingAcceptable")
+    private Boolean isTextingAcceptable;
+
+    @JsonProperty("PersonalNotes")
+    private String personalNotes;
+  }
 }

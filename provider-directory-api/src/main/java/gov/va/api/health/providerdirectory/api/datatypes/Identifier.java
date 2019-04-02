@@ -34,7 +34,7 @@ public class Identifier implements Element {
   @Pattern(regexp = Fhir.URI)
   String system;
 
-  String value;
+  Integer value;
   @Valid Period period;
   @Valid Reference assigner;
 
