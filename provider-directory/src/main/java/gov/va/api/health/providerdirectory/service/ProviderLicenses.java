@@ -1,10 +1,9 @@
 package gov.va.api.health.providerdirectory.service;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +17,11 @@ import lombok.NoArgsConstructor;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties
 public class ProviderLicenses {
+
+  List<Value> value;
+
   @JsonProperty("@odata.context")
   private String odataContext;
-  List<Value> value;
 
   @Data
   @Builder
@@ -28,10 +29,13 @@ public class ProviderLicenses {
   @AllArgsConstructor
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   public static class Value {
+
     @JsonProperty("LicenseNumber")
     String licenseNumber;
+
     @JsonProperty("LicensingState")
     String licensingState;
+
     @JsonProperty("ExpirationDate")
     String expirationDate;
   }

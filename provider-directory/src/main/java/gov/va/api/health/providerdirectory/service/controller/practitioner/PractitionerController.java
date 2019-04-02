@@ -27,7 +27,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -39,17 +44,25 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @RestController
 @RequestMapping(
-        value = {"/api/Practitioner"},
-        produces = {"application/json","application/fhir+json","application/json+fhir"}
+  value = {"/api/Practitioner"},
+  produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
 public class PractitionerController {
 
   private final RestTemplate restTemplate;
+
   private final String baseUrl;
+
   private Transformer transformer;
+
   private Bundler bundler;
 
-  public PractitionerController(@Value("${ppms.url}") String baseUrl, @Autowired RestTemplate restTemplate,@Autowired Transformer transformer,@Autowired Bundler bundler ) {
+  /** Controller setup. */
+  public PractitionerController(
+      @Value("${ppms.url}") String baseUrl,
+      @Autowired RestTemplate restTemplate,
+      @Autowired Transformer transformer,
+      @Autowired Bundler bundler) {
     this.restTemplate = restTemplate;
     this.baseUrl = baseUrl;
     this.transformer = transformer;
@@ -62,12 +75,19 @@ public class PractitionerController {
 
   // TODO: bundle function and search will be fairly different since ProviderDirectory calls out to
   private Practitioner.Bundle bundle(
-     MultiValueMap<String, String> parameters, int page, int count) {
-    ProviderResponse providerResponse = ppmsProvider(parameters.get("identifier").toArray()[0].toString());
-    ProviderContacts providerContacts = ppmsProviderContact(parameters.get("identifier").toArray()[0].toString());
-    ProviderLicenses providerLicenses = ppmsProviderLicense(parameters.get("identifier").toArray()[0].toString());
-    ProviderWrapper root = ProviderWrapper.builder().providerContacts(providerContacts).providerLicenses(providerLicenses).providerResponse(providerResponse).build();
-
+      MultiValueMap<String, String> parameters, int page, int count) {
+    ProviderResponse providerResponse =
+        ppmsProvider(parameters.get("identifier").toArray()[0].toString());
+    ProviderContacts providerContacts =
+        ppmsProviderContact(parameters.get("identifier").toArray()[0].toString());
+    ProviderLicenses providerLicenses =
+        ppmsProviderLicense(parameters.get("identifier").toArray()[0].toString());
+    ProviderWrapper root =
+        ProviderWrapper.builder()
+            .providerContacts(providerContacts)
+            .providerLicenses(providerLicenses)
+            .providerResponse(providerResponse)
+            .build();
     LinkConfig linkConfig =
         LinkConfig.builder()
             .path("Practitioner")
@@ -76,27 +96,24 @@ public class PractitionerController {
             .recordsPerPage(count)
             .totalRecords(0)
             .build();
-      return bundler.bundle(
-              BundleContext.of(
-                      linkConfig,
-                      Collections.singletonList(root),
-                      transformer,
-                      Practitioner.Entry::new,
-                      Practitioner.Bundle::new));
+    return bundler.bundle(
+        BundleContext.of(
+            linkConfig,
+            Collections.singletonList(root),
+            transformer,
+            Practitioner.Entry::new,
+            Practitioner.Bundle::new));
   }
-
 
   @SneakyThrows
   private ProviderResponse ppmsProvider(String id) {
     String url =
-        UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")")
-            .build()
-            .toUriString();
+        UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")").build().toUriString();
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
     ResponseEntity<ProviderResponse> entity =
-            restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
+        restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
     ProviderResponse responseObject = entity.getBody();
     return responseObject;
   }
@@ -104,34 +121,49 @@ public class PractitionerController {
   @SneakyThrows
   private ProviderContacts ppmsProviderContact(String id) {
     String url =
-        UriComponentsBuilder.fromHttpUrl(
-                baseUrl + "Providers(" + id + ")/ProviderContacts")
+        UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderContacts")
             .build()
             .toUriString();
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
     ResponseEntity<ProviderContacts> entity =
-            restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContacts.class);
+        restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContacts.class);
     ProviderContacts responseObject = entity.getBody();
-
     return responseObject;
   }
 
   @SneakyThrows
   private ProviderLicenses ppmsProviderLicense(String id) {
     String url =
-        UriComponentsBuilder.fromHttpUrl(
-                baseUrl + "Providers(" + id + ")/ProviderLicenses")
+        UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderLicenses")
             .build()
             .toUriString();
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
     ResponseEntity<ProviderLicenses> entity =
-            restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderLicenses.class);
+        restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderLicenses.class);
     ProviderLicenses responseObject = entity.getBody();
     return responseObject;
+  }
+
+  /** Search by family & given name. */
+  @GetMapping(params = {"family", "given"})
+  public Practitioner.Bundle searchByFailyAndGiven(
+      @RequestParam("family") String familyName,
+      @RequestParam("given") String givenName,
+      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
+    return bundle(
+        Parameters.builder()
+            .add("family", familyName)
+            .add("given", givenName)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
+        page,
+        count);
   }
 
   /** Search by identifier. */
@@ -140,7 +172,7 @@ public class PractitionerController {
       @RequestParam("identifier") String identifier,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
-return bundle(
+    return bundle(
         Parameters.builder()
             .add("identifier", identifier)
             .add("page", page)
@@ -148,41 +180,18 @@ return bundle(
             .build(),
         page,
         count);
-
   }
 
-  // ** Search by family & given name. */
-  @GetMapping(params = {"family", "given"})
-  public Practitioner.Bundle searchByFailyAndGiven(
-   @RequestParam("family") String familyName,
-   @RequestParam("given") String givenName,
-   @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
-   @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
-    return bundle(
-   Parameters.builder()
-   .add("family", familyName)
-   .add("given", givenName)
-   .add("page", page)
-   .add("_count", count)
-   .build(),
-   page,
-   count);
-   }
-
-   /** Search by name. */
+  /** Search by name. */
   @GetMapping(params = {"name"})
   public Practitioner.Bundle searchByName(
-          @RequestParam("name") String name,
-          @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
-          @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
+      @RequestParam("name") String name,
+      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
     return bundle(
-            Parameters.builder()
-                    .add("name", name)
-                    .add("page", page)
-                    .add("_count", count)
-                    .build(),
-            page,
-            count);
+        Parameters.builder().add("name", name).add("page", page).add("_count", count).build(),
+        page,
+        count);
   }
 
   /** Hey, this is a validate endpoint. It validates. */
@@ -193,7 +202,6 @@ return bundle(
   public OperationOutcome validate(@RequestBody Practitioner.Bundle bundle) {
     return Validator.create().validate(bundle);
   }
-
 
   public interface Transformer extends Function<ProviderWrapper, Practitioner> {}
 }
