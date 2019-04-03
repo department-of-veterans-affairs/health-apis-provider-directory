@@ -105,49 +105,12 @@ public class PractitionerRoleController {
             .add("_count", count)
             .build();
 
-    // PD PractitionerRole	PPMS Fields(s)
-    // active			Providers.ProviderStatusReason
-    // period			Providers(Identifier)/ProviderLicenses.ExpirationDate
-    // practitioner		Reference to Practitioner
-    // organization		Reference to Organization
-    // code				Providers(Identifier)?$expand=ProviderSpecialties.SpecialtyCode
-    // specialty		Providers(Identifier)?$expand=ProviderSpecialties
-    // location			Providers(Identifier)?$expand=CareSites
-    // healthcareService	HealthcareService is another resource, FHIR R4, not required
-    // telecom					Providers(Identifier)/ProviderContacts
-    // availableTime			Possibly ServiceAvailabilities, not available in PPMS, not req
-    // notAvailable				Possibly ServiceAvailabilities, not available in PPMS, not req
-    // availabiltyExceptions	Possibly ServiceAvailabilities, not available in PPMS, not req
-    // endpoint				Reference to endpoint
-
+    // call https://dws.ppms.va.gov/v1.0/Providers(1679592604) 
+    // call https://dev.dws.ppms.va.gov/v1.0/Providers(1285621557)/ProviderServices 
+    
     //  GET [base]/PractitionerRole?practitioner.identifier=[system]|[code]
 
-    //	  @NotBlank String resourceType;
-    //	  @Pattern(regexp = Fhir.ID)
-    //	  String id;
-    //	  @Valid Meta meta;
-    //	  @Pattern(regexp = Fhir.URI)
-    //	  String implicitRules;
-    //	  @Pattern(regexp = Fhir.CODE)
-    //	  String language;
-    //	  @Valid Narrative text;
-    //	  @Valid List<SimpleResource> contained;
-    //	  @Valid List<Extension> modifierExtension;
-    //	  @Valid List<Extension> extension;
-    //	  @Valid List<Identifier> identifier;
-    //	  Boolean active;
-    //	  @Valid Period period;
-    //	  @Valid @NotNull Reference practitioner;
-    //	  @Valid @NotNull Reference organization;
-    //	  @Valid @NotNull CodeableConcept code;
-    //	  @Valid @NotNull CodeableConcept specialty;
-    //	  @Valid List<Reference> location;
-    //	  @Valid List<Reference> healthcareService;
-    //	  @Valid List<PractitionerContactPoint> telecom;
-    //	  List<PractitionerAvailableTime> availableTime;
-    //	  List<PractitionerNotAvailable> notAvailable;
-    //	  String availabilityExceptions;
-    //	  @Valid List<Reference> endpoint;
+    PpmsPractitionerRole ppmsPractitionerRole = null;
 
     int totalRecords = 0;
     PageLinks.LinkConfig linkConfig =
@@ -161,7 +124,7 @@ public class PractitionerRoleController {
     return bundler.bundle(
         BundleContext.of(
             linkConfig,
-            Collections.emptyList(),
+            Collections.singletonList(ppmsPractitionerRole),
             transformer,
             PractitionerRole.Entry::new,
             PractitionerRole.Bundle::new));
