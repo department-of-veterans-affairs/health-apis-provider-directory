@@ -1,0 +1,50 @@
+{
+    "resourceType" : "Bundle",
+    "type" : "searchset",
+    "total" : 0,
+    "link" : [
+        {
+            "relation" : "first",
+            "url" : "//Practitioner?name=Klingerman, Michael&page=1&_count=1"
+        },
+        {
+            "relation" : "self",
+            "url" : "//Practitioner?name=Klingerman, Michael&page=1&_count=1"
+        },
+        {
+            "relation" : "last",
+            "url" : "//Practitioner?name=Klingerman, Michael&page=0&_count=1"
+        }
+    ],
+    "entry" : [
+        {
+            "fullUrl" : "//Practitioner/null",
+            "resource" : {
+                "resourceType" : "Practitioner",
+                "identifier" : [
+                    {
+                        "system" : "Npi",
+                        "value" : "1285621557"
+                    }
+                ],
+                "active" : true,
+                "name" : {
+                    "family" : "Klingerman",
+                    "given" : [
+                        " Michael"
+                    ]
+                },
+                "telecom" : [
+                    {
+                        "system" : "email",
+                        "value" : "dustin.lehman@email.com"
+                    }
+                ],
+                "gender" : "male"
+            },
+            "search" : {
+                "mode" : "match"
+            }
+        }
+    ]
+}
