@@ -14,6 +14,5 @@ import lombok.NoArgsConstructor;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public final class ProviderWrapper {
   ProviderResponse providerResponse;
-  ProviderLicenses providerLicenses;
   ProviderContacts providerContacts;
 }
