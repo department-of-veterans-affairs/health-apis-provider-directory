@@ -1,14 +1,12 @@
 package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
-import gov.va.api.health.providerdirectory.service.ProviderLicenses;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderWrapper;
+import gov.va.api.health.providerdirectory.service.client.PpmsClient;
+import gov.va.api.health.providerdirectory.service.client.RestPpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
 import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
@@ -21,11 +19,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Request Mappings for Location Resource, see
@@ -57,35 +49,49 @@ public class PractitionerController {
 
   private Bundler bundler;
 
+  private PpmsClient client;
+
   /** Controller setup. */
   public PractitionerController(
       @Value("${ppms.url}") String baseUrl,
       @Autowired RestTemplate restTemplate,
       @Autowired Transformer transformer,
-      @Autowired Bundler bundler) {
+      @Autowired Bundler bundler,
+      @Autowired PpmsClient client) {
     this.restTemplate = restTemplate;
     this.baseUrl = baseUrl;
     this.transformer = transformer;
     this.bundler = bundler;
-  }
-
-  private static ObjectMapper objectMapper() {
-    return JacksonConfig.createMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    this.client = client;
   }
 
   // TODO: bundle function and search will be fairly different since ProviderDirectory calls out to
   private Practitioner.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
-    ProviderResponse providerResponse =
-        ppmsProvider(parameters.get("identifier").toArray()[0].toString());
-    ProviderContacts providerContacts =
-        ppmsProviderContact(parameters.get("identifier").toArray()[0].toString());
-    ProviderLicenses providerLicenses =
-        ppmsProviderLicense(parameters.get("identifier").toArray()[0].toString());
+    String ppmsLookupParam;
+    ProviderResponse providerResponse;
+
+    if (parameters.get("identifier") != null) {
+      ppmsLookupParam = parameters.get("identifier").toArray()[0].toString();
+      providerResponse = ppmsProvider(ppmsLookupParam, true);
+    } else if (parameters.get("name") != null) {
+      ppmsLookupParam = parameters.get("name").toArray()[0].toString();
+      providerResponse = ppmsProvider(ppmsLookupParam, false);
+    } else {
+      ppmsLookupParam =
+          parameters.get("family").toArray()[0].toString()
+              + ", "
+              + parameters.get("given").toArray()[0].toString();
+      providerResponse = ppmsProvider(ppmsLookupParam, false);
+    }
+
+    String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
+
+    ProviderContacts providerContacts = ppmsProviderContact(providerIdentifier);
+
     ProviderWrapper root =
         ProviderWrapper.builder()
             .providerContacts(providerContacts)
-            .providerLicenses(providerLicenses)
             .providerResponse(providerResponse)
             .build();
     LinkConfig linkConfig =
@@ -106,51 +112,18 @@ public class PractitionerController {
   }
 
   @SneakyThrows
-  private ProviderResponse ppmsProvider(String id) {
-    String url =
-        UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")").build().toUriString();
-    HttpHeaders headers = new HttpHeaders();
-    headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
-    HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-    ResponseEntity<ProviderResponse> entity =
-        restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
-    ProviderResponse responseObject = entity.getBody();
-    return responseObject;
+  private ProviderResponse ppmsProvider(String id, Boolean identifier) {
+    return client.providerResponseSearch(id, identifier);
   }
 
   @SneakyThrows
   private ProviderContacts ppmsProviderContact(String id) {
-    String url =
-        UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderContacts")
-            .build()
-            .toUriString();
-    HttpHeaders headers = new HttpHeaders();
-    headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
-    HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-    ResponseEntity<ProviderContacts> entity =
-        restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContacts.class);
-    ProviderContacts responseObject = entity.getBody();
-    return responseObject;
-  }
-
-  @SneakyThrows
-  private ProviderLicenses ppmsProviderLicense(String id) {
-    String url =
-        UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderLicenses")
-            .build()
-            .toUriString();
-    HttpHeaders headers = new HttpHeaders();
-    headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
-    HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-    ResponseEntity<ProviderLicenses> entity =
-        restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderLicenses.class);
-    ProviderLicenses responseObject = entity.getBody();
-    return responseObject;
+    return client.providerContactsSearch(id);
   }
 
   /** Search by family & given name. */
   @GetMapping(params = {"family", "given"})
-  public Practitioner.Bundle searchByFailyAndGiven(
+  public Practitioner.Bundle searchByFamilyAndGiven(
       @RequestParam("family") String familyName,
       @RequestParam("given") String givenName,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
