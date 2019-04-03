@@ -1,8 +1,5 @@
 package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
@@ -69,19 +66,32 @@ public class PractitionerController {
     this.bundler = bundler;
   }
 
-  private static ObjectMapper objectMapper() {
-    return JacksonConfig.createMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-  }
-
   // TODO: bundle function and search will be fairly different since ProviderDirectory calls out to
   private Practitioner.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
-    ProviderResponse providerResponse =
-        ppmsProvider(parameters.get("identifier").toArray()[0].toString());
+    String ppmsLookupParam;
+    ProviderResponse providerResponse;
+
+    if(parameters.get("identifier") != null){
+      ppmsLookupParam = parameters.get("identifier").toArray()[0].toString();
+      providerResponse = ppmsProvider(ppmsLookupParam, true);
+    }
+    else if(parameters.get("name") != null) {
+      ppmsLookupParam = parameters.get("name").toArray()[0].toString();
+      providerResponse = ppmsProvider(ppmsLookupParam, false);
+    } else {
+      ppmsLookupParam = parameters.get("family").toArray()[0].toString() + ", " +
+              parameters.get("given").toArray()[0].toString();
+      providerResponse = ppmsProvider(ppmsLookupParam, false);
+    }
+
+    String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
+
     ProviderContacts providerContacts =
-        ppmsProviderContact(parameters.get("identifier").toArray()[0].toString());
+        ppmsProviderContact(providerIdentifier);
     ProviderLicenses providerLicenses =
-        ppmsProviderLicense(parameters.get("identifier").toArray()[0].toString());
+        ppmsProviderLicense(providerIdentifier);
+
     ProviderWrapper root =
         ProviderWrapper.builder()
             .providerContacts(providerContacts)
@@ -106,9 +116,14 @@ public class PractitionerController {
   }
 
   @SneakyThrows
-  private ProviderResponse ppmsProvider(String id) {
-    String url =
-        UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")").build().toUriString();
+  private ProviderResponse ppmsProvider(String id, Boolean identifier) {
+
+    String url;
+    if(identifier == true){
+        url = UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")").build().toUriString();
+    } else {
+        url = UriComponentsBuilder.fromHttpUrl(baseUrl + "GetProviderByName?name=" + id).build().toUriString();
+      }
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
     HttpEntity<?> requestEntity = new HttpEntity<>(headers);
