@@ -37,6 +37,7 @@ import gov.va.api.health.providerdirectory.api.resources.PractitionerRole.Practi
 import gov.va.api.health.providerdirectory.api.resources.PractitionerRole.PractitionerNotAvailable;
 import gov.va.api.health.providerdirectory.service.PpmsPractitionerRole;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
+import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.PageLinks;
@@ -62,7 +63,7 @@ import lombok.extern.slf4j.Slf4j;
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class PractitionerRoleController {
-  private PpmsClient ppmsClient;
+  // private PpmsClient ppmsClient;
 
   private Transformer transformer;
 
@@ -71,31 +72,16 @@ public class PractitionerRoleController {
   /** Read by identifier. */
   @GetMapping(value = {"/{publicId}"})
   public PractitionerRole read(@PathVariable("publicId") String publicId) {
-    return null;
+    throw new UnsupportedOperationException();
+  }
 
-    // PETERTODO make calls to get care sites and contacts
-
-    //    if (BooleanUtils.isTrue(BooleanUtils.toBooleanObject(database20Mode))) {
-    //      return jpaRead(publicId);
-    //    }
-    //    CdwDiagnosticReport102Root mrAndersonCdw =
-    // mrAndersonSearch(Parameters.forIdentity(publicId));
-    //    DiagnosticReport mrAndersonReport =
-    //        transformer.apply(
-    //            firstPayloadItem(
-    //                hasPayload(mrAndersonCdw.getDiagnosticReports()).getDiagnosticReport()));
-    //    if ("both".equalsIgnoreCase(database20Mode)) {
-    //      DiagnosticReport jpaReport = jpaRead(publicId);
-    //      if (!jpaReport.equals(mrAndersonReport)) {
-    //        log.warn("jpa read and mr-anderson read do not match.");
-    //        log.warn("jpa report is {}",
-    // JacksonConfig.createMapper().writeValueAsString(jpaReport));
-    //        log.warn(
-    //            "mr-anderson report is {}",
-    //            JacksonConfig.createMapper().writeValueAsString(mrAndersonReport));
-    //      }
-    //    }
-    //    return mrAndersonReport;
+  @GetMapping(params = {"family", "given"})
+  public PractitionerRole.Bundle searchByFamilyAndGiven(
+      @RequestParam("family") String family,
+      @RequestParam("given") String given,
+      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+      @RequestParam(value = "_count", defaultValue = "15") @Min(0) int count) {
+    throw new UnsupportedOperationException();
   }
 
   /** Search by identifier. */
@@ -112,35 +98,34 @@ public class PractitionerRoleController {
             .add("_count", count)
             .build();
 
-    // call https://dws.ppms.va.gov/v1.0/Providers(1679592604)
-    // call https://dev.dws.ppms.va.gov/v1.0/Providers(1285621557)/ProviderServices
+    //  identifier=[system]|[code]
 
-    //  GET [base]/PractitionerRole?practitioner.identifier=[system]|[code]
+    // TODO use canned provider and provider specialties data from disk
+    // call https://dws.ppms.va.gov/v1.0/Providers(1679592604)
+    // call https://dws.ppms.va.gov/v1.0/Providers(1679592604)/ProviderContacts
+    // call https://dws.ppms.va.gov/v1.0/Providers(1679592604)/ProviderSpecialties
     ProviderResponse providerResponse =
         JacksonConfig.createMapper()
             .readValue(new File("c:/tmp/sample-providers.json"), ProviderResponse.class);
+
+    ProviderContacts providerContacts =
+        JacksonConfig.createMapper()
+            .readValue(new File("c:/tmp/sample-provider-contacts.json"), ProviderContacts.class);
     log.error(
         JacksonConfig.createMapper()
             .writerWithDefaultPrettyPrinter()
-            .writeValueAsString(providerResponse));
+            .writeValueAsString(providerContacts));
 
     PpmsProviderSpecialtiesResponse ppmsProviderSpecialtiesResponse =
         JacksonConfig.createMapper()
             .readValue(
                 new File("c:/tmp/sample-provider-specialties.json"),
                 PpmsProviderSpecialtiesResponse.class);
-    log.error(
-        JacksonConfig.createMapper()
-            .writerWithDefaultPrettyPrinter()
-            .writeValueAsString(ppmsProviderSpecialtiesResponse));
-
-    if (true) {
-      return null;
-    }
 
     PpmsPractitionerRole ppmsPractitionerRole =
         PpmsPractitionerRole.builder()
             .providerResponse(providerResponse)
+            .providerContacts(providerContacts)
             .providerSpecialtiesResponse(ppmsProviderSpecialtiesResponse)
             .build();
 
@@ -162,11 +147,13 @@ public class PractitionerRoleController {
             PractitionerRole.Bundle::new));
   }
 
-  //  GET [base]/PractitionerRole?practitioner.family=[string]&given=[string]
-  // {&_include=PractitionerRole:practitioner&_include=PractitionerRole:endpoint}
-  //
-  //  GET [base]/PractitionerRole?specialty=[system]|[code]
-  // {&_include=PractitionerRole:practitioner&_include=PractitionerRole:endpoint}
+  @GetMapping(params = {"specialty"})
+  public PractitionerRole.Bundle searchBySpecialty(
+      @RequestParam("specialty") String specialty,
+      @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+      @RequestParam(value = "_count", defaultValue = "15") @Min(0) int count) {
+    throw new UnsupportedOperationException();
+  }
 
   public interface Transformer extends Function<PpmsPractitionerRole, PractitionerRole> {}
 }
