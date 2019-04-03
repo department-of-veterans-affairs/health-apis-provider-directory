@@ -5,6 +5,7 @@ import gov.va.api.health.providerdirectory.api.resources.Practitioner;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderWrapper;
+import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.client.RestPpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
@@ -48,7 +49,7 @@ public class PractitionerController {
 
   private Bundler bundler;
 
-  private RestPpmsClient client;
+  private PpmsClient client;
 
   /** Controller setup. */
   public PractitionerController(
@@ -56,7 +57,7 @@ public class PractitionerController {
       @Autowired RestTemplate restTemplate,
       @Autowired Transformer transformer,
       @Autowired Bundler bundler,
-      @Autowired RestPpmsClient client) {
+      @Autowired PpmsClient client) {
     this.restTemplate = restTemplate;
     this.baseUrl = baseUrl;
     this.transformer = transformer;
