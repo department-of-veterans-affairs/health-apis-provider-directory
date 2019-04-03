@@ -6,7 +6,6 @@ import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderWrapper;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
-import gov.va.api.health.providerdirectory.service.client.RestPpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
 import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
