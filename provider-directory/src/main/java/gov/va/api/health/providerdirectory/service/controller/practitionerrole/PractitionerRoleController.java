@@ -1,5 +1,6 @@
 package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.providerdirectory.api.Fhir;
 import gov.va.api.health.providerdirectory.api.datatypes.CodeableConcept;
 import gov.va.api.health.providerdirectory.api.datatypes.Identifier;
@@ -33,12 +35,16 @@ import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
 import gov.va.api.health.providerdirectory.api.resources.PractitionerRole.PractitionerAvailableTime;
 import gov.va.api.health.providerdirectory.api.resources.PractitionerRole.PractitionerContactPoint;
 import gov.va.api.health.providerdirectory.api.resources.PractitionerRole.PractitionerNotAvailable;
+import gov.va.api.health.providerdirectory.service.PpmsPractitionerRole;
+import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
+import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.PageLinks;
 import gov.va.api.health.providerdirectory.service.controller.Parameters;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
 import gov.va.api.health.providerdirectory.service.controller.PpmsClient;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -93,6 +99,7 @@ public class PractitionerRoleController {
   }
 
   /** Search by identifier. */
+  @SneakyThrows
   @GetMapping(params = {"identifier"})
   public PractitionerRole.Bundle searchByIdentifier(
       @RequestParam("identifier") String identifier,
@@ -105,12 +112,37 @@ public class PractitionerRoleController {
             .add("_count", count)
             .build();
 
-    // call https://dws.ppms.va.gov/v1.0/Providers(1679592604) 
-    // call https://dev.dws.ppms.va.gov/v1.0/Providers(1285621557)/ProviderServices 
-    
-    //  GET [base]/PractitionerRole?practitioner.identifier=[system]|[code]
+    // call https://dws.ppms.va.gov/v1.0/Providers(1679592604)
+    // call https://dev.dws.ppms.va.gov/v1.0/Providers(1285621557)/ProviderServices
 
-    PpmsPractitionerRole ppmsPractitionerRole = null;
+    //  GET [base]/PractitionerRole?practitioner.identifier=[system]|[code]
+    ProviderResponse providerResponse =
+        JacksonConfig.createMapper()
+            .readValue(new File("c:/tmp/sample-providers.json"), ProviderResponse.class);
+    log.error(
+        JacksonConfig.createMapper()
+            .writerWithDefaultPrettyPrinter()
+            .writeValueAsString(providerResponse));
+
+    PpmsProviderSpecialtiesResponse ppmsProviderSpecialtiesResponse =
+        JacksonConfig.createMapper()
+            .readValue(
+                new File("c:/tmp/sample-provider-specialties.json"),
+                PpmsProviderSpecialtiesResponse.class);
+    log.error(
+        JacksonConfig.createMapper()
+            .writerWithDefaultPrettyPrinter()
+            .writeValueAsString(ppmsProviderSpecialtiesResponse));
+
+    if (true) {
+      return null;
+    }
+
+    PpmsPractitionerRole ppmsPractitionerRole =
+        PpmsPractitionerRole.builder()
+            .providerResponse(providerResponse)
+            .providerSpecialtiesResponse(ppmsProviderSpecialtiesResponse)
+            .build();
 
     int totalRecords = 0;
     PageLinks.LinkConfig linkConfig =

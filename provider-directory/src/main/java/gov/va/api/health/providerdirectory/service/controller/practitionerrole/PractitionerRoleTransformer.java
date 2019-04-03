@@ -3,23 +3,23 @@ package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 import org.springframework.stereotype.Service;
 
 import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
+import gov.va.api.health.providerdirectory.service.PpmsPractitionerRole;
 
 @Service
 public class PractitionerRoleTransformer implements PractitionerRoleController.Transformer {
   @Override
   public PractitionerRole apply(PpmsPractitionerRole ppms) {
     // active			Providers.ProviderStatusReason
-    // period			Providers(Identifier)/ProviderLicenses.ExpirationDate
-    // telecom					Providers(Identifier)/ProviderContacts
+    // telecom			Providers(Identifier)/ProviderContacts
     // these are on practitioner as well
-
-    // location			Providers(Identifier)?$expand=CareSites
 
     // required:
     // practitioner		Reference to Practitioner
     // organization		Reference to Organization
     // code				Providers(Identifier)?$expand=ProviderSpecialties.SpecialtyCode
     // specialty		Providers(Identifier)?$expand=ProviderSpecialties
+
+    // location			Providers(Identifier)?$expand=CareSites
 
     return PractitionerRole.builder()
         .resourceType("PractitionerRole")
