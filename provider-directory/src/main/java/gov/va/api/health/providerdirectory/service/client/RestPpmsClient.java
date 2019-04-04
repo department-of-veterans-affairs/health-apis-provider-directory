@@ -19,7 +19,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 /** A rest implementation of the Mr. Anderson client. */
 @Component
 public class RestPpmsClient implements PpmsClient {
-
   private final RestTemplate restTemplate;
 
   private final String baseUrl;
@@ -30,6 +29,12 @@ public class RestPpmsClient implements PpmsClient {
     this.restTemplate = restTemplate;
   }
 
+  private static HttpHeaders headers() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
+    return headers;
+  }
+
   @Override
   public ProviderContacts providerContactsSearch(String id) {
     try {
@@ -37,9 +42,7 @@ public class RestPpmsClient implements PpmsClient {
           UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderContacts")
               .build()
               .toUriString();
-      HttpHeaders headers = new HttpHeaders();
-      headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
-      HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+      HttpEntity<?> requestEntity = new HttpEntity<>(headers());
       ResponseEntity<ProviderContacts> entity =
           restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContacts.class);
       return entity.getBody();
@@ -67,9 +70,7 @@ public class RestPpmsClient implements PpmsClient {
                 .build()
                 .toUriString();
       }
-      HttpHeaders headers = new HttpHeaders();
-      headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
-      HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+      HttpEntity<?> requestEntity = new HttpEntity<>(headers());
       ResponseEntity<ProviderResponse> entity =
           restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
       return entity.getBody();
