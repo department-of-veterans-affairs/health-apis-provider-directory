@@ -8,7 +8,7 @@ public class PractitionerRoleTransformerTest {
   @SuppressWarnings("unchecked")
   @Test
   public void dummyTest() {
-    PractitionerRoleTransformer transformer = new PractitionerRoleTransformer();
+    // PractitionerRoleTransformer transformer = new PractitionerRoleTransformer();
     assert true;
   }
 }

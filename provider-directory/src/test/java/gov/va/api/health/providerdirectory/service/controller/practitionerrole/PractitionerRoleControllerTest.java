@@ -8,7 +8,7 @@ public class PractitionerRoleControllerTest {
   @SuppressWarnings("unchecked")
   @Test
   public void dummyTest() {
-    PractitionerRoleController controller = new PractitionerRoleController();
+    // PractitionerRoleController controller = new PractitionerRoleController();
     assert true;
   }
 }
