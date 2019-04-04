@@ -51,24 +51,21 @@ public class PractitionerController {
     this.client = client;
   }
 
-  // TODO: bundle function and search will be fairly different since ProviderDirectory calls out to
   private Practitioner.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
-    String ppmsLookupParam;
     ProviderResponse providerResponse;
-
     if (parameters.get("identifier") != null) {
-      ppmsLookupParam = parameters.get("identifier").toArray()[0].toString();
-      providerResponse = client.providersForId(ppmsLookupParam);
+      String identifier = parameters.get("identifier").toArray()[0].toString();
+      providerResponse = client.providersForId(identifier);
     } else if (parameters.get("name") != null) {
-      ppmsLookupParam = parameters.get("name").toArray()[0].toString();
-      providerResponse = client.providersForName(ppmsLookupParam);
+      String name = parameters.get("name").toArray()[0].toString();
+      providerResponse = client.providersForName(name);
     } else {
-      ppmsLookupParam =
+      String familyAndGiven =
           parameters.get("family").toArray()[0].toString()
               + ", "
               + parameters.get("given").toArray()[0].toString();
-      providerResponse = client.providersForName(ppmsLookupParam);
+      providerResponse = client.providersForName(familyAndGiven);
     }
 
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
