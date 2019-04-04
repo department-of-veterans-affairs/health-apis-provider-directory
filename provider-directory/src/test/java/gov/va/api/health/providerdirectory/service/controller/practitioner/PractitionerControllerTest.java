@@ -43,8 +43,8 @@ public class PractitionerControllerTest {
             .readValue(
                 getClass().getResourceAsStream("/ppms-provider-contact-response.json"),
                 ProviderContacts.class);
-    when(ppmsClient.providerResponseSearch("Klingerman, Michael", false)).thenReturn(response);
-    when(ppmsClient.providerContactsSearch("1285621557")).thenReturn(contacts);
+    when(ppmsClient.providersForName("Klingerman, Michael")).thenReturn(response);
+    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     Bundle expected = controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
     Bundle actual =
         JacksonConfig.createMapper()
@@ -67,8 +67,8 @@ public class PractitionerControllerTest {
             .readValue(
                 getClass().getResourceAsStream("/ppms-provider-contact-response.json"),
                 ProviderContacts.class);
-    when(ppmsClient.providerResponseSearch("identifier", true)).thenReturn(response);
-    when(ppmsClient.providerContactsSearch("1285621557")).thenReturn(contacts);
+    when(ppmsClient.providersForId("identifier")).thenReturn(response);
+    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     Bundle expected = controller.searchByIdentifier("identifier", 1, 1);
     Bundle actual =
         JacksonConfig.createMapper()
@@ -91,8 +91,8 @@ public class PractitionerControllerTest {
             .readValue(
                 getClass().getResourceAsStream("/ppms-provider-contact-response.json"),
                 ProviderContacts.class);
-    when(ppmsClient.providerResponseSearch("Klingerman, Michael", false)).thenReturn(response);
-    when(ppmsClient.providerContactsSearch("1285621557")).thenReturn(contacts);
+    when(ppmsClient.providersForName("Klingerman, Michael")).thenReturn(response);
+    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     Bundle expected = controller.searchByName("Klingerman, Michael", 1, 1);
     Bundle actual =
         JacksonConfig.createMapper()

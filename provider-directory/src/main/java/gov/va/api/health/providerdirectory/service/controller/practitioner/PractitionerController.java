@@ -59,16 +59,16 @@ public class PractitionerController {
 
     if (parameters.get("identifier") != null) {
       ppmsLookupParam = parameters.get("identifier").toArray()[0].toString();
-      providerResponse = ppmsProvider(ppmsLookupParam, true);
+      providerResponse = client.providersForId(ppmsLookupParam);
     } else if (parameters.get("name") != null) {
       ppmsLookupParam = parameters.get("name").toArray()[0].toString();
-      providerResponse = ppmsProvider(ppmsLookupParam, false);
+      providerResponse = client.providersForName(ppmsLookupParam);
     } else {
       ppmsLookupParam =
           parameters.get("family").toArray()[0].toString()
               + ", "
               + parameters.get("given").toArray()[0].toString();
-      providerResponse = ppmsProvider(ppmsLookupParam, false);
+      providerResponse = client.providersForName(ppmsLookupParam);
     }
 
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
@@ -98,13 +98,8 @@ public class PractitionerController {
   }
 
   @SneakyThrows
-  private ProviderResponse ppmsProvider(String id, Boolean identifier) {
-    return client.providerResponseSearch(id, identifier);
-  }
-
-  @SneakyThrows
   private ProviderContacts ppmsProviderContact(String id) {
-    return client.providerContactsSearch(id);
+    return client.providerContactsForId(id);
   }
 
   /** Search by family & given name. */

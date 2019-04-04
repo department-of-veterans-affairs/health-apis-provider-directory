@@ -10,10 +10,12 @@ import gov.va.api.health.providerdirectory.service.ProviderResponse;
  */
 public interface PpmsClient {
   /** Return the parameters of the failed search. */
-  ProviderContacts providerContactsSearch(String id);
+  ProviderContacts providerContactsForId(String id);
 
   /** Return the parameters of the failed search. */
-  ProviderResponse providerResponseSearch(String id, boolean identifier);
+  ProviderResponse providersForId(String id);
+
+  ProviderResponse providersForName(String id);
 
   /** A request to Mr. Anderson was malformed, such as missing required search parameters. */
   class BadRequest extends PpmsServiceException {

@@ -30,8 +30,7 @@ public final class RestPpmsClientTest {
         .thenReturn(response);
 
     RestPpmsClient client = new RestPpmsClient("http://foo.bar", restTemplate);
-    assertThat(client.providerResponseSearch("123", true))
-        .isEqualTo(ProviderResponse.builder().build());
+    assertThat(client.providersForId("123")).isEqualTo(ProviderResponse.builder().build());
   }
 
   @Test
@@ -49,7 +48,7 @@ public final class RestPpmsClientTest {
         .thenReturn(response);
 
     RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
-    assertThat(client.providerContactsSearch("123")).isEqualTo(ProviderContacts.builder().build());
+    assertThat(client.providerContactsForId("123")).isEqualTo(ProviderContacts.builder().build());
   }
 
   @Test
@@ -67,8 +66,7 @@ public final class RestPpmsClientTest {
         .thenReturn(response);
 
     RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
-    assertThat(client.providerResponseSearch("123", true))
-        .isEqualTo(ProviderResponse.builder().build());
+    assertThat(client.providersForId("123")).isEqualTo(ProviderResponse.builder().build());
   }
 
   @Test
@@ -86,7 +84,7 @@ public final class RestPpmsClientTest {
         .thenReturn(response);
 
     RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
-    assertThat(client.providerResponseSearch("nelson, bob", false))
+    assertThat(client.providersForName("nelson, bob"))
         .isEqualTo(ProviderResponse.builder().build());
   }
 }
