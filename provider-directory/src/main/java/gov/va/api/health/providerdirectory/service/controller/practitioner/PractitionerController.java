@@ -15,9 +15,7 @@ import java.util.Collections;
 import java.util.function.Function;
 import javax.validation.constraints.Min;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,25 +23,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Request Mappings for Location Resource, see
  * http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html for
  * implementation details.
  */
-@Slf4j
 @RestController
 @RequestMapping(
   value = {"/api/Practitioner"},
   produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
 public class PractitionerController {
-
-  private final RestTemplate restTemplate;
-
-  private final String baseUrl;
-
   private Transformer transformer;
 
   private Bundler bundler;
@@ -52,13 +43,9 @@ public class PractitionerController {
 
   /** Controller setup. */
   public PractitionerController(
-      @Value("${ppms.url}") String baseUrl,
-      @Autowired RestTemplate restTemplate,
       @Autowired Transformer transformer,
       @Autowired Bundler bundler,
       @Autowired PpmsClient client) {
-    this.restTemplate = restTemplate;
-    this.baseUrl = baseUrl;
     this.transformer = transformer;
     this.bundler = bundler;
     this.client = client;

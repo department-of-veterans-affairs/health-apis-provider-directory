@@ -16,4 +16,12 @@
     <Class name="gov.va.api.health.providerdirectory.service.controller.DateTimeParameterValidator"/>
     <Bug pattern="REDOS"/>
   </Match>
+  <Match>
+    <Method name="equals"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+  <Match>
+    <Method name="hashCode"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
 </FindBugsFilter>
