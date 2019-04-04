@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import org.junit.Test;
@@ -86,5 +87,24 @@ public final class RestPpmsClientTest {
     RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.providersForName("nelson, bob"))
         .isEqualTo(ProviderResponse.builder().build());
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void providerSpecialtySearch() {
+    ResponseEntity<PpmsProviderSpecialtiesResponse> response = mock(ResponseEntity.class);
+    when(response.getBody()).thenReturn(PpmsProviderSpecialtiesResponse.builder().build());
+
+    RestTemplate restTemplate = mock(RestTemplate.class);
+    when(restTemplate.exchange(
+            eq("http://foo.bar/Providers(123)/ProviderSpecialties"),
+            eq(HttpMethod.GET),
+            any(HttpEntity.class),
+            eq(PpmsProviderSpecialtiesResponse.class)))
+        .thenReturn(response);
+
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
+    assertThat(client.providerSpecialtySearch("123"))
+        .isEqualTo(PpmsProviderSpecialtiesResponse.builder().build());
   }
 }
