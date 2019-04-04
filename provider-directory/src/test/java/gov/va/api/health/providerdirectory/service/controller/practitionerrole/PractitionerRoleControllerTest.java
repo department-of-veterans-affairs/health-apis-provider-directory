@@ -70,8 +70,8 @@ public class PractitionerRoleControllerTest {
                         "/ppmsPractitionerRole/ppms-provider-specialties-response.json"),
                 PpmsProviderSpecialtiesResponse.class);
 
-    when(ppmsClient.providerResponseSearch("Klingerman, Michael", false)).thenReturn(response);
-    when(ppmsClient.providerContactsSearch("1285621557")).thenReturn(contacts);
+    when(ppmsClient.providersForName("Klingerman, Michael")).thenReturn(response);
+    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     when(ppmsClient.providerSpecialtySearch("1285621557")).thenReturn(specialties);
     expected = controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
     actual =
@@ -111,8 +111,8 @@ public class PractitionerRoleControllerTest {
                     .getResourceAsStream(
                         "/ppmsPractitionerRole/ppms-provider-specialties-response.json"),
                 PpmsProviderSpecialtiesResponse.class);
-    when(ppmsClient.providerResponseSearch("identifier", true)).thenReturn(response);
-    when(ppmsClient.providerContactsSearch("1285621557")).thenReturn(contacts);
+    when(ppmsClient.providersForId("identifier")).thenReturn(response);
+    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     when(ppmsClient.providerSpecialtySearch("1285621557")).thenReturn(specialties);
     expected = controller.searchByIdentifier("identifier", 1, 1);
     actual =

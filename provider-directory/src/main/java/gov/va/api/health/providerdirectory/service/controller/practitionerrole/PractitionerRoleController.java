@@ -49,20 +49,19 @@ public class PractitionerRoleController {
 
   private PractitionerRole.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
-    String ppmsLookupParam;
     ProviderResponse providerResponse;
     if (parameters.get("identifier") != null) {
-      ppmsLookupParam = parameters.get("identifier").toArray()[0].toString();
-      providerResponse = ppmsProvider(ppmsLookupParam, true);
-    } else if (parameters.get("specialty") != null) {
-      ppmsLookupParam = parameters.get("specialty").toArray()[0].toString();
-      providerResponse = ppmsProvider(ppmsLookupParam, false);
+      String identifier = parameters.get("identifier").toArray()[0].toString();
+      providerResponse = ppmsClient.providersForId(identifier);
+    } else if (parameters.get("name") != null) {
+      String name = parameters.get("name").toArray()[0].toString();
+      providerResponse = ppmsClient.providersForName(name);
     } else {
-      ppmsLookupParam =
+      String familyAndGiven =
           parameters.get("family").toArray()[0].toString()
               + ", "
               + parameters.get("given").toArray()[0].toString();
-      providerResponse = ppmsProvider(ppmsLookupParam, false);
+      providerResponse = ppmsClient.providersForName(familyAndGiven);
     }
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
     ProviderContacts providerContacts = ppmsProviderContact(providerIdentifier);
@@ -92,13 +91,8 @@ public class PractitionerRoleController {
   }
 
   @SneakyThrows
-  private ProviderResponse ppmsProvider(String id, Boolean identifier) {
-    return ppmsClient.providerResponseSearch(id, identifier);
-  }
-
-  @SneakyThrows
   private ProviderContacts ppmsProviderContact(String id) {
-    return ppmsClient.providerContactsSearch(id);
+    return ppmsClient.providerContactsForId(id);
   }
 
   @SneakyThrows

@@ -4,6 +4,8 @@ import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesRespon
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import java.util.Collections;
+import java.util.concurrent.Callable;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -17,7 +19,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-/** A rest implementation of the Mr. Anderson client. */
+/** REST implementation of PPMS client. */
 @Component
 public class RestPpmsClient implements PpmsClient {
 
@@ -27,60 +29,43 @@ public class RestPpmsClient implements PpmsClient {
 
   public RestPpmsClient(
       @Value("${ppms.url}") String baseUrl, @Autowired RestTemplate restTemplate) {
-    this.baseUrl = baseUrl;
+    this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
     this.restTemplate = restTemplate;
   }
 
-  @Override
-  public ProviderContacts providerContactsSearch(String id) {
+  @SneakyThrows
+  private static <T> T handlePpmsExceptions(String message, Callable<T> callable) {
     try {
-      String url =
-          UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderContacts")
-              .build()
-              .toUriString();
-      HttpHeaders headers = new HttpHeaders();
-      headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
-      HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-      ResponseEntity<ProviderContacts> entity =
-          restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContacts.class);
-      return entity.getBody();
+      return callable.call();
     } catch (HttpClientErrorException.NotFound e) {
-      throw new NotFound(id);
+      throw new NotFound(message);
     } catch (HttpClientErrorException.BadRequest e) {
-      throw new BadRequest(id);
+      throw new BadRequest(message);
     } catch (HttpStatusCodeException e) {
-      throw new SearchFailed(id);
+      throw new SearchFailed(message);
     }
   }
 
+  private static HttpHeaders headers() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
+    return headers;
+  }
+
   @Override
-  public ProviderResponse providerResponseSearch(String id, boolean identifier) {
-    try {
-      String url;
-      if (identifier == true) {
-        url =
-            UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")")
-                .build()
-                .toUriString();
-      } else {
-        url =
-            UriComponentsBuilder.fromHttpUrl(baseUrl + "GetProviderByName?name=" + id)
-                .build()
-                .toUriString();
-      }
-      HttpHeaders headers = new HttpHeaders();
-      headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
-      HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-      ResponseEntity<ProviderResponse> entity =
-          restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
-      return entity.getBody();
-    } catch (HttpClientErrorException.NotFound e) {
-      throw new NotFound(id);
-    } catch (HttpClientErrorException.BadRequest e) {
-      throw new BadRequest(id);
-    } catch (HttpStatusCodeException e) {
-      throw new SearchFailed(id);
-    }
+  public ProviderContacts providerContactsForId(String id) {
+    return handlePpmsExceptions(
+        id,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderContacts")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<ProviderContacts> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContacts.class);
+          return entity.getBody();
+        });
   }
 
   @Override
@@ -104,5 +89,37 @@ public class RestPpmsClient implements PpmsClient {
     } catch (HttpStatusCodeException e) {
       throw new SearchFailed(id);
     }
+  }
+
+  @Override
+  public ProviderResponse providersForId(String id) {
+    return handlePpmsExceptions(
+        id,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<ProviderResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public ProviderResponse providersForName(String name) {
+    return handlePpmsExceptions(
+        name,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "GetProviderByName?name=" + name)
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<ProviderResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
+          return entity.getBody();
+        });
   }
 }

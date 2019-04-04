@@ -15,9 +15,7 @@ import java.util.Collections;
 import java.util.function.Function;
 import javax.validation.constraints.Min;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,25 +23,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Request Mappings for Location Resource, see
  * http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html for
  * implementation details.
  */
-@Slf4j
 @RestController
 @RequestMapping(
   value = {"/api/Practitioner"},
   produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
 public class PractitionerController {
-
-  private final RestTemplate restTemplate;
-
-  private final String baseUrl;
-
   private Transformer transformer;
 
   private Bundler bundler;
@@ -52,36 +43,29 @@ public class PractitionerController {
 
   /** Controller setup. */
   public PractitionerController(
-      @Value("${ppms.url}") String baseUrl,
-      @Autowired RestTemplate restTemplate,
       @Autowired Transformer transformer,
       @Autowired Bundler bundler,
       @Autowired PpmsClient client) {
-    this.restTemplate = restTemplate;
-    this.baseUrl = baseUrl;
     this.transformer = transformer;
     this.bundler = bundler;
     this.client = client;
   }
 
-  // TODO: bundle function and search will be fairly different since ProviderDirectory calls out to
   private Practitioner.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
-    String ppmsLookupParam;
     ProviderResponse providerResponse;
-
     if (parameters.get("identifier") != null) {
-      ppmsLookupParam = parameters.get("identifier").toArray()[0].toString();
-      providerResponse = ppmsProvider(ppmsLookupParam, true);
+      String identifier = parameters.get("identifier").toArray()[0].toString();
+      providerResponse = client.providersForId(identifier);
     } else if (parameters.get("name") != null) {
-      ppmsLookupParam = parameters.get("name").toArray()[0].toString();
-      providerResponse = ppmsProvider(ppmsLookupParam, false);
+      String name = parameters.get("name").toArray()[0].toString();
+      providerResponse = client.providersForName(name);
     } else {
-      ppmsLookupParam =
+      String familyAndGiven =
           parameters.get("family").toArray()[0].toString()
               + ", "
               + parameters.get("given").toArray()[0].toString();
-      providerResponse = ppmsProvider(ppmsLookupParam, false);
+      providerResponse = client.providersForName(familyAndGiven);
     }
 
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
@@ -99,7 +83,7 @@ public class PractitionerController {
             .queryParams(parameters)
             .page(page)
             .recordsPerPage(count)
-            .totalRecords(0)
+            .totalRecords(1)
             .build();
     return bundler.bundle(
         BundleContext.of(
@@ -111,13 +95,8 @@ public class PractitionerController {
   }
 
   @SneakyThrows
-  private ProviderResponse ppmsProvider(String id, Boolean identifier) {
-    return client.providerResponseSearch(id, identifier);
-  }
-
-  @SneakyThrows
   private ProviderContacts ppmsProviderContact(String id) {
-    return client.providerContactsSearch(id);
+    return client.providerContactsForId(id);
   }
 
   /** Search by family & given name. */
