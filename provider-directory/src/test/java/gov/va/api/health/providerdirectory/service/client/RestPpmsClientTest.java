@@ -17,6 +17,25 @@ import org.springframework.web.client.RestTemplate;
 public final class RestPpmsClientTest {
   @Test
   @SuppressWarnings("unchecked")
+  public void addTrailingSlashToBaseUrl() {
+    ResponseEntity<ProviderResponse> response = mock(ResponseEntity.class);
+    when(response.getBody()).thenReturn(ProviderResponse.builder().build());
+
+    RestTemplate restTemplate = mock(RestTemplate.class);
+    when(restTemplate.exchange(
+            eq("http://foo.bar/Providers(123)"),
+            eq(HttpMethod.GET),
+            any(HttpEntity.class),
+            eq(ProviderResponse.class)))
+        .thenReturn(response);
+
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar", restTemplate);
+    assertThat(client.providerResponseSearch("123", true))
+        .isEqualTo(ProviderResponse.builder().build());
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
   public void providerContactsForId() {
     ResponseEntity<ProviderContacts> response = mock(ResponseEntity.class);
     when(response.getBody()).thenReturn(ProviderContacts.builder().build());

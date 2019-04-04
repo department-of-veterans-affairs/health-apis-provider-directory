@@ -25,7 +25,7 @@ public class RestPpmsClient implements PpmsClient {
 
   public RestPpmsClient(
       @Value("${ppms.url}") String baseUrl, @Autowired RestTemplate restTemplate) {
-    this.baseUrl = baseUrl;
+    this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
     this.restTemplate = restTemplate;
   }
 
