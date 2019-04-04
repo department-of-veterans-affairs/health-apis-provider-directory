@@ -15,7 +15,6 @@ import java.util.function.Function;
 import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
  * https://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html for
  * implementation details.
  */
-@Slf4j
 @SuppressWarnings("WeakerAccess")
 @Validated
 @RestController
@@ -40,7 +38,6 @@ import org.springframework.web.bind.annotation.RestController;
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class PractitionerRoleController {
-
   private PpmsClient ppmsClient;
 
   private Transformer transformer;

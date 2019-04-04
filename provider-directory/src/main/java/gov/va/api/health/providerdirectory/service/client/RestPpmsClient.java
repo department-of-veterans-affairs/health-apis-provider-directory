@@ -22,7 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 /** REST implementation of PPMS client. */
 @Component
 public class RestPpmsClient implements PpmsClient {
-
   private final RestTemplate restTemplate;
 
   private final String baseUrl;
@@ -70,25 +69,20 @@ public class RestPpmsClient implements PpmsClient {
 
   @Override
   public PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id) {
-    try {
-      String url =
-          UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderSpecialties")
-              .build()
-              .toUriString();
-      HttpHeaders headers = new HttpHeaders();
-      headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
-      HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-      ResponseEntity<PpmsProviderSpecialtiesResponse> entity =
-          restTemplate.exchange(
-              url, HttpMethod.GET, requestEntity, PpmsProviderSpecialtiesResponse.class);
-      return entity.getBody();
-    } catch (HttpClientErrorException.NotFound e) {
-      throw new NotFound(id);
-    } catch (HttpClientErrorException.BadRequest e) {
-      throw new BadRequest(id);
-    } catch (HttpStatusCodeException e) {
-      throw new SearchFailed(id);
-    }
+    return handlePpmsExceptions(
+        id,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(
+                      baseUrl + "Providers(" + id + ")/ProviderSpecialties")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<PpmsProviderSpecialtiesResponse> entity =
+              restTemplate.exchange(
+                  url, HttpMethod.GET, requestEntity, PpmsProviderSpecialtiesResponse.class);
+          return entity.getBody();
+        });
   }
 
   @Override

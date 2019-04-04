@@ -20,7 +20,6 @@ import org.mockito.MockitoAnnotations;
 
 @SuppressWarnings("WeakerAccess")
 public class PractitionerRoleControllerTest {
-
   Bundle expected;
 
   Bundle actual;
@@ -45,24 +44,21 @@ public class PractitionerRoleControllerTest {
   @Test
   @SneakyThrows
   public void searchByFamilyAndGiven() {
-    ProviderResponse response;
-    ProviderContacts contacts;
-    PpmsProviderSpecialtiesResponse specialties;
-    response =
+    ProviderResponse response =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/ppmsPractitionerRole/ppms-provider-by-identifier-response.json"),
                 ProviderResponse.class);
-    contacts =
+    ProviderContacts contacts =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/ppmsPractitionerRole/ppms-provider-contact-response.json"),
                 ProviderContacts.class);
-    specialties =
+    PpmsProviderSpecialtiesResponse specialties =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
@@ -87,24 +83,21 @@ public class PractitionerRoleControllerTest {
   @Test
   @SneakyThrows
   public void searchByIdentifier() {
-    ProviderResponse response;
-    ProviderContacts contacts;
-    PpmsProviderSpecialtiesResponse specialties;
-    response =
+    ProviderResponse response =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/ppmsPractitionerRole/ppms-provider-by-identifier-response.json"),
                 ProviderResponse.class);
-    contacts =
+    ProviderContacts contacts =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/ppmsPractitionerRole/ppms-provider-contact-response.json"),
                 ProviderContacts.class);
-    specialties =
+    PpmsProviderSpecialtiesResponse specialties =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()

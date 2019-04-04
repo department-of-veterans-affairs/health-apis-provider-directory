@@ -43,11 +43,10 @@ public class BundlerTest {
 
   @Test
   public void bundlerBuildsGenericTypeBundle() {
-
-    List<BundleLink> links =
+    List<BundleLink> theLinks =
         Collections.singletonList(
             BundleLink.builder().relation(LinkRelation.self).url("http://whatever.com").build());
-    when(this.links.create(Mockito.any())).thenReturn(links);
+    when(this.links.create(Mockito.any())).thenReturn(theLinks);
     when(this.links.readLink(Mockito.any(), Mockito.any()))
         .thenReturn("http://one.com")
         .thenReturn("http://two.com")
@@ -69,7 +68,7 @@ public class BundlerTest {
     expected.resourceType("Bundle");
     expected.type(BundleType.searchset);
     expected.total(10);
-    expected.link(links);
+    expected.link(theLinks);
     expected.entry(
         Arrays.asList(
             FugaziEntry.of("http://one.com", FugaziArgo.of(1)),
