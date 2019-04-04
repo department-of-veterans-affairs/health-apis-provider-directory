@@ -1,5 +1,6 @@
 package gov.va.api.health.providerdirectory.service.client;
 
+import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 
@@ -12,6 +13,9 @@ public interface PpmsClient {
 
   /** Return the parameters of the failed search. */
   ProviderContacts providerContactsSearch(String id);
+
+  /** Return the parameters of the failed search. */
+  PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id);
 
   /** Return the parameters of the failed search. */
   ProviderResponse providerResponseSearch(String id, boolean identifier);
