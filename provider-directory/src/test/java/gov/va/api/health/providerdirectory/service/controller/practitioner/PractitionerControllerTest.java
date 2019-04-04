@@ -47,7 +47,7 @@ public class PractitionerControllerTest {
   @Before
   public void _init() {
     MockitoAnnotations.initMocks(this);
-    controller = new PractitionerController(tx, bundler, ppmsClient);
+    controller = new PractitionerController(baseUrl, restTemplate, tx, bundler, ppmsClient);
   }
 
   @Test

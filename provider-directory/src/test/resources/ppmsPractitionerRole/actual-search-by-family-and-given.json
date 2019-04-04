@@ -31,14 +31,14 @@
               "code": "207R00000X"
             }
           ]
-        }
+        },
+        "telecom" : [
+          {
+            "system" : "email",
+            "value" : "dustin.lehman@email.com"
+          }
+        ]
       },
-      "telecom" : [
-        {
-          "system" : "email",
-          "value" : "dustin.lehman@email.com"
-        }
-      ],
       "search": {
         "mode": "match"
       }
