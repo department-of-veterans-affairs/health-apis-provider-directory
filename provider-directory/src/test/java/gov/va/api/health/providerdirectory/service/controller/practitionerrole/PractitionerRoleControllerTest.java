@@ -77,7 +77,7 @@ public class PractitionerRoleControllerTest {
                         .readValue(
                                 getClass().getResourceAsStream("/ppmsPractitionerRole/actual-search-by-family-and-given.json"),
                                 PractitionerRole.Bundle.class);
-        Assertions.assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual.equals(expected));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class PractitionerRoleControllerTest {
                         .readValue(
                                 getClass().getResourceAsStream("/ppmsPractitionerRole/actual-search-by-identifier.json"),
                                 PractitionerRole.Bundle.class);
-        assert(actual.equals(expected));
+        Assertions.assertThat(actual.equals(expected));
     }
 
 
