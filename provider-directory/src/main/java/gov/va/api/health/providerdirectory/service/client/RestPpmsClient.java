@@ -54,28 +54,6 @@ public class RestPpmsClient implements PpmsClient {
   }
 
   @Override
-  public PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id) {
-    try {
-      String url =
-              UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderSpecialties")
-                      .build()
-                      .toUriString();
-      HttpHeaders headers = new HttpHeaders();
-      headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
-      HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-      ResponseEntity<PpmsProviderSpecialtiesResponse> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, PpmsProviderSpecialtiesResponse.class);
-      return entity.getBody();
-    } catch (HttpClientErrorException.NotFound e) {
-      throw new NotFound(id);
-    } catch (HttpClientErrorException.BadRequest e) {
-      throw new BadRequest(id);
-    } catch (HttpStatusCodeException e) {
-      throw new SearchFailed(id);
-    }
-  }
-
-  @Override
   public ProviderResponse providerResponseSearch(String id, boolean identifier) {
     try {
       String url;
@@ -95,6 +73,29 @@ public class RestPpmsClient implements PpmsClient {
       HttpEntity<?> requestEntity = new HttpEntity<>(headers);
       ResponseEntity<ProviderResponse> entity =
           restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
+      return entity.getBody();
+    } catch (HttpClientErrorException.NotFound e) {
+      throw new NotFound(id);
+    } catch (HttpClientErrorException.BadRequest e) {
+      throw new BadRequest(id);
+    } catch (HttpStatusCodeException e) {
+      throw new SearchFailed(id);
+    }
+  }
+
+  @Override
+  public PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id) {
+    try {
+      String url =
+          UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderSpecialties")
+              .build()
+              .toUriString();
+      HttpHeaders headers = new HttpHeaders();
+      headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
+      HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+      ResponseEntity<PpmsProviderSpecialtiesResponse> entity =
+          restTemplate.exchange(
+              url, HttpMethod.GET, requestEntity, PpmsProviderSpecialtiesResponse.class);
       return entity.getBody();
     } catch (HttpClientErrorException.NotFound e) {
       throw new NotFound(id);

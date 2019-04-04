@@ -1,16 +1,16 @@
 {
-  "@odata.context": "https://dws.ppms.va.gov/v1.0/$metadata#ProviderSpecialties",
-  "value": [
-    {
-      "CodedSpecialty": "207R00000X",
-      "Name": "Internal Medicine",
-      "Grouping": "Allopathic & Osteopathic Physicians",
-      "Classification": "Internal Medicine",
-      "Specialization": null,
-      "SpecialtyDescription": "A physician who provides long-term, comprehensive care in the office and the hospital, managing both common and complex illness of adolescents, adults and the elderly. Internists are trained in the diagnosis and treatment of cancer, infections and diseases affecting the heart, blood, kidneys, joints and digestive, respiratory and vascular systems. They are also trained in the essentials of primary care internal medicine, which incorporates an understanding of disease prevention, wellness, substance abuse, mental health and effective treatment of common problems of the eyes, ears, skin, nervous system and reproductive organs.",
-      "ProviderName": "Klingerman, Michael ",
-      "IsPrimaryType": "Yes",
-      "SpecialtyName": "Internal Medicine"
-    }
-  ]
+    "@odata.context" : "https://dws.ppms.va.gov/v1.0/$metadata#ProviderSpecialties",
+    "value" : [
+        {
+            "CodedSpecialty" : "207R00000X",
+            "Name" : "Internal Medicine",
+            "Grouping" : "Allopathic & Osteopathic Physicians",
+            "Classification" : "Internal Medicine",
+            "Specialization" : null,
+            "SpecialtyDescription" : "A physician who provides long-term, comprehensive care in the office and the hospital, managing both common and complex illness of adolescents, adults and the elderly. Internists are trained in the diagnosis and treatment of cancer, infections and diseases affecting the heart, blood, kidneys, joints and digestive, respiratory and vascular systems. They are also trained in the essentials of primary care internal medicine, which incorporates an understanding of disease prevention, wellness, substance abuse, mental health and effective treatment of common problems of the eyes, ears, skin, nervous system and reproductive organs.",
+            "ProviderName" : "Klingerman, Michael ",
+            "IsPrimaryType" : "Yes",
+            "SpecialtyName" : "Internal Medicine"
+        }
+    ]
 }

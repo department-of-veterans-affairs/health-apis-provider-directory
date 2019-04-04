@@ -1,47 +1,47 @@
 {
-  "resourceType": "Bundle",
-  "type": "searchset",
-  "total": 0,
-  "link": [
-    {
-      "relation": "first",
-      "url": "//PractitionerRole?family=Klingerman&given=Michael&page=1&_count=1"
-    },
-    {
-      "relation": "self",
-      "url": "//PractitionerRole?family=Klingerman&given=Michael&page=1&_count=1"
-    },
-    {
-      "relation": "last",
-      "url": "//PractitionerRole?family=Klingerman&given=Michael&page=0&_count=1"
-    }
-  ],
-  "entry": [
-    {
-      "fullUrl": "//PractitionerRole/null",
-      "resource": {
-        "resourceType": "PractitionerRole",
-        "active": true,
-        "practitioner": {
-          "reference": "null/Practitioner/1285621557"
+    "resourceType" : "Bundle",
+    "type" : "searchset",
+    "total" : 0,
+    "link" : [
+        {
+            "relation" : "first",
+            "url" : "//PractitionerRole?family=Klingerman&given=Michael&page=1&_count=1"
         },
-        "code": {
-          "coding": [
-            {
-              "code": "207R00000X"
+        {
+            "relation" : "self",
+            "url" : "//PractitionerRole?family=Klingerman&given=Michael&page=1&_count=1"
+        },
+        {
+            "relation" : "last",
+            "url" : "//PractitionerRole?family=Klingerman&given=Michael&page=0&_count=1"
+        }
+    ],
+    "entry" : [
+        {
+            "fullUrl" : "//PractitionerRole/null",
+            "resource" : {
+                "resourceType" : "PractitionerRole",
+                "active" : true,
+                "practitioner" : {
+                    "reference" : "null/Practitioner/1285621557"
+                },
+                "code" : {
+                    "coding" : [
+                        {
+                            "code" : "207R00000X"
+                        }
+                    ]
+                },
+                "telecom" : [
+                    {
+                        "system" : "email",
+                        "value" : "dustin.lehman@email.com"
+                    }
+                ]
+            },
+            "search" : {
+                "mode" : "match"
             }
-          ]
-        },
-        "telecom" : [
-          {
-            "system" : "email",
-            "value" : "dustin.lehman@email.com"
-          }
-        ]
-      },
-      "search": {
-        "mode": "match"
-      }
-    }
-  ]
+        }
+    ]
 }

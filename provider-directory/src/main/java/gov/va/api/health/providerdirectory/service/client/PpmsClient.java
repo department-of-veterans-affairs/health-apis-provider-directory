@@ -15,10 +15,10 @@ public interface PpmsClient {
   ProviderContacts providerContactsSearch(String id);
 
   /** Return the parameters of the failed search. */
-  PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id);
+  ProviderResponse providerResponseSearch(String id, boolean identifier);
 
   /** Return the parameters of the failed search. */
-  ProviderResponse providerResponseSearch(String id, boolean identifier);
+  PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id);
 
   /** A request to Mr. Anderson was malformed, such as missing required search parameters. */
   class BadRequest extends PpmsServiceException {
