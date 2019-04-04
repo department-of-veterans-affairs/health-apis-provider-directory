@@ -18,7 +18,7 @@ import lombok.SneakyThrows;
 import org.junit.Test;
 
 @SuppressWarnings("WeakerAccess")
-public class PractitionerControllerTest {
+public final class PractitionerControllerTest {
   PractitionerController.Transformer tx = new PractitionerTransformer();
 
   ConfigurableBaseUrlPageLinks configurableBaseUrlPageLinks =

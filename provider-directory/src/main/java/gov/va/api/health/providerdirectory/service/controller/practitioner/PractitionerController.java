@@ -83,7 +83,7 @@ public class PractitionerController {
             .queryParams(parameters)
             .page(page)
             .recordsPerPage(count)
-            .totalRecords(0)
+            .totalRecords(1)
             .build();
     return bundler.bundle(
         BundleContext.of(
