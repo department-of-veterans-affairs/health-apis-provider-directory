@@ -11,7 +11,7 @@
     <jacoco.coverage>0.90</jacoco.coverage>
   </properties>
   <artifactId>provider-directory</artifactId>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>1.0.4</version>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
@@ -21,7 +21,7 @@
     <dependency>
       <groupId>gov.va.api.health</groupId>
       <artifactId>provider-directory-api</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
+      <version>1.0.4</version>
     </dependency>
     <dependency>
       <groupId>gov.va.dvp</groupId>
