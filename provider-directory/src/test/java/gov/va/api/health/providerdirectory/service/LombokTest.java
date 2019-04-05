@@ -25,10 +25,12 @@ public final class LombokTest {
   public void exerciseLombok() {
     for (Class<?> pojoClass :
         Arrays.asList(
-            ProviderResponse.class,
-            ProviderResponse.Value.class,
+            PpmsProviderSpecialtiesResponse.class,
+            PpmsProviderSpecialtiesResponse.Value.class,
             ProviderContacts.class,
-            ProviderContacts.Value.class)) {
+            ProviderContacts.Value.class,
+            ProviderResponse.Value.class,
+            ProviderResponse.class)) {
       exerciseLombok(pojoClass);
     }
   }

@@ -3,7 +3,6 @@ package gov.va.api.health.providerdirectory.service.controller;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gov.va.api.health.providerdirectory.service.controller.Transformers.*;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
