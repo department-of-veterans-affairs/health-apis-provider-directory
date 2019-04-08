@@ -39,7 +39,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
             CodeableConcept.builder()
                 .coding(codeCodings(ppms.providerSpecialtiesResponse()))
                 .build())
-            .id(provider.providerIdentifier().toString())
+        .id(provider.providerIdentifier().toString())
         .telecom(
             ppms.providerContacts().value().isEmpty()
                 ? telecoms(null)
