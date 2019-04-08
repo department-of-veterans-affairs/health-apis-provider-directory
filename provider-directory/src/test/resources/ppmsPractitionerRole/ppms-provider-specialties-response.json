@@ -1,5 +1,5 @@
 {
-    "@odata.context" : "https://dws.ppms.va.gov/v1.0/$metadata#ProviderSpecialties",
+    "@odata.context" : "https://dev-dws.ppms.va.gov/v1.0/$metadata#ProviderSpecialties",
     "value" : [
         {
             "CodedSpecialty" : "207R00000X",

@@ -91,6 +91,7 @@ public class PractitionerTransformer implements PractitionerController.Transform
     return Practitioner.builder()
         .resourceType("Practitioner")
         .active(active(response.providerStatusReason()))
+        .id(response.providerIdentifier().toString())
         .identifier(identifiers)
         .name(name(response.name()))
         .gender(gender(response.providerGender()))

@@ -18,9 +18,10 @@
     ],
     "entry" : [
         {
-            "fullUrl" : "//Practitioner/null",
+            "fullUrl" : "//Practitioner/1285621557",
             "resource" : {
                 "resourceType" : "Practitioner",
+                "id" : "1285621557",
                 "identifier" : [
                     {
                         "system" : "Npi",

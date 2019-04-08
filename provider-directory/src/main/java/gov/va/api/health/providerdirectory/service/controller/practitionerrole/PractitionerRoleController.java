@@ -69,14 +69,13 @@ public class PractitionerRoleController {
             .providerResponse(providerResponse)
             .providerSpecialtiesResponse(providerSpecialty)
             .build();
-    int totalRecords = 0;
     LinkConfig linkConfig =
         LinkConfig.builder()
             .path("PractitionerRole")
             .queryParams(parameters)
             .page(page)
             .recordsPerPage(count)
-            .totalRecords(totalRecords)
+            .totalRecords(1)
             .build();
     return bundler.bundle(
         BundleContext.of(
