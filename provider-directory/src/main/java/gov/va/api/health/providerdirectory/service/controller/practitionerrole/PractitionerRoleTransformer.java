@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PractitionerRoleTransformer implements PractitionerRoleController.Transformer {
 
-  @Value("${provider-directory.url")
+  @Value("${provider-directory.url}")
   String baseUrl;
 
   @Override
@@ -39,6 +39,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
             CodeableConcept.builder()
                 .coding(codeCodings(ppms.providerSpecialtiesResponse()))
                 .build())
+            .id(provider.providerIdentifier().toString())
         .telecom(
             ppms.providerContacts().value().isEmpty()
                 ? telecoms(null)
@@ -54,7 +55,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
     return specialtiesResponse
         .value()
         .stream()
-        .map(v -> Coding.builder().code(v.codedSpecialty()).build())
+        .map(v -> Coding.builder().code(v.codedSpecialty()).display(v.name()).build())
         .collect(Collectors.toList());
   }
 
