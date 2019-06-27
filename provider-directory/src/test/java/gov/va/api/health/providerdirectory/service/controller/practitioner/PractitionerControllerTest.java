@@ -15,6 +15,7 @@ import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUr
 import gov.va.api.health.providerdirectory.service.controller.Validator;
 import javax.validation.ConstraintViolationException;
 import lombok.SneakyThrows;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 @SuppressWarnings("WeakerAccess")
@@ -51,7 +52,7 @@ public final class PractitionerControllerTest {
             .readValue(
                 getClass().getResourceAsStream("/test-search-by-family-and-given.json"),
                 Practitioner.Bundle.class);
-    assertThat(actual).isEqualTo(expected);
+        Assertions.assertThat(actual).isEqualTo(expected);
   }
 
   @Test
