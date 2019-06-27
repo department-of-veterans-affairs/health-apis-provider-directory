@@ -52,7 +52,7 @@ public final class PractitionerControllerTest {
             .readValue(
                 getClass().getResourceAsStream("/test-search-by-family-and-given.json"),
                 Practitioner.Bundle.class);
-        Assertions.assertThat(actual).isEqualTo(expected);
+    Assertions.assertThat(actual).isEqualTo(expected);
   }
 
   @Test
