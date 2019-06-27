@@ -48,7 +48,6 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
-                  <artifactId>provider-directory-api</artifactId>
                   <version>${project.version}</version>
                   <type>yaml</type>
                   <classifier>openapi</classifier>
