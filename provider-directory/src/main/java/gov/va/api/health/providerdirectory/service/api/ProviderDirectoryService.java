@@ -1,11 +1,11 @@
 package gov.va.api.health.providerdirectory.service.api;
 
-import gov.va.api.health.providerdirectory.api.EndpointApi;
-import gov.va.api.health.providerdirectory.api.LocationApi;
-import gov.va.api.health.providerdirectory.api.MetadataApi;
-import gov.va.api.health.providerdirectory.api.OrganizationApi;
-import gov.va.api.health.providerdirectory.api.PractitionerApi;
-import gov.va.api.health.providerdirectory.api.PractitionerRoleApi;
+import gov.va.api.health.stu3.api.EndpointApi;
+import gov.va.api.health.stu3.api.LocationApi;
+import gov.va.api.health.stu3.api.MetadataApi;
+import gov.va.api.health.stu3.api.OrganizationApi;
+import gov.va.api.health.stu3.api.PractitionerApi;
+import gov.va.api.health.stu3.api.PractitionerRoleApi;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

@@ -21,11 +21,6 @@
     </dependency>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>provider-directory-api</artifactId>
-      <version>1.0.7-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>gov.va.api.health</groupId>
       <artifactId>stu3</artifactId>
       <version>${stu3.version}</version>
     </dependency>

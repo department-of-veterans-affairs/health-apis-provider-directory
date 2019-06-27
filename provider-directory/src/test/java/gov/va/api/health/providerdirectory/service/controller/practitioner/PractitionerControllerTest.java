@@ -5,17 +5,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.api.health.providerdirectory.api.resources.Practitioner;
-import gov.va.api.health.providerdirectory.api.resources.Practitioner.Bundle;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
 import gov.va.api.health.providerdirectory.service.controller.Validator;
+import gov.va.api.health.stu3.api.resources.Practitioner;
+import gov.va.api.health.stu3.api.resources.Practitioner.Bundle;
 import javax.validation.ConstraintViolationException;
 import lombok.SneakyThrows;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 @SuppressWarnings("WeakerAccess")
@@ -52,7 +51,7 @@ public final class PractitionerControllerTest {
             .readValue(
                 getClass().getResourceAsStream("/test-search-by-family-and-given.json"),
                 Practitioner.Bundle.class);
-    Assertions.assertThat(actual).isEqualTo(expected);
+    assertThat(actual).isEqualTo(expected);
   }
 
   @Test

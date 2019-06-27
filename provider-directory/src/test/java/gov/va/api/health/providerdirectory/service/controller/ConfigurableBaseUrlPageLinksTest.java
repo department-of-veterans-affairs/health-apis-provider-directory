@@ -2,9 +2,9 @@ package gov.va.api.health.providerdirectory.service.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import gov.va.api.health.providerdirectory.api.bundle.BundleLink;
-import gov.va.api.health.providerdirectory.api.bundle.BundleLink.LinkRelation;
 import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
+import gov.va.api.health.stu3.api.bundle.BundleLink;
+import gov.va.api.health.stu3.api.bundle.BundleLink.LinkRelation;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
