@@ -1,7 +1,7 @@
 package gov.va.api.health.providerdirectory.service.controller;
 
-import gov.va.api.health.providerdirectory.api.bundle.BundleLink;
-import gov.va.api.health.providerdirectory.api.bundle.BundleLink.LinkRelation;
+import gov.va.api.health.stu3.api.bundle.BundleLink;
+import gov.va.api.health.stu3.api.bundle.BundleLink.LinkRelation;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;

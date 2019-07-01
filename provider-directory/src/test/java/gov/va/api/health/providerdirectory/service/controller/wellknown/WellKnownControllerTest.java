@@ -4,8 +4,8 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.api.health.providerdirectory.api.information.WellKnown;
 import gov.va.api.health.providerdirectory.service.controller.capabilitystatement.CapabilityStatementProperties;
+import gov.va.api.health.stu3.api.information.WellKnown;
 import lombok.SneakyThrows;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package gov.va.api.health.providerdirectory.service.controller.capabilitystatement;
 
-import gov.va.api.health.providerdirectory.api.resources.CapabilityStatement.Status;
+import gov.va.api.health.stu3.api.resources.CapabilityStatement.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

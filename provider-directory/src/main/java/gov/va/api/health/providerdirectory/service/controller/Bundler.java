@@ -1,12 +1,12 @@
 package gov.va.api.health.providerdirectory.service.controller;
 
-import gov.va.api.health.providerdirectory.api.bundle.AbstractBundle;
-import gov.va.api.health.providerdirectory.api.bundle.AbstractBundle.BundleType;
-import gov.va.api.health.providerdirectory.api.bundle.AbstractEntry;
-import gov.va.api.health.providerdirectory.api.bundle.AbstractEntry.Search;
-import gov.va.api.health.providerdirectory.api.bundle.AbstractEntry.SearchMode;
-import gov.va.api.health.providerdirectory.api.resources.Resource;
 import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
+import gov.va.api.health.stu3.api.bundle.AbstractBundle;
+import gov.va.api.health.stu3.api.bundle.AbstractBundle.BundleType;
+import gov.va.api.health.stu3.api.bundle.AbstractEntry;
+import gov.va.api.health.stu3.api.bundle.AbstractEntry.Search;
+import gov.va.api.health.stu3.api.bundle.AbstractEntry.SearchMode;
+import gov.va.api.health.stu3.api.resources.Resource;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;

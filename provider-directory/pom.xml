@@ -4,11 +4,12 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>service-starter</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.7</version>
     <relativePath/>
   </parent>
   <properties>
-    <jacoco.coverage>0.90</jacoco.coverage>
+    <jacoco.coverage>0.89</jacoco.coverage>
+    <stu3.version>1.0.13</stu3.version>
   </properties>
   <artifactId>provider-directory</artifactId>
   <version>1.0.7-SNAPSHOT</version>
@@ -19,9 +20,25 @@
       <artifactId>service-auto-config</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.el</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>${reflections.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>provider-directory-api</artifactId>
-      <version>1.0.7-SNAPSHOT</version>
+      <artifactId>stu3</artifactId>
+      <version>${stu3.version}</version>
     </dependency>
     <dependency>
       <groupId>gov.va.dvp</groupId>
@@ -35,28 +52,53 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>swagger</id>
-            <phase>generate-resources</phase>
+            <id>provider-directory-swag</id>
+            <phase>compile</phase>
             <goals>
-              <goal>copy</goal>
+              <goal>resolve</goal>
             </goals>
             <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>provider-directory-api</artifactId>
-                  <version>${project.version}</version>
-                  <type>yaml</type>
-                  <classifier>openapi</classifier>
-                  <overWrite>true</overWrite>
-                  <outputDirectory>${project.build.directory}/swagger</outputDirectory>
-                  <destFileName>openapi.yaml</destFileName>
-                </artifactItem>
-              </artifactItems>
+              <resourceClasses>
+                <resourceClass>gov.va.api.health.providerdirectory.service.api.ProviderDirectoryService</resourceClass>
+              </resourceClasses>
+              <outputFileName>openapi</outputFileName>
+              <outputPath>${project.build.directory}/classes</outputPath>
+              <outputFormat>JSONANDYAML</outputFormat>
+              <prettyPrint>true</prettyPrint>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <configuration>
+              <tasks>
+                <!--
+                  Sadness here.
+                  Swagger is ignore @JsonProperty annotations on enums. This big bit of sadness changes generated swagger _ to - in enums.
+                -->
+                <replaceregexp byline="true" file="${project.build.directory}/classes/openapi.yaml" flags="g" match="([a-z])_([a-z])" replace="\1-\2"/>
+                <replaceregexp byline="true" file="${project.build.directory}/classes/openapi.yaml" flags="g" match="- _([a-z])" replace="- \1"/>
+                <replaceregexp byline="true" file="${project.build.directory}/classes/openapi.json" flags="g" match="([a-z])_([a-z])" replace="\1-\2"/>
+                <replaceregexp byline="true" file="${project.build.directory}/classes/openapi.json" flags="g" match="(,|\[) &quot;_([a-z])" replace="\1 &quot;\2"/>
+                <!--
+                  This group is because the swagger auto-generated for dates, times, and datetimes examples doesn't play nice with how swagger is actually consumed.
+                  The first regex captures datetimes and times. The second one covers left over dates.
+                -->
+                <replaceregexp byline="true" file="${project.build.directory}/classes/openapi.yaml" flags="g" match="\b(([0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1]))?)T)?(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\.[0-9]+)?)(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?)\b" replace="'\1'"/>
+                <replaceregexp byline="true" file="${project.build.directory}/classes/openapi.yaml" flags="g" match="( ([0-9]{4}-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1]))?))" replace=" '\2'"/>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -65,31 +107,35 @@
         <artifactId>build-helper-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>add-some-swagger</id>
-            <phase>generate-resources</phase>
             <goals>
-              <goal>add-resource</goal>
+              <goal>attach-artifact</goal>
             </goals>
             <configuration>
-              <resources>
-                <resource>
-                  <directory>${project.build.directory}/swagger</directory>
-                </resource>
-              </resources>
+              <artifacts>
+                <artifact>
+                  <file>target/classes/openapi.yaml</file>
+                  <classifier>openapi</classifier>
+                  <type>yaml</type>
+                </artifact>
+                <artifact>
+                  <file>target/classes/openapi.json</file>
+                  <classifier>openapi</classifier>
+                  <type>json</type>
+                </artifact>
+              </artifacts>
             </configuration>
           </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
           <execution>
-            <id>capability-timestamp</id>
+            <id>test-jar</id>
+            <phase>package</phase>
             <goals>
-              <goal>timestamp-property</goal>
+              <goal>test-jar</goal>
             </goals>
-            <configuration>
-              <name>capability.publication-date</name>
-              <pattern>yyyy-MM-dd'T'HH:mm:ss'Z'</pattern>
-              <timeZone>UTC</timeZone>
-              <locale>en_US</locale>
-              <unit>second</unit>
-            </configuration>
           </execution>
         </executions>
       </plugin>
