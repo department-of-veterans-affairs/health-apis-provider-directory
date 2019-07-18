@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,12 +82,11 @@ public class LocationController {
       recordCount = ppmsCareSites.value().size();
       int fromIndex = Math.min((page - 1) * count, ppmsCareSites.value().size());
       int toIndex = Math.min((fromIndex + count), ppmsCareSites.value().size());
-      IntStream.range(fromIndex, toIndex)
-          .parallel()
-          .forEach(
-              i -> {
-                paged.add(client.careSitesByName(ppmsCareSites.value().get(i).name()));
-              });
+      paged =
+          IntStream.range(fromIndex, toIndex)
+              .parallel()
+              .mapToObj(i -> client.careSitesByName(ppmsCareSites.value().get(i).name()))
+              .collect(Collectors.toList());
     }
 
     LinkConfig linkConfig =
