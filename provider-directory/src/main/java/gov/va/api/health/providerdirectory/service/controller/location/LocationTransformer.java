@@ -3,11 +3,11 @@ package gov.va.api.health.providerdirectory.service.controller.location;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.convert;
 
-import gov.va.api.health.providerdirectory.api.datatypes.ContactPoint;
-import gov.va.api.health.providerdirectory.api.resources.Location;
-import gov.va.api.health.providerdirectory.api.resources.Location.LocationAddress;
 import gov.va.api.health.providerdirectory.service.LocationWrapper;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
+import gov.va.api.health.stu3.api.datatypes.ContactPoint;
+import gov.va.api.health.stu3.api.resources.Location;
+import gov.va.api.health.stu3.api.resources.Location.LocationAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

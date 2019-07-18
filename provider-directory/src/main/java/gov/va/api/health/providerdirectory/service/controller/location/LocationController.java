@@ -9,6 +9,8 @@ import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleCont
 import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
 import gov.va.api.health.providerdirectory.service.controller.Parameters;
 import gov.va.api.health.providerdirectory.service.controller.Validator;
+import gov.va.api.health.stu3.api.resources.Location;
+import gov.va.api.health.stu3.api.resources.OperationOutcome;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,9 +18,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.validation.constraints.Min;
-
-import gov.va.api.health.stu3.api.resources.Location;
-import gov.va.api.health.stu3.api.resources.OperationOutcome;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
