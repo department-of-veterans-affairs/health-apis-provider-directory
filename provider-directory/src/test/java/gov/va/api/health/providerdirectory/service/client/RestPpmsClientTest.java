@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
-import gov.va.api.health.providerdirectory.service.ProviderContacts;
+import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
@@ -37,19 +37,19 @@ public final class RestPpmsClientTest {
   @Test
   @SuppressWarnings("unchecked")
   public void providerContactsForId() {
-    ResponseEntity<ProviderContacts> response = mock(ResponseEntity.class);
-    when(response.getBody()).thenReturn(ProviderContacts.builder().build());
+    ResponseEntity<ProviderContactsResponse> response = mock(ResponseEntity.class);
+    when(response.getBody()).thenReturn(ProviderContactsResponse.builder().build());
 
     RestTemplate restTemplate = mock(RestTemplate.class);
     when(restTemplate.exchange(
-            eq("http://foo.bar/Providers(123)/ProviderContacts"),
+            eq("http://foo.bar/Providers(123)/ProviderContactsResponse"),
             eq(HttpMethod.GET),
             any(HttpEntity.class),
-            eq(ProviderContacts.class)))
+            eq(ProviderContactsResponse.class)))
         .thenReturn(response);
 
     RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
-    assertThat(client.providerContactsForId("123")).isEqualTo(ProviderContacts.builder().build());
+    assertThat(client.providerContactsForId("123")).isEqualTo(ProviderContactsResponse.builder().build());
   }
 
   @Test
@@ -92,19 +92,19 @@ public final class RestPpmsClientTest {
   @Test
   @SuppressWarnings("unchecked")
   public void providerSpecialtySearch() {
-    ResponseEntity<PpmsProviderSpecialtiesResponse> response = mock(ResponseEntity.class);
-    when(response.getBody()).thenReturn(PpmsProviderSpecialtiesResponse.builder().build());
+    ResponseEntity<ProviderSpecialtiesResponse> response = mock(ResponseEntity.class);
+    when(response.getBody()).thenReturn(ProviderSpecialtiesResponse.builder().build());
 
     RestTemplate restTemplate = mock(RestTemplate.class);
     when(restTemplate.exchange(
             eq("http://foo.bar/Providers(123)/ProviderSpecialties"),
             eq(HttpMethod.GET),
             any(HttpEntity.class),
-            eq(PpmsProviderSpecialtiesResponse.class)))
+            eq(ProviderSpecialtiesResponse.class)))
         .thenReturn(response);
 
     RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.providerSpecialtySearch("123"))
-        .isEqualTo(PpmsProviderSpecialtiesResponse.builder().build());
+        .isEqualTo(ProviderSpecialtiesResponse.builder().build());
   }
 }

@@ -5,9 +5,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
+<<<<<<< Updated upstream
 import gov.va.api.health.providerdirectory.api.resources.Practitioner;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner.Bundle;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
+=======
+import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
+>>>>>>> Stashed changes
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
@@ -16,6 +21,7 @@ import gov.va.api.health.providerdirectory.service.controller.Validator;
 import javax.validation.ConstraintViolationException;
 import lombok.SneakyThrows;
 import org.junit.Test;
+import org.springframework.stereotype.Controller;
 
 @SuppressWarnings("WeakerAccess")
 public final class PractitionerControllerTest {
@@ -32,24 +38,48 @@ public final class PractitionerControllerTest {
 
   @Test
   @SneakyThrows
+  public void readByIdentifier() {
+    ProviderResponse response =
+            JacksonConfig.createMapper()
+                    .readValue(
+                            getClass().getResourceAsStream("/PractitionerTestResources/mock-provider-by-identifier-response.json"),
+                            ProviderResponse.class);
+    ProviderContactsResponse contacts =
+            JacksonConfig.createMapper()
+                    .readValue(
+                            getClass().getResourceAsStream("/PractitionerTestResources/mock-provider-contact-response.json"),
+                            ProviderContactsResponse.class);
+    when(ppmsClient.providersForId("identifier")).thenReturn(response);
+    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
+    Practitioner expected = controller.readByIdentifier("identifier");
+    Practitioner actual =
+            JacksonConfig.createMapper()
+                    .readValue(
+                            getClass().getResourceAsStream("/PractitionerTestResources/expected-read-by-identifier.json"),
+                            Practitioner.class);
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  @SneakyThrows
   public void searchByFamilyAndGiven() {
     ProviderResponse response =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppms-provider-by-identifier-response.json"),
+                getClass().getResourceAsStream("/PractitionerTestResources/mock-provider-by-identifier-response.json"),
                 ProviderResponse.class);
-    ProviderContacts contacts =
+    ProviderContactsResponse contacts =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppms-provider-contact-response.json"),
-                ProviderContacts.class);
+                getClass().getResourceAsStream("/PractitionerTestResources/mock-provider-contact-response.json"),
+                ProviderContactsResponse.class);
     when(ppmsClient.providersForName("Klingerman, Michael")).thenReturn(response);
     when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     Bundle expected = controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
     Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/test-search-by-family-and-given.json"),
+                getClass().getResourceAsStream("/PractitionerTestResources/expected-search-by-family-and-given.json"),
                 Practitioner.Bundle.class);
     assertThat(actual).isEqualTo(expected);
   }
@@ -60,20 +90,20 @@ public final class PractitionerControllerTest {
     ProviderResponse response =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppms-provider-by-identifier-response.json"),
+                getClass().getResourceAsStream("/PractitionerTestResources/mock-provider-by-identifier-response.json"),
                 ProviderResponse.class);
-    ProviderContacts contacts =
+    ProviderContactsResponse contacts =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppms-provider-contact-response.json"),
-                ProviderContacts.class);
+                getClass().getResourceAsStream("/PractitionerTestResources/mock-provider-contact-response.json"),
+                ProviderContactsResponse.class);
     when(ppmsClient.providersForId("identifier")).thenReturn(response);
     when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     Bundle expected = controller.searchByIdentifier("identifier", 1, 1);
     Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/test-search-by-identifier.json"),
+                getClass().getResourceAsStream("/PractitionerTestResources/expected-search-by-identifier.json"),
                 Practitioner.Bundle.class);
     assertThat(actual).isEqualTo(expected);
   }
@@ -84,20 +114,20 @@ public final class PractitionerControllerTest {
     ProviderResponse response =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppms-provider-by-identifier-response.json"),
+                getClass().getResourceAsStream("/PractitionerTestResources/mock-provider-by-identifier-response.json"),
                 ProviderResponse.class);
-    ProviderContacts contacts =
+    ProviderContactsResponse contacts =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppms-provider-contact-response.json"),
-                ProviderContacts.class);
+                getClass().getResourceAsStream("/PractitionerTestResources/mock-provider-contact-response.json"),
+                ProviderContactsResponse.class);
     when(ppmsClient.providersForName("Klingerman, Michael")).thenReturn(response);
     when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     Bundle expected = controller.searchByName("Klingerman, Michael", 1, 1);
     Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/test-search-by-name.json"),
+                getClass().getResourceAsStream("/PractitionerTestResources/expected-search-by-name.json"),
                 Practitioner.Bundle.class);
     assertThat(actual).isEqualTo(expected);
   }
@@ -108,7 +138,7 @@ public final class PractitionerControllerTest {
     Bundle resource =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/test-search-by-name.json"),
+                getClass().getResourceAsStream("/PractitionerTestResources/expected-search-by-name.json"),
                 Practitioner.Bundle.class);
     assertThat(controller.validate(resource)).isEqualTo(Validator.ok());
   }
@@ -119,7 +149,7 @@ public final class PractitionerControllerTest {
     Bundle resource =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/test-search-by-name.json"),
+                getClass().getResourceAsStream("/PractitionerTestResources/expected-search-by-name.json"),
                 Practitioner.Bundle.class);
     resource.resourceType(null);
     controller.validate(resource);

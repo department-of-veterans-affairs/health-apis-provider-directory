@@ -1,10 +1,14 @@
 package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
+<<<<<<< Updated upstream
 import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
+=======
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
+>>>>>>> Stashed changes
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
-import gov.va.api.health.providerdirectory.service.ProviderWrapper;
+import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
@@ -17,12 +21,9 @@ import javax.validation.constraints.Min;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static gov.va.api.health.providerdirectory.service.controller.Transformers.firstPayloadItem;
 
 /**
  * Request Mappings for Location Resource, see
@@ -53,30 +54,9 @@ public class PractitionerController {
 
   private Practitioner.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
-    ProviderResponse providerResponse;
-    if (parameters.get("identifier") != null) {
-      String identifier = parameters.get("identifier").toArray()[0].toString();
-      providerResponse = client.providersForId(identifier);
-    } else if (parameters.get("name") != null) {
-      String name = parameters.get("name").toArray()[0].toString();
-      providerResponse = client.providersForName(name);
-    } else {
-      String familyAndGiven =
-          parameters.get("family").toArray()[0].toString()
-              + ", "
-              + parameters.get("given").toArray()[0].toString();
-      providerResponse = client.providersForName(familyAndGiven);
-    }
 
-    String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
+    PractitionerWrapper root = search(parameters);
 
-    ProviderContacts providerContacts = ppmsProviderContact(providerIdentifier);
-
-    ProviderWrapper root =
-        ProviderWrapper.builder()
-            .providerContacts(providerContacts)
-            .providerResponse(providerResponse)
-            .build();
     LinkConfig linkConfig =
         LinkConfig.builder()
             .path("Practitioner")
@@ -94,9 +74,43 @@ public class PractitionerController {
             Practitioner.Bundle::new));
   }
 
+  private PractitionerWrapper search(MultiValueMap<String, String> parameters) {
+    ProviderResponse providerResponse;
+    if (parameters.get("identifier") != null) {
+      String identifier = parameters.get("identifier").toArray()[0].toString();
+      providerResponse = client.providersForId(identifier);
+    } else if (parameters.get("name") != null) {
+      String name = parameters.get("name").toArray()[0].toString();
+      providerResponse = client.providersForName(name);
+    } else {
+      String familyAndGiven =
+              parameters.get("family").toArray()[0].toString()
+                      + ", "
+                      + parameters.get("given").toArray()[0].toString();
+      providerResponse = client.providersForName(familyAndGiven);
+    }
+    String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
+
+    ProviderContactsResponse providerContactsResponse = providerContact(providerIdentifier);
+
+    PractitionerWrapper root =
+            PractitionerWrapper.builder()
+                    .providerContactsResponse(providerContactsResponse)
+                    .providerResponse(providerResponse)
+                    .build();
+    return root;
+  }
+
   @SneakyThrows
-  private ProviderContacts ppmsProviderContact(String id) {
+  private ProviderContactsResponse providerContact(String id) {
     return client.providerContactsForId(id);
+  }
+
+  /** Read by identifier. **/
+  @GetMapping(value = {"/{publicId}"})
+  public Practitioner readByIdentifier(@PathVariable("publicId") String publicId) {
+    return transformer.apply(
+            firstPayloadItem(Collections.singletonList(search(Parameters.forIdentity(publicId)))));
   }
 
   /** Search by family & given name. */
@@ -154,5 +168,5 @@ public class PractitionerController {
     return Validator.create().validate(bundle);
   }
 
-  public interface Transformer extends Function<ProviderWrapper, Practitioner> {}
+  public interface Transformer extends Function<PractitionerWrapper, Practitioner> {}
 }

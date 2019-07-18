@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public final class PpmsProviderSpecialtiesResponse {
+public final class ProviderSpecialtiesResponse {
   @JsonProperty("@odata.context")
   private String odataContext;
 

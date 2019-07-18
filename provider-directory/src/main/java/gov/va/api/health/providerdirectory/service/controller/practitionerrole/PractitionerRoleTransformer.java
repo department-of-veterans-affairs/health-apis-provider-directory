@@ -2,6 +2,7 @@ package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 
+<<<<<<< Updated upstream
 import gov.va.api.health.providerdirectory.api.datatypes.CodeableConcept;
 import gov.va.api.health.providerdirectory.api.datatypes.Coding;
 import gov.va.api.health.providerdirectory.api.datatypes.ContactPoint;
@@ -11,6 +12,11 @@ import gov.va.api.health.providerdirectory.api.resources.PractitionerRole.Practi
 import gov.va.api.health.providerdirectory.service.PpmsPractitionerRole;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
+=======
+import gov.va.api.health.providerdirectory.service.PractitionerRoleWrapper;
+import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
+>>>>>>> Stashed changes
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
 import java.util.ArrayList;
@@ -27,7 +33,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
   String baseUrl;
 
   @Override
-  public PractitionerRole apply(PpmsPractitionerRole ppms) {
+  public PractitionerRole apply(PractitionerRoleWrapper ppms) {
     // TODO organization reference is required
     // location could be populated by caresites
     ProviderResponse.Value provider = ppms.providerResponse().value().get(0);
@@ -41,9 +47,9 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
                 .build())
         .id(provider.providerIdentifier().toString())
         .telecom(
-            ppms.providerContacts().value().isEmpty()
+            ppms.providerContactsResponse().value().isEmpty()
                 ? telecoms(null)
-                : ppms.providerContacts()
+                : ppms.providerContactsResponse()
                     .value()
                     .stream()
                     .flatMap(v -> telecoms(v).stream())
@@ -51,7 +57,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
         .build();
   }
 
-  private List<Coding> codeCodings(PpmsProviderSpecialtiesResponse specialtiesResponse) {
+  private List<Coding> codeCodings(ProviderSpecialtiesResponse specialtiesResponse) {
     return specialtiesResponse
         .value()
         .stream()
@@ -72,7 +78,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
         .build();
   }
 
-  List<PractitionerContactPoint> telecoms(ProviderContacts.Value source) {
+  List<PractitionerContactPoint> telecoms(ProviderContactsResponse.Value source) {
     if (source == null
         || allBlank(source.mobilePhone(), source.businessPhone(), source.email(), source.fax())) {
       return null;

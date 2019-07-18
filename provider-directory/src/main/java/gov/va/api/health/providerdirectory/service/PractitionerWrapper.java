@@ -5,10 +5,9 @@ import lombok.Value;
 
 @Value
 @Builder
-public final class PpmsPractitionerRole {
+public final class PractitionerWrapper {
   ProviderResponse providerResponse;
 
-  ProviderContacts providerContacts;
+  ProviderContactsResponse providerContactsResponse;
 
-  PpmsProviderSpecialtiesResponse providerSpecialtiesResponse;
 }

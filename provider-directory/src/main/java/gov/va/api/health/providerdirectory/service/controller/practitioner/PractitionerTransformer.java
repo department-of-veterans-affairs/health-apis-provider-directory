@@ -3,6 +3,7 @@ package gov.va.api.health.providerdirectory.service.controller.practitioner;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.convert;
 
+<<<<<<< Updated upstream
 import gov.va.api.health.providerdirectory.api.datatypes.Address;
 import gov.va.api.health.providerdirectory.api.datatypes.ContactPoint;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner;
@@ -10,8 +11,11 @@ import gov.va.api.health.providerdirectory.api.resources.Practitioner.Gender;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner.PractitionerHumanName;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner.PractitionerIdentifier;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
+=======
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
+>>>>>>> Stashed changes
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
-import gov.va.api.health.providerdirectory.service.ProviderWrapper;
+import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +53,7 @@ public class PractitionerTransformer implements PractitionerController.Transform
   }
 
   @Override
-  public Practitioner apply(ProviderWrapper ppmsData) {
+  public Practitioner apply(PractitionerWrapper ppmsData) {
     return practitioner(ppmsData);
   }
 
@@ -78,11 +82,11 @@ public class PractitionerTransformer implements PractitionerController.Transform
                 .build());
   }
 
-  private Practitioner practitioner(ProviderWrapper ppmsData) {
+  private Practitioner practitioner(PractitionerWrapper ppmsData) {
     ProviderResponse.Value response = ppmsData.providerResponse().value().get(0);
-    ProviderContacts.Value contacts;
-    if (ppmsData.providerContacts().value().size() > 0) {
-      contacts = ppmsData.providerContacts().value().get(0);
+    ProviderContactsResponse.Value contacts;
+    if (ppmsData.providerContactsResponse().value().size() > 0) {
+      contacts = ppmsData.providerContactsResponse().value().get(0);
     } else {
       contacts = null;
     }
@@ -108,7 +112,7 @@ public class PractitionerTransformer implements PractitionerController.Transform
         .build();
   }
 
-  List<ContactPoint> telecoms(ProviderContacts.Value source) {
+  List<ContactPoint> telecoms(ProviderContactsResponse.Value source) {
     if (source == null
         || allBlank(source.mobilePhone(), source.businessPhone(), source.email(), source.fax())) {
       return null;

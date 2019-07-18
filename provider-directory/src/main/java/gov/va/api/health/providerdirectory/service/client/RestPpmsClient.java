@@ -1,7 +1,7 @@
 package gov.va.api.health.providerdirectory.service.client;
 
-import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
-import gov.va.api.health.providerdirectory.service.ProviderContacts;
+import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import java.util.Collections;
 import java.util.concurrent.Callable;
@@ -52,7 +52,7 @@ public class RestPpmsClient implements PpmsClient {
   }
 
   @Override
-  public ProviderContacts providerContactsForId(String id) {
+  public ProviderContactsResponse providerContactsForId(String id) {
     return handlePpmsExceptions(
         id,
         () -> {
@@ -61,14 +61,14 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<ProviderContacts> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContacts.class);
+          ResponseEntity<ProviderContactsResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContactsResponse.class);
           return entity.getBody();
         });
   }
 
   @Override
-  public PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id) {
+  public ProviderSpecialtiesResponse providerSpecialtySearch(String id) {
     return handlePpmsExceptions(
         id,
         () -> {
@@ -78,9 +78,9 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<PpmsProviderSpecialtiesResponse> entity =
+          ResponseEntity<ProviderSpecialtiesResponse> entity =
               restTemplate.exchange(
-                  url, HttpMethod.GET, requestEntity, PpmsProviderSpecialtiesResponse.class);
+                  url, HttpMethod.GET, requestEntity, ProviderSpecialtiesResponse.class);
           return entity.getBody();
         });
   }

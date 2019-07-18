@@ -1,12 +1,18 @@
 package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
+<<<<<<< Updated upstream
 import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
 import gov.va.api.health.providerdirectory.api.resources.PractitionerRole.Bundle;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
+=======
+import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
+>>>>>>> Stashed changes
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
@@ -20,10 +26,6 @@ import org.mockito.MockitoAnnotations;
 
 @SuppressWarnings("WeakerAccess")
 public class PractitionerRoleControllerTest {
-  Bundle expected;
-
-  Bundle actual;
-
   PractitionerRoleController.Transformer tx = new PractitionerRoleTransformer();
 
   PractitionerRoleController controller;
@@ -43,39 +45,77 @@ public class PractitionerRoleControllerTest {
 
   @Test
   @SneakyThrows
+  public void readByIdentifier() {
+    ProviderResponse response =
+            JacksonConfig.createMapper()
+                    .readValue(
+                            getClass()
+                                    .getResourceAsStream(
+                                            "/PractitionerRoleTestResources/mock-provider-by-identifier-response.json"),
+                            ProviderResponse.class);
+    ProviderContactsResponse contacts =
+            JacksonConfig.createMapper()
+                    .readValue(
+                            getClass()
+                                    .getResourceAsStream(
+                                            "/PractitionerRoleTestResources/mock-provider-contact-response.json"),
+                            ProviderContactsResponse.class);
+    ProviderSpecialtiesResponse specialties =
+            JacksonConfig.createMapper()
+                    .readValue(
+                            getClass()
+                                    .getResourceAsStream(
+                                            "/PractitionerRoleTestResources/mock-provider-specialties-response.json"),
+                            ProviderSpecialtiesResponse.class);
+    when(ppmsClient.providersForId("identifier")).thenReturn(response);
+    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
+    when(ppmsClient.providerSpecialtySearch("1285621557")).thenReturn(specialties);
+    PractitionerRole expected = controller.readByIdentifier("identifier");
+    PractitionerRole actual =
+            JacksonConfig.createMapper()
+                    .readValue(
+                            getClass()
+                                    .getResourceAsStream("/PractitionerRoleTestResources/expected-read-by-identifier.json"),
+                            PractitionerRole.class);
+    Assertions.assertThat(actual).isEqualTo(expected);
+  }
+
+
+  @Test
+  @SneakyThrows
   public void searchByFamilyAndGiven() {
     ProviderResponse response =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
-                        "/ppmsPractitionerRole/ppms-provider-by-identifier-response.json"),
+                            "/PractitionerRoleTestResources/mock-provider-by-identifier-response.json"),
                 ProviderResponse.class);
-    ProviderContacts contacts =
+    ProviderContactsResponse contacts =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
-                        "/ppmsPractitionerRole/ppms-provider-contact-response.json"),
-                ProviderContacts.class);
-    PpmsProviderSpecialtiesResponse specialties =
+                            "/PractitionerRoleTestResources/mock-provider-contact-response.json"),
+                ProviderContactsResponse.class);
+    ProviderSpecialtiesResponse specialties =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
-                        "/ppmsPractitionerRole/ppms-provider-specialties-response.json"),
-                PpmsProviderSpecialtiesResponse.class);
+                            "/PractitionerRoleTestResources/mock-provider-specialties-response.json"),
+                ProviderSpecialtiesResponse.class);
 
     when(ppmsClient.providersForName("Klingerman, Michael")).thenReturn(response);
     when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     when(ppmsClient.providerSpecialtySearch("1285621557")).thenReturn(specialties);
-    expected = controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
-    actual =
+    Bundle expected = controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
+    Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
-                        "/ppmsPractitionerRole/actual-search-by-family-and-given.json"),
+                            "/PractitionerRoleTestResources/expected-search-by-family-and-given.json"),
                 PractitionerRole.Bundle.class);
     Assertions.assertThat(actual).isEqualTo(expected);
   }
@@ -88,31 +128,31 @@ public class PractitionerRoleControllerTest {
             .readValue(
                 getClass()
                     .getResourceAsStream(
-                        "/ppmsPractitionerRole/ppms-provider-by-identifier-response.json"),
+                            "/PractitionerRoleTestResources/mock-provider-by-identifier-response.json"),
                 ProviderResponse.class);
-    ProviderContacts contacts =
+    ProviderContactsResponse contacts =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
-                        "/ppmsPractitionerRole/ppms-provider-contact-response.json"),
-                ProviderContacts.class);
-    PpmsProviderSpecialtiesResponse specialties =
+                            "/PractitionerRoleTestResources/mock-provider-contact-response.json"),
+                ProviderContactsResponse.class);
+    ProviderSpecialtiesResponse specialties =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
-                        "/ppmsPractitionerRole/ppms-provider-specialties-response.json"),
-                PpmsProviderSpecialtiesResponse.class);
+                            "/PractitionerRoleTestResources/mock-provider-specialties-response.json"),
+                ProviderSpecialtiesResponse.class);
     when(ppmsClient.providersForId("identifier")).thenReturn(response);
     when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     when(ppmsClient.providerSpecialtySearch("1285621557")).thenReturn(specialties);
-    expected = controller.searchByIdentifier("identifier", 1, 1);
-    actual =
+    Bundle expected = controller.searchByIdentifier("identifier", 1, 1);
+    Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
-                    .getResourceAsStream("/ppmsPractitionerRole/actual-search-by-identifier.json"),
+                    .getResourceAsStream("/PractitionerRoleTestResources/expected-search-by-identifier.json"),
                 PractitionerRole.Bundle.class);
     Assertions.assertThat(actual).isEqualTo(expected);
   }
