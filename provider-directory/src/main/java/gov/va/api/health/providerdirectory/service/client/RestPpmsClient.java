@@ -1,7 +1,7 @@
 package gov.va.api.health.providerdirectory.service.client;
 
-import gov.va.api.health.providerdirectory.service.PpmsCareSites;
-import gov.va.api.health.providerdirectory.service.PpmsProviderServices;
+import gov.va.api.health.providerdirectory.service.CareSitesResponse;
+import gov.va.api.health.providerdirectory.service.LocationWrapper;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
@@ -55,7 +55,7 @@ public class RestPpmsClient implements PpmsClient {
   }
 
   @Override
-  public PpmsCareSites careSitesByCity(String city) {
+  public CareSitesResponse careSitesByCity(String city) {
     return handlePpmsExceptions(
         city,
         () -> {
@@ -64,14 +64,14 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<PpmsCareSites> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, PpmsCareSites.class);
+          ResponseEntity<CareSitesResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
           return entity.getBody();
         });
   }
 
   @Override
-  public PpmsProviderServices careSitesById(String id) {
+  public LocationWrapper careSitesById(String id) {
     return handlePpmsExceptions(
         id,
         () -> {
@@ -80,14 +80,14 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<PpmsProviderServices> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, PpmsProviderServices.class);
+          ResponseEntity<LocationWrapper> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, LocationWrapper.class);
           return entity.getBody();
         });
   }
 
   @Override
-  public PpmsProviderServices careSitesByName(String name) {
+  public LocationWrapper careSitesByName(String name) {
     return handlePpmsExceptions(
         name,
         () -> {
@@ -97,20 +97,19 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<PpmsProviderServices> entity = null;
+          ResponseEntity<LocationWrapper> entity = null;
           try {
             entity =
-                restTemplate.exchange(
-                    url, HttpMethod.GET, requestEntity, PpmsProviderServices.class);
+                restTemplate.exchange(url, HttpMethod.GET, requestEntity, LocationWrapper.class);
           } catch (Exception e) {
             System.out.println("PPMS failed to return data for " + name);
           }
-          return entity == null ? PpmsProviderServices.builder().build() : entity.getBody();
+          return entity == null ? LocationWrapper.builder().build() : entity.getBody();
         });
   }
 
   @Override
-  public PpmsCareSites careSitesByState(String state) {
+  public CareSitesResponse careSitesByState(String state) {
     return handlePpmsExceptions(
         state,
         () -> {
@@ -119,14 +118,14 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<PpmsCareSites> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, PpmsCareSites.class);
+          ResponseEntity<CareSitesResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
           return entity.getBody();
         });
   }
 
   @Override
-  public PpmsCareSites careSitesByZip(String zip) {
+  public CareSitesResponse careSitesByZip(String zip) {
     return handlePpmsExceptions(
         zip,
         () -> {
@@ -135,8 +134,8 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<PpmsCareSites> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, PpmsCareSites.class);
+          ResponseEntity<CareSitesResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
           return entity.getBody();
         });
   }

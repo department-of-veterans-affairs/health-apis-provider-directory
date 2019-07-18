@@ -6,7 +6,7 @@ import static gov.va.api.health.providerdirectory.service.controller.Transformer
 import gov.va.api.health.providerdirectory.api.datatypes.ContactPoint;
 import gov.va.api.health.providerdirectory.api.resources.Location;
 import gov.va.api.health.providerdirectory.api.resources.Location.LocationAddress;
-import gov.va.api.health.providerdirectory.service.PpmsProviderServices;
+import gov.va.api.health.providerdirectory.service.LocationWrapper;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LocationTransformer implements LocationController.Transformer {
 
-  LocationAddress address(PpmsProviderServices.Value value) {
+  LocationAddress address(LocationWrapper.Value value) {
     return convert(
         value,
         ppms ->
@@ -29,7 +29,7 @@ public class LocationTransformer implements LocationController.Transformer {
                 .build());
   }
 
-  List<LocationAddress> addresses(PpmsProviderServices.Value value) {
+  List<LocationAddress> addresses(LocationWrapper.Value value) {
     if (value.careSiteAddressCity() == null) {
       return null;
     }
@@ -39,12 +39,12 @@ public class LocationTransformer implements LocationController.Transformer {
   }
 
   @Override
-  public Location apply(PpmsProviderServices ppmsData) {
+  public Location apply(LocationWrapper ppmsData) {
     return location(ppmsData);
   }
 
-  private Location location(PpmsProviderServices ppmsData) {
-    PpmsProviderServices.Value providerServices = ppmsData.value().get(0);
+  private Location location(LocationWrapper ppmsData) {
+    LocationWrapper.Value providerServices = ppmsData.value().get(0);
     return Location.builder()
         .resourceType("Location")
         .name(providerServices.careSiteName())
@@ -61,7 +61,7 @@ public class LocationTransformer implements LocationController.Transformer {
         .build();
   }
 
-  List<ContactPoint> telecoms(PpmsProviderServices.Value source) {
+  List<ContactPoint> telecoms(LocationWrapper.Value source) {
     if (source == null || allBlank(source.careSitePhoneNumber())) {
       return null;
     }

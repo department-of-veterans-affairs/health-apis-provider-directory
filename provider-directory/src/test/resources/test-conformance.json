@@ -80,7 +80,15 @@
                     ],
                     "searchParam" : [
                         {
-                            "name" : "address",
+                            "name" : "city",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "state",
+                            "type" : "string"
+                        },
+                        {
+                            "name" : "zip",
                             "type" : "string"
                         },
                         {

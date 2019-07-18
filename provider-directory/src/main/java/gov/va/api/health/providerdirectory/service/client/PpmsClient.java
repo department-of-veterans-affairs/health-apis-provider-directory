@@ -1,7 +1,7 @@
 package gov.va.api.health.providerdirectory.service.client;
 
-import gov.va.api.health.providerdirectory.service.PpmsCareSites;
-import gov.va.api.health.providerdirectory.service.PpmsProviderServices;
+import gov.va.api.health.providerdirectory.service.CareSitesResponse;
+import gov.va.api.health.providerdirectory.service.LocationWrapper;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
@@ -13,15 +13,15 @@ import gov.va.api.health.providerdirectory.service.ProviderResponse;
  */
 public interface PpmsClient {
 
-  PpmsCareSites careSitesByCity(String city);
+  CareSitesResponse careSitesByCity(String city);
 
-  PpmsProviderServices careSitesById(String id);
+  LocationWrapper careSitesById(String id);
 
-  PpmsProviderServices careSitesByName(String name);
+  LocationWrapper careSitesByName(String name);
 
-  PpmsCareSites careSitesByState(String state);
+  CareSitesResponse careSitesByState(String state);
 
-  PpmsCareSites careSitesByZip(String zip);
+  CareSitesResponse careSitesByZip(String zip);
 
   /** Return the parameters of the failed search. */
   ProviderContacts providerContactsForId(String id);

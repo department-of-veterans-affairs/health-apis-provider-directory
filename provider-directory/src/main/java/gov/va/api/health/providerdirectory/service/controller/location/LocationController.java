@@ -2,9 +2,9 @@ package gov.va.api.health.providerdirectory.service.controller.location;
 
 import gov.va.api.health.providerdirectory.api.resources.Location;
 import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
+import gov.va.api.health.providerdirectory.service.CareSitesResponse;
 import gov.va.api.health.providerdirectory.service.CountParameter;
-import gov.va.api.health.providerdirectory.service.PpmsCareSites;
-import gov.va.api.health.providerdirectory.service.PpmsProviderServices;
+import gov.va.api.health.providerdirectory.service.LocationWrapper;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
@@ -57,35 +57,35 @@ public class LocationController {
   }
 
   private Location.Bundle bundle(MultiValueMap<String, String> parameters, int page, int count) {
-    PpmsProviderServices providerService = PpmsProviderServices.builder().build();
-    PpmsCareSites ppmsCareSites;
-    List<PpmsProviderServices> paged = new ArrayList<>();
+    LocationWrapper locationWrapper = LocationWrapper.builder().build();
+    CareSitesResponse careSitesResponse;
+    List<LocationWrapper> paged = new ArrayList<>();
     int recordCount = 1;
 
     if (parameters.get("identifier") != null) {
       String identifier = parameters.get("identifier").toArray()[0].toString();
-      providerService = client.careSitesById(identifier);
+      locationWrapper = client.careSitesById(identifier);
     } else if (parameters.get("name") != null) {
       String name = parameters.get("name").toArray()[0].toString();
-      providerService = client.careSitesByName(name);
+      locationWrapper = client.careSitesByName(name);
     } else {
       if (parameters.get("city") != null) {
         String city = parameters.get("city").toArray()[0].toString();
-        ppmsCareSites = client.careSitesByCity(city);
+        careSitesResponse = client.careSitesByCity(city);
       } else if (parameters.get("state") != null) {
         String state = parameters.get("state").toArray()[0].toString();
-        ppmsCareSites = client.careSitesByState(state);
+        careSitesResponse = client.careSitesByState(state);
       } else {
         String zip = parameters.get("zip").toArray()[0].toString();
-        ppmsCareSites = client.careSitesByZip(zip);
+        careSitesResponse = client.careSitesByZip(zip);
       }
-      recordCount = ppmsCareSites.value().size();
-      int fromIndex = Math.min((page - 1) * count, ppmsCareSites.value().size());
-      int toIndex = Math.min((fromIndex + count), ppmsCareSites.value().size());
+      recordCount = careSitesResponse.value().size();
+      int fromIndex = Math.min((page - 1) * count, careSitesResponse.value().size());
+      int toIndex = Math.min((fromIndex + count), careSitesResponse.value().size());
       paged =
           IntStream.range(fromIndex, toIndex)
               .parallel()
-              .mapToObj(i -> client.careSitesByName(ppmsCareSites.value().get(i).name()))
+              .mapToObj(i -> client.careSitesByName(careSitesResponse.value().get(i).name()))
               .collect(Collectors.toList());
     }
 
@@ -100,7 +100,7 @@ public class LocationController {
     return bundler.bundle(
         BundleContext.of(
             linkConfig,
-            paged.isEmpty() ? Collections.singletonList(providerService) : paged,
+            paged.isEmpty() ? Collections.singletonList(locationWrapper) : paged,
             transformer,
             Location.Entry::new,
             Location.Bundle::new));
@@ -179,5 +179,5 @@ public class LocationController {
     return Validator.create().validate(bundle);
   }
 
-  public interface Transformer extends Function<PpmsProviderServices, Location> {}
+  public interface Transformer extends Function<LocationWrapper, Location> {}
 }

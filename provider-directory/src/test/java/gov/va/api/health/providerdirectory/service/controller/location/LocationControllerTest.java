@@ -6,8 +6,8 @@ import static org.mockito.Mockito.when;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.providerdirectory.api.resources.Location;
-import gov.va.api.health.providerdirectory.service.PpmsCareSites;
-import gov.va.api.health.providerdirectory.service.PpmsProviderServices;
+import gov.va.api.health.providerdirectory.service.CareSitesResponse;
+import gov.va.api.health.providerdirectory.service.LocationWrapper;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
@@ -31,23 +31,26 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByCity() {
-    PpmsProviderServices locationOne =
+    LocationWrapper locationOne =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
-                    .getResourceAsStream("/ppmsCareSites/ppms-provider-response-address-1.json"),
-                PpmsProviderServices.class);
-    PpmsProviderServices locationTwo =
+                    .getResourceAsStream(
+                        "/LocationTestResource/mock-provider-response-address-1.json"),
+                LocationWrapper.class);
+    LocationWrapper locationTwo =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
-                    .getResourceAsStream("/ppmsCareSites/ppms-provider-response-address-2.json"),
-                PpmsProviderServices.class);
-    PpmsCareSites careSites =
+                    .getResourceAsStream(
+                        "/LocationTestResource/mock-provider-response-address-2.json"),
+                LocationWrapper.class);
+    CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppmsCareSites/ppms-care-sites-response.json"),
-                PpmsCareSites.class);
+                getClass()
+                    .getResourceAsStream("/LocationTestResource/mock-care-sites-response.json"),
+                CareSitesResponse.class);
     when(ppmsClient.careSitesByCity("Sharon")).thenReturn(careSites);
     when(ppmsClient.careSitesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(locationOne);
@@ -56,7 +59,8 @@ public final class LocationControllerTest {
     Location.Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppmsCareSites/test-search-by-city.json"),
+                getClass()
+                    .getResourceAsStream("/LocationTestResource/expected-search-by-city.json"),
                 Location.Bundle.class);
     assertThat(actual).isEqualTo(expected);
   }
@@ -64,18 +68,21 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByIdentifier() {
-    PpmsProviderServices response =
+    LocationWrapper response =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
-                    .getResourceAsStream("/ppmsCareSites/ppms-provider-services-response.json"),
-                PpmsProviderServices.class);
+                    .getResourceAsStream(
+                        "/LocationTestResource/mock-provider-services-response.json"),
+                LocationWrapper.class);
     when(ppmsClient.careSitesById("123")).thenReturn(response);
     Location.Bundle expected = controller.searchByIdentifier("123", 1, 15);
     Location.Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppmsCareSites/test-search-location-by-id.json"),
+                getClass()
+                    .getResourceAsStream(
+                        "/LocationTestResource/expected-search-location-by-id.json"),
                 Location.Bundle.class);
     assertThat(actual).isEqualTo(expected);
   }
@@ -83,18 +90,21 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByName() {
-    PpmsProviderServices response =
+    LocationWrapper response =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
-                    .getResourceAsStream("/ppmsCareSites/ppms-provider-services-response.json"),
-                PpmsProviderServices.class);
+                    .getResourceAsStream(
+                        "/LocationTestResource/mock-provider-services-response.json"),
+                LocationWrapper.class);
     when(ppmsClient.careSitesByName("A I Advance Imaging of Tulsa LLC")).thenReturn(response);
     Location.Bundle expected = controller.searchByName("A I Advance Imaging of Tulsa LLC", 1, 15);
     Location.Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppmsCareSites/test-search-location-by-name.json"),
+                getClass()
+                    .getResourceAsStream(
+                        "/LocationTestResource/expected-search-location-by-name.json"),
                 Location.Bundle.class);
     assertThat(actual).isEqualTo(expected);
   }
@@ -102,23 +112,26 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByState() {
-    PpmsProviderServices locationOne =
+    LocationWrapper locationOne =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
-                    .getResourceAsStream("/ppmsCareSites/ppms-provider-response-address-1.json"),
-                PpmsProviderServices.class);
-    PpmsProviderServices locationTwo =
+                    .getResourceAsStream(
+                        "/LocationTestResource/mock-provider-response-address-1.json"),
+                LocationWrapper.class);
+    LocationWrapper locationTwo =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
-                    .getResourceAsStream("/ppmsCareSites/ppms-provider-response-address-2.json"),
-                PpmsProviderServices.class);
-    PpmsCareSites careSites =
+                    .getResourceAsStream(
+                        "/LocationTestResource/mock-provider-response-address-2.json"),
+                LocationWrapper.class);
+    CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppmsCareSites/ppms-care-sites-response.json"),
-                PpmsCareSites.class);
+                getClass()
+                    .getResourceAsStream("/LocationTestResource/mock-care-sites-response.json"),
+                CareSitesResponse.class);
     when(ppmsClient.careSitesByState("Fl")).thenReturn(careSites);
     when(ppmsClient.careSitesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(locationOne);
@@ -127,7 +140,8 @@ public final class LocationControllerTest {
     Location.Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppmsCareSites/test-search-by-state.json"),
+                getClass()
+                    .getResourceAsStream("/LocationTestResource/expected-search-by-state.json"),
                 Location.Bundle.class);
     assertThat(actual).isEqualTo(expected);
   }
@@ -135,23 +149,26 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByZip() {
-    PpmsProviderServices locationOne =
+    LocationWrapper locationOne =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
-                    .getResourceAsStream("/ppmsCareSites/ppms-provider-response-address-1.json"),
-                PpmsProviderServices.class);
-    PpmsProviderServices locationTwo =
+                    .getResourceAsStream(
+                        "/LocationTestResource/mock-provider-response-address-1.json"),
+                LocationWrapper.class);
+    LocationWrapper locationTwo =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
-                    .getResourceAsStream("/ppmsCareSites/ppms-provider-response-address-2.json"),
-                PpmsProviderServices.class);
-    PpmsCareSites careSites =
+                    .getResourceAsStream(
+                        "/LocationTestResource/mock-provider-response-address-2.json"),
+                LocationWrapper.class);
+    CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppmsCareSites/ppms-care-sites-response.json"),
-                PpmsCareSites.class);
+                getClass()
+                    .getResourceAsStream("/LocationTestResource/mock-care-sites-response.json"),
+                CareSitesResponse.class);
     when(ppmsClient.careSitesByZip("45341")).thenReturn(careSites);
     when(ppmsClient.careSitesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(locationOne);
@@ -160,7 +177,7 @@ public final class LocationControllerTest {
     Location.Bundle actual =
         JacksonConfig.createMapper()
             .readValue(
-                getClass().getResourceAsStream("/ppmsCareSites/test-search-by-zip.json"),
+                getClass().getResourceAsStream("/LocationTestResource/expected-search-by-zip.json"),
                 Location.Bundle.class);
     assertThat(actual).isEqualTo(expected);
   }

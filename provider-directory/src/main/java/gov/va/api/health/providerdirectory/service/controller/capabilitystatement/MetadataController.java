@@ -79,7 +79,12 @@ class MetadataController {
   }
 
   private Collection<SearchParam> locationSearchParams() {
-    return asList(SearchParam.ADDRESS, SearchParam.IDENTIFIER, SearchParam.NAME);
+    return asList(
+        SearchParam.CITY,
+        SearchParam.STATE,
+        SearchParam.ZIP,
+        SearchParam.IDENTIFIER,
+        SearchParam.NAME);
   }
 
   private Collection<SearchParam> organizationSearchParams() {
@@ -197,6 +202,9 @@ class MetadataController {
     NAME("name", SearchParamType.string),
     GIVEN("given", SearchParamType.string),
     FAMILY("family", SearchParamType.string),
+    CITY("city", SearchParamType.string),
+    STATE("state", SearchParamType.string),
+    ZIP("zip", SearchParamType.string),
     ADDRESS("address", SearchParamType.string);
 
     private final String param;
