@@ -1,7 +1,5 @@
 package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
-import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
-import gov.va.api.health.providerdirectory.api.resources.Practitioner;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderWrapper;
@@ -11,6 +9,8 @@ import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleCont
 import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
 import gov.va.api.health.providerdirectory.service.controller.Parameters;
 import gov.va.api.health.providerdirectory.service.controller.Validator;
+import gov.va.api.health.stu3.api.resources.OperationOutcome;
+import gov.va.api.health.stu3.api.resources.Practitioner;
 import java.util.Collections;
 import java.util.function.Function;
 import javax.validation.constraints.Min;

@@ -3,10 +3,10 @@ package gov.va.api.health.providerdirectory.service.controller.capabilitystateme
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.api.health.providerdirectory.api.resources.CapabilityStatement;
-import gov.va.api.health.providerdirectory.api.resources.CapabilityStatement.Status;
 import gov.va.api.health.providerdirectory.service.controller.capabilitystatement.CapabilityStatementProperties.ContactProperties;
 import gov.va.api.health.providerdirectory.service.controller.capabilitystatement.CapabilityStatementProperties.SecurityProperties;
+import gov.va.api.health.stu3.api.resources.CapabilityStatement;
+import gov.va.api.health.stu3.api.resources.CapabilityStatement.Status;
 import lombok.SneakyThrows;
 import org.junit.Test;
 

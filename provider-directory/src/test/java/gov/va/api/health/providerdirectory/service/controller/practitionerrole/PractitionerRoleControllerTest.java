@@ -3,14 +3,14 @@ package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 import static org.mockito.Mockito.when;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
-import gov.va.api.health.providerdirectory.api.resources.PractitionerRole.Bundle;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
+import gov.va.api.health.stu3.api.resources.PractitionerRole;
+import gov.va.api.health.stu3.api.resources.PractitionerRole.Bundle;
 import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;

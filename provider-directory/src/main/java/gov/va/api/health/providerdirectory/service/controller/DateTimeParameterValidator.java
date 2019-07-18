@@ -1,6 +1,6 @@
 package gov.va.api.health.providerdirectory.service.controller;
 
-import gov.va.api.health.providerdirectory.api.Fhir;
+import gov.va.api.health.stu3.api.Fhir;
 import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
