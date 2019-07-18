@@ -1,7 +1,5 @@
 package gov.va.api.health.providerdirectory.service.controller.location;
 
-import gov.va.api.health.providerdirectory.api.resources.Location;
-import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
 import gov.va.api.health.providerdirectory.service.CountParameter;
 import gov.va.api.health.providerdirectory.service.LocationWrapper;
@@ -18,6 +16,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.validation.constraints.Min;
+
+import gov.va.api.health.stu3.api.resources.Location;
+import gov.va.api.health.stu3.api.resources.OperationOutcome;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
