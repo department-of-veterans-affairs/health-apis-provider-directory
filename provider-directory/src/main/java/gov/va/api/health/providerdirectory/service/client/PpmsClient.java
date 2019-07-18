@@ -1,5 +1,7 @@
 package gov.va.api.health.providerdirectory.service.client;
 
+import gov.va.api.health.providerdirectory.service.PpmsCareSites;
+import gov.va.api.health.providerdirectory.service.PpmsProviderServices;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
@@ -10,6 +12,17 @@ import gov.va.api.health.providerdirectory.service.ProviderResponse;
  * objects.
  */
 public interface PpmsClient {
+
+  PpmsCareSites careSitesByCity(String city);
+
+  PpmsProviderServices careSitesById(String id);
+
+  PpmsProviderServices careSitesByName(String name);
+
+  PpmsCareSites careSitesByState(String state);
+
+  PpmsCareSites careSitesByZip(String zip);
+
   /** Return the parameters of the failed search. */
   ProviderContacts providerContactsForId(String id);
 
@@ -23,6 +36,7 @@ public interface PpmsClient {
 
   /** A request to Mr. Anderson was malformed, such as missing required search parameters. */
   class BadRequest extends PpmsServiceException {
+
     public BadRequest(String id) {
       super(id);
     }
@@ -30,6 +44,7 @@ public interface PpmsClient {
 
   /** The generic exception for working with Mr. Anderson. */
   class PpmsServiceException extends RuntimeException {
+
     PpmsServiceException(String id) {
       super(id);
     }
@@ -37,6 +52,7 @@ public interface PpmsClient {
 
   /** The resource requested was not found. */
   class NotFound extends PpmsServiceException {
+
     public NotFound(String id) {
       super(id);
     }
@@ -44,6 +60,7 @@ public interface PpmsClient {
 
   /** An unspecified error occurred while performing a search. */
   class SearchFailed extends PpmsServiceException {
+
     public SearchFailed(String id) {
       super(id);
     }

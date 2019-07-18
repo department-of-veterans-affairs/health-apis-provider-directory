@@ -1,5 +1,7 @@
 package gov.va.api.health.providerdirectory.service.client;
 
+import gov.va.api.health.providerdirectory.service.PpmsCareSites;
+import gov.va.api.health.providerdirectory.service.PpmsProviderServices;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
@@ -22,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 /** REST implementation of PPMS client. */
 @Component
 public class RestPpmsClient implements PpmsClient {
+
   private final RestTemplate restTemplate;
 
   private final String baseUrl;
@@ -49,6 +52,93 @@ public class RestPpmsClient implements PpmsClient {
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
     return headers;
+  }
+
+  @Override
+  public PpmsCareSites careSitesByCity(String city) {
+    return handlePpmsExceptions(
+        city,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "GetCareSiteByCity?City=" + city)
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<PpmsCareSites> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, PpmsCareSites.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public PpmsProviderServices careSitesById(String id) {
+    return handlePpmsExceptions(
+        id,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderServices")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<PpmsProviderServices> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, PpmsProviderServices.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public PpmsProviderServices careSitesByName(String name) {
+    return handlePpmsExceptions(
+        name,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(
+                      baseUrl + "CareSites('" + name + "')/ProviderServices")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<PpmsProviderServices> entity = null;
+          try {
+            entity =
+                restTemplate.exchange(
+                    url, HttpMethod.GET, requestEntity, PpmsProviderServices.class);
+          } catch (Exception e) {
+            System.out.println("PPMS failed to return data for " + name);
+          }
+          return entity == null ? PpmsProviderServices.builder().build() : entity.getBody();
+        });
+  }
+
+  @Override
+  public PpmsCareSites careSitesByState(String state) {
+    return handlePpmsExceptions(
+        state,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "GetCareSiteByState?State=" + state)
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<PpmsCareSites> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, PpmsCareSites.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public PpmsCareSites careSitesByZip(String zip) {
+    return handlePpmsExceptions(
+        zip,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "GetCareSiteByZip?Zip=" + zip)
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<PpmsCareSites> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, PpmsCareSites.class);
+          return entity.getBody();
+        });
   }
 
   @Override
