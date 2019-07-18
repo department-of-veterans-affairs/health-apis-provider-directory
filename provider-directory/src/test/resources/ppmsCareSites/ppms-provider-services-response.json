@@ -1,0 +1,27 @@
+{
+    "@odata.context" : "https://dws.ppms.va.gov/v1.0/$metadata#ProviderServices",
+    "value" : [
+        {
+            "Name" : "A I Advance Imaging of Tulsa LLC - Clinic/Center - Radiology ",
+            "AffiliationName" : "TriWest - Choice",
+            "RelationshipName" : "Choice",
+            "ProviderName" : "A I Advance Imaging of Tulsa LLC",
+            "ProviderAgreementName" : null,
+            "SpecialtyName" : "Clinic/Center - Radiology",
+            "HPP" : "Unknown",
+            "HighPerformingProvider" : "TriWest - Choice(U)",
+            "CareSiteName" : "A I Advance Imaging of Tulsa LLC",
+            "CareSiteLocationAddress" : "6711 S Yale Ave Ste 212, Tulsa, OK, 74136",
+            "CareSiteAddressStreet" : "6711 S Yale Ave Ste 212",
+            "CareSiteAddressCity" : "Tulsa",
+            "CareSiteAddressState" : "OK",
+            "CareSiteAddressZipCode" : "74136",
+            "Latitude" : 36.066014,
+            "Longitude" : -95.921907,
+            "CareSitePhoneNumber" : "9185230002",
+            "OrganiztionGroupName" : "A I Advance Imaging of Tulsa LLC",
+            "DescriptionOfService" : null,
+            "Limitation" : null
+        }
+    ]
+}

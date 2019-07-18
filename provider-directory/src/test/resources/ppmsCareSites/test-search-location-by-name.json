@@ -1,0 +1,47 @@
+{
+    "resourceType" : "Bundle",
+    "type" : "searchset",
+    "total" : 1,
+    "link" : [
+        {
+            "relation" : "first",
+            "url" : "//Location?name=A I Advance Imaging of Tulsa LLC&page=1&_count=15"
+        },
+        {
+            "relation" : "self",
+            "url" : "//Location?name=A I Advance Imaging of Tulsa LLC&page=1&_count=15"
+        },
+        {
+            "relation" : "last",
+            "url" : "//Location?name=A I Advance Imaging of Tulsa LLC&page=1&_count=15"
+        }
+    ],
+    "entry" : [
+        {
+            "fullUrl" : "//Location/null",
+            "resource" : {
+                "resourceType" : "Location",
+                "status" : "active",
+                "name" : "A I Advance Imaging of Tulsa LLC",
+                "telecom" : [
+                    {
+                        "system" : "phone",
+                        "value" : "9185230002"
+                    }
+                ],
+                "address" : {
+                    "text" : "6711 S Yale Ave Ste 212, Tulsa, OK, 74136",
+                    "line" : [
+                        "6711 S Yale Ave Ste 212"
+                    ],
+                    "city" : "Tulsa",
+                    "state" : "OK",
+                    "postalCode" : "74136"
+                }
+            },
+            "search" : {
+                "mode" : "match"
+            }
+        }
+    ]
+}

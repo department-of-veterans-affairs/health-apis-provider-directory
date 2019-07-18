@@ -1,0 +1,77 @@
+{
+    "resourceType" : "Bundle",
+    "type" : "searchset",
+    "total" : 116,
+    "link" : [
+        {
+            "relation" : "first",
+            "url" : "//Location?state=Fl&page=1&_count=2"
+        },
+        {
+            "relation" : "self",
+            "url" : "//Location?state=Fl&page=1&_count=2"
+        },
+        {
+            "relation" : "next",
+            "url" : "//Location?state=Fl&page=2&_count=2"
+        },
+        {
+            "relation" : "last",
+            "url" : "//Location?state=Fl&page=58&_count=2"
+        }
+    ],
+    "entry" : [
+        {
+            "fullUrl" : "//Location/null",
+            "resource" : {
+                "resourceType" : "Location",
+                "status" : "active",
+                "name" : "Beacon Orthopaedics & Sports Medicine Ltd",
+                "telecom" : [
+                    {
+                        "system" : "phone",
+                        "value" : "5133543700"
+                    }
+                ],
+                "address" : {
+                    "text" : "500 E Business Way, Sharonville, OH, 45241",
+                    "line" : [
+                        "500 E Business Way"
+                    ],
+                    "city" : "Sharonville",
+                    "state" : "OH",
+                    "postalCode" : "45241"
+                }
+            },
+            "search" : {
+                "mode" : "match"
+            }
+        },
+        {
+            "fullUrl" : "//Location/null",
+            "resource" : {
+                "resourceType" : "Location",
+                "status" : "active",
+                "name" : "Sharon Hospital Medical Practice",
+                "telecom" : [
+                    {
+                        "system" : "phone",
+                        "value" : "8603644511"
+                    }
+                ],
+                "address" : {
+                    "text" : "50 Hospital Hill Rd, Sharon, CT, 06069",
+                    "line" : [
+                        "50 Hospital Hill Rd"
+                    ],
+                    "city" : "Sharon",
+                    "state" : "CT",
+                    "postalCode" : "06069"
+                }
+            },
+            "search" : {
+                "mode" : "match"
+            }
+        }
+    ]
+}
