@@ -85,7 +85,8 @@ public class LocationController {
       paged =
           IntStream.range(fromIndex, toIndex)
               .parallel()
-              .mapToObj(i -> ppmsClient.providerServicesByName(careSitesResponse.value().get(i).name()))
+              .mapToObj(
+                  i -> ppmsClient.providerServicesByName(careSitesResponse.value().get(i).name()))
               .collect(Collectors.toList());
     }
 
