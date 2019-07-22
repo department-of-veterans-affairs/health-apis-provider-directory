@@ -1,6 +1,6 @@
 package gov.va.api.health.providerdirectory.service.controller;
 
-import gov.va.api.health.providerdirectory.api.bundle.BundleLink;
+import gov.va.api.health.stu3.api.bundle.BundleLink;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;

@@ -3,17 +3,18 @@ package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 
 
-import gov.va.api.health.providerdirectory.api.datatypes.CodeableConcept;
-import gov.va.api.health.providerdirectory.api.datatypes.Coding;
-import gov.va.api.health.providerdirectory.api.datatypes.ContactPoint;
-import gov.va.api.health.providerdirectory.api.elements.Reference;
-import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
-import gov.va.api.health.providerdirectory.api.resources.PractitionerRole.PractitionerContactPoint;
+
 import gov.va.api.health.providerdirectory.service.PractitionerRoleWrapper;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
+import gov.va.api.health.stu3.api.datatypes.CodeableConcept;
+import gov.va.api.health.stu3.api.datatypes.Coding;
+import gov.va.api.health.stu3.api.datatypes.ContactPoint;
+import gov.va.api.health.stu3.api.elements.Reference;
+import gov.va.api.health.stu3.api.resources.PractitionerRole;
+import gov.va.api.health.stu3.api.resources.PractitionerRole.PractitionerContactPoint;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

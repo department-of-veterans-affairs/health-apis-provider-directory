@@ -1,7 +1,7 @@
 package gov.va.api.health.providerdirectory.service.controller.wellknown;
 
-import gov.va.api.health.providerdirectory.api.information.WellKnown;
 import gov.va.api.health.providerdirectory.service.controller.capabilitystatement.CapabilityStatementProperties;
+import gov.va.api.health.stu3.api.information.WellKnown;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

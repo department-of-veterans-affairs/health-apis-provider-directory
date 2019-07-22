@@ -1,6 +1,5 @@
 package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
-import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
 import gov.va.api.health.providerdirectory.service.PractitionerRoleWrapper;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
@@ -10,6 +9,7 @@ import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
 import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
 import gov.va.api.health.providerdirectory.service.controller.Parameters;
+import gov.va.api.health.stu3.api.resources.PractitionerRole;
 import java.util.Collections;
 import java.util.function.Function;
 import javax.validation.constraints.Min;

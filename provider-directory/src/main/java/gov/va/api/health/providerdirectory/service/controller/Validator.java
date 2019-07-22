@@ -1,12 +1,12 @@
 package gov.va.api.health.providerdirectory.service.controller;
 
-import gov.va.api.health.providerdirectory.api.bundle.AbstractBundle;
-import gov.va.api.health.providerdirectory.api.datatypes.CodeableConcept;
-import gov.va.api.health.providerdirectory.api.elements.Narrative;
-import gov.va.api.health.providerdirectory.api.elements.Narrative.NarrativeStatus;
-import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
-import gov.va.api.health.providerdirectory.api.resources.OperationOutcome.Issue;
-import gov.va.api.health.providerdirectory.api.resources.OperationOutcome.Issue.IssueSeverity;
+import gov.va.api.health.stu3.api.bundle.AbstractBundle;
+import gov.va.api.health.stu3.api.datatypes.CodeableConcept;
+import gov.va.api.health.stu3.api.elements.Narrative;
+import gov.va.api.health.stu3.api.elements.Narrative.NarrativeStatus;
+import gov.va.api.health.stu3.api.resources.OperationOutcome;
+import gov.va.api.health.stu3.api.resources.OperationOutcome.Issue;
+import gov.va.api.health.stu3.api.resources.OperationOutcome.Issue.IssueSeverity;
 import java.util.Collections;
 import java.util.Set;
 import javax.validation.ConstraintViolation;

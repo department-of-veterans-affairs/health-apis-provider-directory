@@ -5,18 +5,17 @@ import static gov.va.api.health.providerdirectory.service.controller.Transformer
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
-import gov.va.api.health.providerdirectory.api.datatypes.Address;
-import gov.va.api.health.providerdirectory.api.datatypes.ContactPoint;
-import gov.va.api.health.providerdirectory.api.resources.Practitioner;
-import gov.va.api.health.providerdirectory.api.resources.Practitioner.Gender;
-import gov.va.api.health.providerdirectory.api.resources.Practitioner.PractitionerHumanName;
-import gov.va.api.health.providerdirectory.api.resources.Practitioner.PractitionerIdentifier;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
+import gov.va.api.health.stu3.api.datatypes.Address;
+import gov.va.api.health.stu3.api.datatypes.ContactPoint;
+import gov.va.api.health.stu3.api.resources.Practitioner;
+import gov.va.api.health.stu3.api.resources.Practitioner.Gender;
+import gov.va.api.health.stu3.api.resources.Practitioner.PractitionerHumanName;
+import gov.va.api.health.stu3.api.resources.Practitioner.PractitionerIdentifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -72,9 +71,12 @@ public class PractitionerTransformer implements PractitionerController.Transform
   }
 
   PractitionerHumanName name(String name) {
-    List<String> splitName = Arrays.asList(name.trim().split(","));
+    List<String> splitNames = new ArrayList<>();
+    for (String s : name.split(",")) {
+      splitNames.add(s.trim());
+    }
     return convert(
-        splitName,
+        splitNames,
         ppms ->
             PractitionerHumanName.builder()
                 .family(ppms.get(0))
