@@ -20,6 +20,11 @@ public final class ProviderSpecialtiesResponse {
 
   private List<Value> value;
 
+  /** Lazy getter */
+  public List<Value> getValue() {
+    return value;
+  }
+
   @Data
   @Builder
   @NoArgsConstructor(access = AccessLevel.PRIVATE)

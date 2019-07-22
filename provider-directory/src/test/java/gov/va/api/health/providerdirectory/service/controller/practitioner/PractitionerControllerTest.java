@@ -5,14 +5,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-<<<<<<< Updated upstream
 import gov.va.api.health.providerdirectory.api.resources.Practitioner;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner.Bundle;
-import gov.va.api.health.providerdirectory.service.ProviderContacts;
-=======
-import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
->>>>>>> Stashed changes
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
@@ -21,7 +16,6 @@ import gov.va.api.health.providerdirectory.service.controller.Validator;
 import javax.validation.ConstraintViolationException;
 import lombok.SneakyThrows;
 import org.junit.Test;
-import org.springframework.stereotype.Controller;
 
 @SuppressWarnings("WeakerAccess")
 public final class PractitionerControllerTest {

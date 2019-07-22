@@ -1,15 +1,9 @@
 package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
-<<<<<<< Updated upstream
 import gov.va.api.health.providerdirectory.api.resources.PractitionerRole;
-import gov.va.api.health.providerdirectory.service.PpmsPractitionerRole;
-import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
-import gov.va.api.health.providerdirectory.service.ProviderContacts;
-=======
 import gov.va.api.health.providerdirectory.service.PractitionerRoleWrapper;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
->>>>>>> Stashed changes
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
@@ -72,24 +66,26 @@ public class PractitionerRoleController {
               PractitionerRole.Bundle::new));
   }
 
+  /** If a user were to search by a parameter other then family or given, the call would
+   * be checked and failed earlier at the PPMS call. */
   private PractitionerRoleWrapper search(MultiValueMap<String, String> parameters) {
       ProviderResponse providerResponse;
-      if (parameters.get("identifier") != null) {
-          String identifier = parameters.get("identifier").toArray()[0].toString();
+      if (parameters.containsKey("identifier")) {
+          String identifier = parameters.get("identifier").get(0);
           providerResponse = ppmsClient.providersForId(identifier);
-      } else if (parameters.get("name") != null) {
-          String name = parameters.get("name").toArray()[0].toString();
+      } else if (parameters.containsKey("name")) {
+          String name = parameters.get("name").get(0);
           providerResponse = ppmsClient.providersForName(name);
       } else {
           String familyAndGiven =
-                  parameters.get("family").toArray()[0].toString()
+                  parameters.get("family").get(0)
                           + ", "
-                          + parameters.get("given").toArray()[0].toString();
+                          + parameters.get("given").get(0);
           providerResponse = ppmsClient.providersForName(familyAndGiven);
       }
       String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
-      ProviderContactsResponse providerContactsResponse = ppmsProviderContact(providerResponse.value().get(0).providerIdentifier().toString());
-      ProviderSpecialtiesResponse providerSpecialty = ppmsProviderSpecialty(providerIdentifier);
+      ProviderContactsResponse providerContactsResponse = ppmsClient.providerContactsForId(providerResponse.value().get(0).providerIdentifier().toString());
+      ProviderSpecialtiesResponse providerSpecialty = ppmsClient.providerSpecialtySearch(providerIdentifier);
       PractitionerRoleWrapper root =
               PractitionerRoleWrapper.builder()
                       .providerContactsResponse(providerContactsResponse)
@@ -97,17 +93,6 @@ public class PractitionerRoleController {
                       .providerSpecialtiesResponse(providerSpecialty)
                       .build();
       return root;
-  }
-
-
-  @SneakyThrows
-  private ProviderContactsResponse ppmsProviderContact(String id) {
-    return ppmsClient.providerContactsForId(id);
-  }
-
-  @SneakyThrows
-  private ProviderSpecialtiesResponse ppmsProviderSpecialty(String id) {
-    return ppmsClient.providerSpecialtySearch(id);
   }
 
     /** Read by identifier. **/

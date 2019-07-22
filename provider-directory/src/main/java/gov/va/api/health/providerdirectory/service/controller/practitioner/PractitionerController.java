@@ -1,12 +1,9 @@
 package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
-<<<<<<< Updated upstream
+
 import gov.va.api.health.providerdirectory.api.resources.OperationOutcome;
 import gov.va.api.health.providerdirectory.api.resources.Practitioner;
-import gov.va.api.health.providerdirectory.service.ProviderContacts;
-=======
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
->>>>>>> Stashed changes
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
@@ -74,20 +71,24 @@ public class PractitionerController {
             Practitioner.Bundle::new));
   }
 
+  /** If a user were to search by a parameter other then family or given, the call would
+   * be checked and failed earlier at the PPMS call. */
   private PractitionerWrapper search(MultiValueMap<String, String> parameters) {
     ProviderResponse providerResponse;
-    if (parameters.get("identifier") != null) {
-      String identifier = parameters.get("identifier").toArray()[0].toString();
+    if (parameters.containsKey("identifier")) {
+      String identifier = parameters.get("identifier").get(0);
       providerResponse = client.providersForId(identifier);
-    } else if (parameters.get("name") != null) {
-      String name = parameters.get("name").toArray()[0].toString();
+    } else if (parameters.containsKey("name")) {
+      String name = parameters.get("name").get(0);
       providerResponse = client.providersForName(name);
     } else {
       String familyAndGiven =
-              parameters.get("family").toArray()[0].toString()
+              parameters.get("family").get(0)
                       + ", "
-                      + parameters.get("given").toArray()[0].toString();
+                      + parameters.get("given").get(0);
+
       providerResponse = client.providersForName(familyAndGiven);
+
     }
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
 

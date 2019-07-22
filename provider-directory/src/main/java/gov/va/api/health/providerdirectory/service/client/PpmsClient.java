@@ -5,9 +5,7 @@ import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 
 /**
- * This is the abstraction for communicating with the Mr. Anderson service. This service works with
- * a JAXB model that represents the CDW schemas. Queries to Mr. Anderson are contained in type-safe
- * objects.
+ * This is the abstraction for communicating with PPMS through their Restful API.
  */
 public interface PpmsClient {
   /** Return the parameters of the failed search. */
@@ -21,14 +19,14 @@ public interface PpmsClient {
 
   ProviderResponse providersForName(String id);
 
-  /** A request to Mr. Anderson was malformed, such as missing required search parameters. */
+  /** A request was malformed, such as missing required search parameters. */
   class BadRequest extends PpmsServiceException {
     public BadRequest(String id) {
       super(id);
     }
   }
 
-  /** The generic exception for working with Mr. Anderson. */
+  /** The generic exception for working. */
   class PpmsServiceException extends RuntimeException {
     PpmsServiceException(String id) {
       super(id);
