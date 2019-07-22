@@ -52,9 +52,9 @@ public final class LocationControllerTest {
                     .getResourceAsStream("/LocationTestResource/mock-care-sites-response.json"),
                 CareSitesResponse.class);
     when(ppmsClient.careSitesByCity("Sharon")).thenReturn(careSites);
-    when(ppmsClient.careSitesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
+    when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(locationOne);
-    when(ppmsClient.careSitesByName("Sharon Hospital Medical Practice")).thenReturn(locationTwo);
+    when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice")).thenReturn(locationTwo);
     Location.Bundle expected = controller.searchByCity("Sharon", 1, 2);
     Location.Bundle actual =
         JacksonConfig.createMapper()
@@ -75,7 +75,7 @@ public final class LocationControllerTest {
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-services-response.json"),
                 ProviderServicesResponse.class);
-    when(ppmsClient.careSitesById("123")).thenReturn(response);
+    when(ppmsClient.providerServicesById("123")).thenReturn(response);
     Location.Bundle expected = controller.searchByIdentifier("123", 1, 15);
     Location.Bundle actual =
         JacksonConfig.createMapper()
@@ -97,7 +97,7 @@ public final class LocationControllerTest {
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-services-response.json"),
                 ProviderServicesResponse.class);
-    when(ppmsClient.careSitesByName("A I Advance Imaging of Tulsa LLC")).thenReturn(response);
+    when(ppmsClient.providerServicesByName("A I Advance Imaging of Tulsa LLC")).thenReturn(response);
     Location.Bundle expected = controller.searchByName("A I Advance Imaging of Tulsa LLC", 1, 15);
     Location.Bundle actual =
         JacksonConfig.createMapper()
@@ -133,9 +133,9 @@ public final class LocationControllerTest {
                     .getResourceAsStream("/LocationTestResource/mock-care-sites-response.json"),
                 CareSitesResponse.class);
     when(ppmsClient.careSitesByState("Fl")).thenReturn(careSites);
-    when(ppmsClient.careSitesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
+    when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(locationOne);
-    when(ppmsClient.careSitesByName("Sharon Hospital Medical Practice")).thenReturn(locationTwo);
+    when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice")).thenReturn(locationTwo);
     Location.Bundle expected = controller.searchByState("Fl", 1, 2);
     Location.Bundle actual =
         JacksonConfig.createMapper()
@@ -170,9 +170,9 @@ public final class LocationControllerTest {
                     .getResourceAsStream("/LocationTestResource/mock-care-sites-response.json"),
                 CareSitesResponse.class);
     when(ppmsClient.careSitesByZip("45341")).thenReturn(careSites);
-    when(ppmsClient.careSitesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
+    when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(locationOne);
-    when(ppmsClient.careSitesByName("Sharon Hospital Medical Practice")).thenReturn(locationTwo);
+    when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice")).thenReturn(locationTwo);
     Location.Bundle expected = controller.searchByZip("45341", 1, 2);
     Location.Bundle actual =
         JacksonConfig.createMapper()

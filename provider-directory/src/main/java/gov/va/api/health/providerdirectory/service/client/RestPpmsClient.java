@@ -1,10 +1,10 @@
 package gov.va.api.health.providerdirectory.service.client;
 
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
-import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import lombok.SneakyThrows;
@@ -73,45 +73,6 @@ public class RestPpmsClient implements PpmsClient {
   }
 
   @Override
-  public ProviderServicesResponse providerServicesById(String id) {
-    return handlePpmsExceptions(
-        id,
-        () -> {
-          String url =
-              UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderServices")
-                  .build()
-                  .toUriString();
-          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<ProviderServicesResponse> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
-          return entity.getBody();
-        });
-  }
-
-  @Override
-  public ProviderServicesResponse providerServicesByName(String name) {
-    return handlePpmsExceptions(
-        name,
-        () -> {
-          String url =
-              UriComponentsBuilder.fromHttpUrl(
-                      baseUrl + "CareSites('" + name + "')/ProviderServices")
-                  .build()
-                  .toUriString();
-          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<ProviderServicesResponse> entity = null;
-          try {
-            entity =
-                restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
-              return entity.getBody();
-          } catch (Exception e) {
-            log.error("PPMS failed to return data for " + name);
-              return ProviderServicesResponse.builder().build();
-          }
-        });
-  }
-
-  @Override
   public CareSitesResponse careSitesByState(String state) {
     return handlePpmsExceptions(
         state,
@@ -156,6 +117,47 @@ public class RestPpmsClient implements PpmsClient {
           ResponseEntity<ProviderContacts> entity =
               restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContacts.class);
           return entity.getBody();
+        });
+  }
+
+  @Override
+  public ProviderServicesResponse providerServicesById(String id) {
+    return handlePpmsExceptions(
+        id,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderServices")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<ProviderServicesResponse> entity =
+              restTemplate.exchange(
+                  url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public ProviderServicesResponse providerServicesByName(String name) {
+    return handlePpmsExceptions(
+        name,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(
+                      baseUrl + "CareSites('" + name + "')/ProviderServices")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<ProviderServicesResponse> entity = null;
+          try {
+            entity =
+                restTemplate.exchange(
+                    url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
+            return entity.getBody();
+          } catch (Exception e) {
+            log.error("PPMS failed to return data for " + name);
+            return ProviderServicesResponse.builder().build();
+          }
         });
   }
 

@@ -64,10 +64,10 @@ public class LocationController {
 
     if (parameters.get("identifier") != null) {
       String identifier = parameters.get("identifier").toArray()[0].toString();
-      providerServicesResponse = ppmsClient.careSitesById(identifier);
+      providerServicesResponse = ppmsClient.providerServicesById(identifier);
     } else if (parameters.get("name") != null) {
       String name = parameters.get("name").toArray()[0].toString();
-      providerServicesResponse = ppmsClient.careSitesByName(name);
+      providerServicesResponse = ppmsClient.providerServicesByName(name);
     } else {
       if (parameters.get("address-city") != null) {
         String city = parameters.get("address-city").toArray()[0].toString();
@@ -85,7 +85,7 @@ public class LocationController {
       paged =
           IntStream.range(fromIndex, toIndex)
               .parallel()
-              .mapToObj(i -> ppmsClient.careSitesByName(careSitesResponse.value().get(i).name()))
+              .mapToObj(i -> ppmsClient.providerServicesByName(careSitesResponse.value().get(i).name()))
               .collect(Collectors.toList());
     }
 
@@ -113,7 +113,11 @@ public class LocationController {
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @CountParameter @Min(0) int count) {
     return bundle(
-        Parameters.builder().add("address-city", city).add("page", page).add("_count", count).build(),
+        Parameters.builder()
+            .add("address-city", city)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
         page,
         count);
   }
@@ -153,7 +157,11 @@ public class LocationController {
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @CountParameter @Min(0) int count) {
     return bundle(
-        Parameters.builder().add("address-state", state).add("page", page).add("_count", count).build(),
+        Parameters.builder()
+            .add("address-state", state)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
         page,
         count);
   }
@@ -165,7 +173,11 @@ public class LocationController {
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @CountParameter @Min(0) int count) {
     return bundle(
-        Parameters.builder().add("address-postalcode", zip).add("page", page).add("_count", count).build(),
+        Parameters.builder()
+            .add("address-postalcode", zip)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
         page,
         count);
   }

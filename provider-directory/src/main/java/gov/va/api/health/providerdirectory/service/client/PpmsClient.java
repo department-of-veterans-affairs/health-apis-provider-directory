@@ -1,10 +1,10 @@
 package gov.va.api.health.providerdirectory.service.client;
 
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
-import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 
 /**
  * This is the abstraction for communicating with the Mr. Anderson service. This service works with
@@ -15,16 +15,16 @@ public interface PpmsClient {
 
   CareSitesResponse careSitesByCity(String city);
 
-  ProviderServicesResponse providerServicesById(String id);
-
-  ProviderServicesResponse providerServicesByName(String name);
-
   CareSitesResponse careSitesByState(String state);
 
   CareSitesResponse careSitesByZip(String zip);
 
   /** Return the parameters of the failed search. */
   ProviderContacts providerContactsForId(String id);
+
+  ProviderServicesResponse providerServicesById(String id);
+
+  ProviderServicesResponse providerServicesByName(String name);
 
   /** Return the parameters of the failed search. */
   PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id);
