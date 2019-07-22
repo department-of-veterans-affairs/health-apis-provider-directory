@@ -1,23 +1,23 @@
 {
     "resourceType" : "Bundle",
     "type" : "searchset",
-    "total" : 116,
+    "total" : 3,
     "link" : [
         {
             "relation" : "first",
-            "url" : "//Location?zip=45341&page=1&_count=2"
+            "url" : "//Location?address-postalcode=45341&page=1&_count=2"
         },
         {
             "relation" : "self",
-            "url" : "//Location?zip=45341&page=1&_count=2"
+            "url" : "//Location?address-postalcode=45341&page=1&_count=2"
         },
         {
             "relation" : "next",
-            "url" : "//Location?zip=45341&page=2&_count=2"
+            "url" : "//Location?address-postalcode=45341&page=2&_count=2"
         },
         {
             "relation" : "last",
-            "url" : "//Location?zip=45341&page=58&_count=2"
+            "url" : "//Location?address-postalcode=45341&page=2&_count=2"
         }
     ],
     "entry" : [

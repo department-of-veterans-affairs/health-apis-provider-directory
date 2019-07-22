@@ -80,15 +80,15 @@
                     ],
                     "searchParam" : [
                         {
-                            "name" : "city",
+                            "name" : "address-city",
                             "type" : "string"
                         },
                         {
-                            "name" : "state",
+                            "name" : "address-state",
                             "type" : "string"
                         },
                         {
-                            "name" : "zip",
+                            "name" : "address-postalcode",
                             "type" : "string"
                         },
                         {

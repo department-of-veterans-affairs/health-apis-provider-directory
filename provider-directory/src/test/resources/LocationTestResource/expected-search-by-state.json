@@ -1,23 +1,23 @@
 {
     "resourceType" : "Bundle",
     "type" : "searchset",
-    "total" : 116,
+    "total" : 3,
     "link" : [
         {
             "relation" : "first",
-            "url" : "//Location?state=Fl&page=1&_count=2"
+            "url" : "//Location?address-state=Fl&page=1&_count=2"
         },
         {
             "relation" : "self",
-            "url" : "//Location?state=Fl&page=1&_count=2"
+            "url" : "//Location?address-state=Fl&page=1&_count=2"
         },
         {
             "relation" : "next",
-            "url" : "//Location?state=Fl&page=2&_count=2"
+            "url" : "//Location?address-state=Fl&page=2&_count=2"
         },
         {
             "relation" : "last",
-            "url" : "//Location?state=Fl&page=58&_count=2"
+            "url" : "//Location?address-state=Fl&page=2&_count=2"
         }
     ],
     "entry" : [

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
-import gov.va.api.health.providerdirectory.service.LocationWrapper;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
@@ -31,20 +31,20 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByCity() {
-    LocationWrapper locationOne =
+    ProviderServicesResponse locationOne =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-response-address-1.json"),
-                LocationWrapper.class);
-    LocationWrapper locationTwo =
+                ProviderServicesResponse.class);
+    ProviderServicesResponse locationTwo =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-response-address-2.json"),
-                LocationWrapper.class);
+                ProviderServicesResponse.class);
     CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
@@ -68,13 +68,13 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByIdentifier() {
-    LocationWrapper response =
+    ProviderServicesResponse response =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-services-response.json"),
-                LocationWrapper.class);
+                ProviderServicesResponse.class);
     when(ppmsClient.careSitesById("123")).thenReturn(response);
     Location.Bundle expected = controller.searchByIdentifier("123", 1, 15);
     Location.Bundle actual =
@@ -90,13 +90,13 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByName() {
-    LocationWrapper response =
+    ProviderServicesResponse response =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-services-response.json"),
-                LocationWrapper.class);
+                ProviderServicesResponse.class);
     when(ppmsClient.careSitesByName("A I Advance Imaging of Tulsa LLC")).thenReturn(response);
     Location.Bundle expected = controller.searchByName("A I Advance Imaging of Tulsa LLC", 1, 15);
     Location.Bundle actual =
@@ -112,20 +112,20 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByState() {
-    LocationWrapper locationOne =
+    ProviderServicesResponse locationOne =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-response-address-1.json"),
-                LocationWrapper.class);
-    LocationWrapper locationTwo =
+                ProviderServicesResponse.class);
+    ProviderServicesResponse locationTwo =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-response-address-2.json"),
-                LocationWrapper.class);
+                ProviderServicesResponse.class);
     CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
@@ -149,20 +149,20 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByZip() {
-    LocationWrapper locationOne =
+    ProviderServicesResponse locationOne =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-response-address-1.json"),
-                LocationWrapper.class);
-    LocationWrapper locationTwo =
+                ProviderServicesResponse.class);
+    ProviderServicesResponse locationTwo =
         JacksonConfig.createMapper()
             .readValue(
                 getClass()
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-response-address-2.json"),
-                LocationWrapper.class);
+                ProviderServicesResponse.class);
     CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(

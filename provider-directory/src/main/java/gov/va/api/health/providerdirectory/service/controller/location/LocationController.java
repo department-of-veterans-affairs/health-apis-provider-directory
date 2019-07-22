@@ -2,7 +2,7 @@ package gov.va.api.health.providerdirectory.service.controller.location;
 
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
 import gov.va.api.health.providerdirectory.service.CountParameter;
-import gov.va.api.health.providerdirectory.service.LocationWrapper;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
@@ -42,7 +42,7 @@ public class LocationController {
 
   private Transformer transformer;
 
-  private PpmsClient client;
+  private PpmsClient ppmsClient;
 
   private Bundler bundler;
 
@@ -50,42 +50,42 @@ public class LocationController {
   public LocationController(
       @Autowired LocationController.Transformer transformer,
       @Autowired Bundler bundler,
-      @Autowired PpmsClient client) {
+      @Autowired PpmsClient ppmsClient) {
     this.transformer = transformer;
     this.bundler = bundler;
-    this.client = client;
+    this.ppmsClient = ppmsClient;
   }
 
   private Location.Bundle bundle(MultiValueMap<String, String> parameters, int page, int count) {
-    LocationWrapper locationWrapper = LocationWrapper.builder().build();
+    ProviderServicesResponse providerServicesResponse = ProviderServicesResponse.builder().build();
     CareSitesResponse careSitesResponse;
-    List<LocationWrapper> paged = new ArrayList<>();
-    int recordCount = 1;
+    List<ProviderServicesResponse> paged = new ArrayList<>();
+    int totalRecords = 1;
 
     if (parameters.get("identifier") != null) {
       String identifier = parameters.get("identifier").toArray()[0].toString();
-      locationWrapper = client.careSitesById(identifier);
+      providerServicesResponse = ppmsClient.careSitesById(identifier);
     } else if (parameters.get("name") != null) {
       String name = parameters.get("name").toArray()[0].toString();
-      locationWrapper = client.careSitesByName(name);
+      providerServicesResponse = ppmsClient.careSitesByName(name);
     } else {
-      if (parameters.get("city") != null) {
-        String city = parameters.get("city").toArray()[0].toString();
-        careSitesResponse = client.careSitesByCity(city);
-      } else if (parameters.get("state") != null) {
-        String state = parameters.get("state").toArray()[0].toString();
-        careSitesResponse = client.careSitesByState(state);
+      if (parameters.get("address-city") != null) {
+        String city = parameters.get("address-city").toArray()[0].toString();
+        careSitesResponse = ppmsClient.careSitesByCity(city);
+      } else if (parameters.get("address-state") != null) {
+        String state = parameters.get("address-state").toArray()[0].toString();
+        careSitesResponse = ppmsClient.careSitesByState(state);
       } else {
-        String zip = parameters.get("zip").toArray()[0].toString();
-        careSitesResponse = client.careSitesByZip(zip);
+        String zip = parameters.get("address-postalcode").toArray()[0].toString();
+        careSitesResponse = ppmsClient.careSitesByZip(zip);
       }
-      recordCount = careSitesResponse.value().size();
+      totalRecords = careSitesResponse.value().size();
       int fromIndex = Math.min((page - 1) * count, careSitesResponse.value().size());
       int toIndex = Math.min((fromIndex + count), careSitesResponse.value().size());
       paged =
           IntStream.range(fromIndex, toIndex)
               .parallel()
-              .mapToObj(i -> client.careSitesByName(careSitesResponse.value().get(i).name()))
+              .mapToObj(i -> ppmsClient.careSitesByName(careSitesResponse.value().get(i).name()))
               .collect(Collectors.toList());
     }
 
@@ -95,25 +95,25 @@ public class LocationController {
             .queryParams(parameters)
             .page(page)
             .recordsPerPage(count)
-            .totalRecords(recordCount)
+            .totalRecords(totalRecords)
             .build();
     return bundler.bundle(
         BundleContext.of(
             linkConfig,
-            paged.isEmpty() ? Collections.singletonList(locationWrapper) : paged,
+            paged.isEmpty() ? Collections.singletonList(providerServicesResponse) : paged,
             transformer,
             Location.Entry::new,
             Location.Bundle::new));
   }
 
   /** Search by family & given name. */
-  @GetMapping(params = {"city"})
+  @GetMapping(params = {"address-city"})
   public Location.Bundle searchByCity(
-      @RequestParam("city") String city,
+      @RequestParam("address-city") String city,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @CountParameter @Min(0) int count) {
     return bundle(
-        Parameters.builder().add("city", city).add("page", page).add("_count", count).build(),
+        Parameters.builder().add("address-city", city).add("page", page).add("_count", count).build(),
         page,
         count);
   }
@@ -147,25 +147,25 @@ public class LocationController {
   }
 
   /** Search by family & given name. */
-  @GetMapping(params = {"state"})
+  @GetMapping(params = {"address-state"})
   public Location.Bundle searchByState(
-      @RequestParam("state") String state,
+      @RequestParam("address-state") String state,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @CountParameter @Min(0) int count) {
     return bundle(
-        Parameters.builder().add("state", state).add("page", page).add("_count", count).build(),
+        Parameters.builder().add("address-state", state).add("page", page).add("_count", count).build(),
         page,
         count);
   }
 
   /** Search by family & given name. */
-  @GetMapping(params = {"zip"})
+  @GetMapping(params = {"address-postalcode"})
   public Location.Bundle searchByZip(
-      @RequestParam("zip") String zip,
+      @RequestParam("address-postalcode") String zip,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @CountParameter @Min(0) int count) {
     return bundle(
-        Parameters.builder().add("zip", zip).add("page", page).add("_count", count).build(),
+        Parameters.builder().add("address-postalcode", zip).add("page", page).add("_count", count).build(),
         page,
         count);
   }
@@ -179,5 +179,5 @@ public class LocationController {
     return Validator.create().validate(bundle);
   }
 
-  public interface Transformer extends Function<LocationWrapper, Location> {}
+  public interface Transformer extends Function<ProviderServicesResponse, Location> {}
 }

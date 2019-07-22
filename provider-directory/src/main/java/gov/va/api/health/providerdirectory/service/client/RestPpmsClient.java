@@ -1,13 +1,14 @@
 package gov.va.api.health.providerdirectory.service.client;
 
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
-import gov.va.api.health.providerdirectory.service.LocationWrapper;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /** REST implementation of PPMS client. */
 @Component
+@Slf4j
 public class RestPpmsClient implements PpmsClient {
 
   private final RestTemplate restTemplate;
@@ -71,7 +73,7 @@ public class RestPpmsClient implements PpmsClient {
   }
 
   @Override
-  public LocationWrapper careSitesById(String id) {
+  public ProviderServicesResponse providerServicesById(String id) {
     return handlePpmsExceptions(
         id,
         () -> {
@@ -80,14 +82,14 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<LocationWrapper> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, LocationWrapper.class);
+          ResponseEntity<ProviderServicesResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
           return entity.getBody();
         });
   }
 
   @Override
-  public LocationWrapper careSitesByName(String name) {
+  public ProviderServicesResponse providerServicesByName(String name) {
     return handlePpmsExceptions(
         name,
         () -> {
@@ -97,14 +99,15 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<LocationWrapper> entity = null;
+          ResponseEntity<ProviderServicesResponse> entity = null;
           try {
             entity =
-                restTemplate.exchange(url, HttpMethod.GET, requestEntity, LocationWrapper.class);
+                restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
+              return entity.getBody();
           } catch (Exception e) {
-            System.out.println("PPMS failed to return data for " + name);
+            log.error("PPMS failed to return data for " + name);
+              return ProviderServicesResponse.builder().build();
           }
-          return entity == null ? LocationWrapper.builder().build() : entity.getBody();
         });
   }
 

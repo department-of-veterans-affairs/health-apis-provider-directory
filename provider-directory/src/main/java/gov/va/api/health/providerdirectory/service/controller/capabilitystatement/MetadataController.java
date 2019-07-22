@@ -202,9 +202,9 @@ class MetadataController {
     NAME("name", SearchParamType.string),
     GIVEN("given", SearchParamType.string),
     FAMILY("family", SearchParamType.string),
-    CITY("city", SearchParamType.string),
-    STATE("state", SearchParamType.string),
-    ZIP("zip", SearchParamType.string),
+    CITY("address-city", SearchParamType.string),
+    STATE("address-state", SearchParamType.string),
+    ZIP("address-postalcode", SearchParamType.string),
     ADDRESS("address", SearchParamType.string);
 
     private final String param;

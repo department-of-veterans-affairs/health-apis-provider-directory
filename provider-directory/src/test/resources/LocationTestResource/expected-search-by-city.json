@@ -1,23 +1,23 @@
 {
     "resourceType" : "Bundle",
     "type" : "searchset",
-    "total" : 116,
+    "total" : 3,
     "link" : [
         {
             "relation" : "first",
-            "url" : "//Location?city=Sharon&page=1&_count=2"
+            "url" : "//Location?address-city=Sharon&page=1&_count=2"
         },
         {
             "relation" : "self",
-            "url" : "//Location?city=Sharon&page=1&_count=2"
+            "url" : "//Location?address-city=Sharon&page=1&_count=2"
         },
         {
             "relation" : "next",
-            "url" : "//Location?city=Sharon&page=2&_count=2"
+            "url" : "//Location?address-city=Sharon&page=2&_count=2"
         },
         {
             "relation" : "last",
-            "url" : "//Location?city=Sharon&page=58&_count=2"
+            "url" : "//Location?address-city=Sharon&page=2&_count=2"
         }
     ],
     "entry" : [

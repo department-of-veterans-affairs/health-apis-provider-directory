@@ -3,7 +3,7 @@ package gov.va.api.health.providerdirectory.service.controller.location;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.convert;
 
-import gov.va.api.health.providerdirectory.service.LocationWrapper;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
 import gov.va.api.health.stu3.api.datatypes.ContactPoint;
 import gov.va.api.health.stu3.api.resources.Location;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LocationTransformer implements LocationController.Transformer {
 
-  LocationAddress address(LocationWrapper.Value value) {
+  LocationAddress address(ProviderServicesResponse.Value value) {
     return convert(
         value,
         ppms ->
@@ -29,7 +29,7 @@ public class LocationTransformer implements LocationController.Transformer {
                 .build());
   }
 
-  List<LocationAddress> addresses(LocationWrapper.Value value) {
+  List<LocationAddress> addresses(ProviderServicesResponse.Value value) {
     if (value.careSiteAddressCity() == null) {
       return null;
     }
@@ -39,12 +39,12 @@ public class LocationTransformer implements LocationController.Transformer {
   }
 
   @Override
-  public Location apply(LocationWrapper ppmsData) {
+  public Location apply(ProviderServicesResponse ppmsData) {
     return location(ppmsData);
   }
 
-  private Location location(LocationWrapper ppmsData) {
-    LocationWrapper.Value providerServices = ppmsData.value().get(0);
+  private Location location(ProviderServicesResponse ppmsData) {
+    ProviderServicesResponse.Value providerServices = ppmsData.value().get(0);
     return Location.builder()
         .resourceType("Location")
         .name(providerServices.careSiteName())
@@ -61,7 +61,7 @@ public class LocationTransformer implements LocationController.Transformer {
         .build();
   }
 
-  List<ContactPoint> telecoms(LocationWrapper.Value source) {
+  List<ContactPoint> telecoms(ProviderServicesResponse.Value source) {
     if (source == null || allBlank(source.careSitePhoneNumber())) {
       return null;
     }

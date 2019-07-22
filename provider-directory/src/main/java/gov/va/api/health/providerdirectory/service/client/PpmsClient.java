@@ -1,7 +1,7 @@
 package gov.va.api.health.providerdirectory.service.client;
 
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
-import gov.va.api.health.providerdirectory.service.LocationWrapper;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContacts;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
@@ -15,9 +15,9 @@ public interface PpmsClient {
 
   CareSitesResponse careSitesByCity(String city);
 
-  LocationWrapper careSitesById(String id);
+  ProviderServicesResponse providerServicesById(String id);
 
-  LocationWrapper careSitesByName(String name);
+  ProviderServicesResponse providerServicesByName(String name);
 
   CareSitesResponse careSitesByState(String state);
 
