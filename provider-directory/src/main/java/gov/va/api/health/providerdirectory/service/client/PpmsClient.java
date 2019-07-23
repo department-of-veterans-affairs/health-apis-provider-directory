@@ -18,30 +18,30 @@ public interface PpmsClient {
   ProviderResponse providersForName(String id);
 
   /** A request was malformed, such as missing required search parameters. */
-  class BadRequest extends PpmsException {
-    public BadRequest(String id) {
-      super(id);
+  public static final class BadRequest extends PpmsException {
+    public BadRequest(String message, Throwable cause) {
+      super(message + ", " + cause.getMessage(), cause);
     }
   }
 
   /** The resource requested was not found. */
-  class NotFound extends PpmsException {
-    public NotFound(String id) {
-      super(id);
+  public static final class NotFound extends PpmsException {
+    public NotFound(String message, Throwable cause) {
+      super(message + ", " + cause.getMessage(), cause);
     }
   }
 
   /** The generic exception for working. */
-  class PpmsException extends RuntimeException {
-    PpmsException(String id) {
-      super(id);
+  public static class PpmsException extends RuntimeException {
+    PpmsException(String message, Throwable cause) {
+      super(message + ", " + cause.getMessage(), cause);
     }
   }
 
   /** An unspecified error occurred while performing a search. */
-  class SearchFailed extends PpmsException {
-    public SearchFailed(String id) {
-      super(id);
+  public static final class SearchFailed extends PpmsException {
+    public SearchFailed(String message, Throwable cause) {
+      super(message + ", " + cause.getMessage(), cause);
     }
   }
 }

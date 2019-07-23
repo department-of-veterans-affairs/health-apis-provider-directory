@@ -37,11 +37,13 @@ public class RestPpmsClient implements PpmsClient {
     try {
       return callable.call();
     } catch (HttpClientErrorException.NotFound e) {
-      throw new NotFound(message);
+      throw new NotFound(message, e);
     } catch (HttpClientErrorException.BadRequest e) {
-      throw new BadRequest(message);
+      throw new BadRequest(message, e);
     } catch (HttpStatusCodeException e) {
-      throw new SearchFailed(message);
+      throw new SearchFailed(message, e);
+    } catch (Exception e) {
+      throw new PpmsException(message, e);
     }
   }
 
@@ -54,7 +56,7 @@ public class RestPpmsClient implements PpmsClient {
   @Override
   public ProviderContactsResponse providerContactsForId(String id) {
     return handlePpmsExceptions(
-        id,
+        "providerId: " + id,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderContacts")
@@ -71,7 +73,7 @@ public class RestPpmsClient implements PpmsClient {
   @Override
   public ProviderSpecialtiesResponse providerSpecialtySearch(String id) {
     return handlePpmsExceptions(
-        id,
+        "providerId: " + id,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(
@@ -89,7 +91,7 @@ public class RestPpmsClient implements PpmsClient {
   @Override
   public ProviderResponse providersForId(String id) {
     return handlePpmsExceptions(
-        id,
+        "providerId: " + id,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")")
@@ -105,7 +107,7 @@ public class RestPpmsClient implements PpmsClient {
   @Override
   public ProviderResponse providersForName(String name) {
     return handlePpmsExceptions(
-        name,
+        "provider name: " + name,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(baseUrl + "GetProviderByName?name=" + name)
