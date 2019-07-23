@@ -33,13 +33,61 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByCity() {
-    CareSitesResponse careSites =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream("/LocationTestResource/mock-care-sites-response.json"),
-                CareSitesResponse.class);
-    when(ppmsClient.careSitesByCity("Sharon")).thenReturn(careSites);
+    when(ppmsClient.careSitesByCity("Sharon"))
+        .thenReturn(
+            CareSitesResponse.builder()
+                .value(
+                    asList(
+                        CareSitesResponse.Value.builder()
+                            .name("Beacon Orthopaedics & Sports Medicine Ltd")
+                            .id("203fa25f-1e06-4811-94cb-0462c480b538")
+                            .careSiteType("Facility")
+                            .vaCareSite(false)
+                            .centerOfExcellence("Unknown")
+                            .isHandicapAccessible(false)
+                            .isExternal(true)
+                            .street("500 E Business Way")
+                            .city("Sharonville")
+                            .state("OH")
+                            .zipCode("45241")
+                            .latitude(39.285282)
+                            .longitude(-84.365756)
+                            .geocoded(true)
+                            .build(),
+                        CareSitesResponse.Value.builder()
+                            .name("Sharon Hospital Medical Practice")
+                            .id("71a07d59-1304-4e6b-bfd3-00002299138e")
+                            .careSiteType("Facility")
+                            .vaCareSite(false)
+                            .centerOfExcellence("Unknown")
+                            .isHandicapAccessible(false)
+                            .isExternal(true)
+                            .street("50 Hospital Hill Rd")
+                            .city("Sharon")
+                            .state("CT")
+                            .zipCode("06069")
+                            .latitude(41.88094667)
+                            .longitude(-73.48159833)
+                            .geocoded(true)
+                            .build(),
+                        CareSitesResponse.Value.builder()
+                            .name("WALLACE COUNTY FAMILY PRACTICE CLINIC")
+                            .id("5e6029bb-acc2-413c-b500-0577f223afbc")
+                            .careSiteType("Facility")
+                            .vaCareSite(false)
+                            .centerOfExcellence("Unknown")
+                            .isHandicapAccessible(false)
+                            .isExternal(true)
+                            .street("504 E 6th")
+                            .city("Sharon Springs")
+                            .state("KS")
+                            .zipCode("67758")
+                            .latitude(38.900732)
+                            .longitude(-101.746397)
+                            .geocoded(true)
+                            .build()))
+                .build());
+
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(
             ProviderServicesResponse.builder()
@@ -195,13 +243,61 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByState() {
-    CareSitesResponse careSites =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream("/LocationTestResource/mock-care-sites-response.json"),
-                CareSitesResponse.class);
-    when(ppmsClient.careSitesByState("Fl")).thenReturn(careSites);
+    when(ppmsClient.careSitesByState("Fl"))
+        .thenReturn(
+            CareSitesResponse.builder()
+                .value(
+                    asList(
+                        CareSitesResponse.Value.builder()
+                            .name("Beacon Orthopaedics & Sports Medicine Ltd")
+                            .id("203fa25f-1e06-4811-94cb-0462c480b538")
+                            .careSiteType("Facility")
+                            .vaCareSite(false)
+                            .centerOfExcellence("Unknown")
+                            .isHandicapAccessible(false)
+                            .isExternal(true)
+                            .street("500 E Business Way")
+                            .city("Sharonville")
+                            .state("OH")
+                            .zipCode("45241")
+                            .latitude(39.285282)
+                            .longitude(-84.365756)
+                            .geocoded(true)
+                            .build(),
+                        CareSitesResponse.Value.builder()
+                            .name("Sharon Hospital Medical Practice")
+                            .id("71a07d59-1304-4e6b-bfd3-00002299138e")
+                            .careSiteType("Facility")
+                            .vaCareSite(false)
+                            .centerOfExcellence("Unknown")
+                            .isHandicapAccessible(false)
+                            .isExternal(true)
+                            .street("50 Hospital Hill Rd")
+                            .city("Sharon")
+                            .state("CT")
+                            .zipCode("06069")
+                            .latitude(41.88094667)
+                            .longitude(-73.48159833)
+                            .geocoded(true)
+                            .build(),
+                        CareSitesResponse.Value.builder()
+                            .name("WALLACE COUNTY FAMILY PRACTICE CLINIC")
+                            .id("5e6029bb-acc2-413c-b500-0577f223afbc")
+                            .careSiteType("Facility")
+                            .vaCareSite(false)
+                            .centerOfExcellence("Unknown")
+                            .isHandicapAccessible(false)
+                            .isExternal(true)
+                            .street("504 E 6th")
+                            .city("Sharon Springs")
+                            .state("KS")
+                            .zipCode("67758")
+                            .latitude(38.900732)
+                            .longitude(-101.746397)
+                            .geocoded(true)
+                            .build()))
+                .build());
+
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(
             ProviderServicesResponse.builder()
@@ -264,13 +360,61 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByZip() {
-    CareSitesResponse careSites =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream("/LocationTestResource/mock-care-sites-response.json"),
-                CareSitesResponse.class);
-    when(ppmsClient.careSitesByZip("45341")).thenReturn(careSites);
+    when(ppmsClient.careSitesByZip("45341"))
+        .thenReturn(
+            CareSitesResponse.builder()
+                .value(
+                    asList(
+                        CareSitesResponse.Value.builder()
+                            .name("Beacon Orthopaedics & Sports Medicine Ltd")
+                            .id("203fa25f-1e06-4811-94cb-0462c480b538")
+                            .careSiteType("Facility")
+                            .vaCareSite(false)
+                            .centerOfExcellence("Unknown")
+                            .isHandicapAccessible(false)
+                            .isExternal(true)
+                            .street("500 E Business Way")
+                            .city("Sharonville")
+                            .state("OH")
+                            .zipCode("45241")
+                            .latitude(39.285282)
+                            .longitude(-84.365756)
+                            .geocoded(true)
+                            .build(),
+                        CareSitesResponse.Value.builder()
+                            .name("Sharon Hospital Medical Practice")
+                            .id("71a07d59-1304-4e6b-bfd3-00002299138e")
+                            .careSiteType("Facility")
+                            .vaCareSite(false)
+                            .centerOfExcellence("Unknown")
+                            .isHandicapAccessible(false)
+                            .isExternal(true)
+                            .street("50 Hospital Hill Rd")
+                            .city("Sharon")
+                            .state("CT")
+                            .zipCode("06069")
+                            .latitude(41.88094667)
+                            .longitude(-73.48159833)
+                            .geocoded(true)
+                            .build(),
+                        CareSitesResponse.Value.builder()
+                            .name("WALLACE COUNTY FAMILY PRACTICE CLINIC")
+                            .id("5e6029bb-acc2-413c-b500-0577f223afbc")
+                            .careSiteType("Facility")
+                            .vaCareSite(false)
+                            .centerOfExcellence("Unknown")
+                            .isHandicapAccessible(false)
+                            .isExternal(true)
+                            .street("504 E 6th")
+                            .city("Sharon Springs")
+                            .state("KS")
+                            .zipCode("67758")
+                            .latitude(38.900732)
+                            .longitude(-101.746397)
+                            .geocoded(true)
+                            .build()))
+                .build());
+
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(
             ProviderServicesResponse.builder()
