@@ -1,8 +1,8 @@
 package gov.va.api.health.providerdirectory.service.client;
 
-import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import lombok.SneakyThrows;
@@ -62,7 +62,8 @@ public class RestPpmsClient implements PpmsClient {
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
           ResponseEntity<ProviderContactsResponse> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContactsResponse.class);
+              restTemplate.exchange(
+                  url, HttpMethod.GET, requestEntity, ProviderContactsResponse.class);
           return entity.getBody();
         });
   }

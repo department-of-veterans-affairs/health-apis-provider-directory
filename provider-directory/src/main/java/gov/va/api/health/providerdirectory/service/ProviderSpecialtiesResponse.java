@@ -20,7 +20,7 @@ public final class ProviderSpecialtiesResponse {
 
   private List<Value> value;
 
-  /** Lazy getter */
+  /** Lazy getter. */
   public List<Value> getValue() {
     return value;
   }
@@ -38,7 +38,7 @@ public final class ProviderSpecialtiesResponse {
     private String name;
 
     @JsonProperty("Grouping")
-    private String gouping;
+    private String grouping;
 
     @JsonProperty("Classification")
     private String classification;

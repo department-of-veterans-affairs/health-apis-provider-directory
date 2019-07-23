@@ -1,8 +1,8 @@
 package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
+import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
-import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
@@ -17,9 +17,13 @@ import javax.validation.constraints.Min;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
-
-import static gov.va.api.health.providerdirectory.service.controller.Transformers.firstPayloadItem;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Request Mappings for Location Resource, see
@@ -32,27 +36,26 @@ import static gov.va.api.health.providerdirectory.service.controller.Transformer
   produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
 public class PractitionerController {
+
   private Transformer transformer;
 
   private Bundler bundler;
 
-  private PpmsClient client;
+  private PpmsClient ppmsClient;
 
   /** Controller setup. */
   public PractitionerController(
       @Autowired Transformer transformer,
       @Autowired Bundler bundler,
-      @Autowired PpmsClient client) {
+      @Autowired PpmsClient ppmsClient) {
     this.transformer = transformer;
     this.bundler = bundler;
-    this.client = client;
+    this.ppmsClient = ppmsClient;
   }
 
   private Practitioner.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
-
     PractitionerWrapper root = search(parameters);
-
     LinkConfig linkConfig =
         LinkConfig.builder()
             .path("Practitioner")
@@ -70,47 +73,40 @@ public class PractitionerController {
             Practitioner.Bundle::new));
   }
 
-  /** If a user were to search by a parameter other then family or given, the call would
-   * be checked and failed earlier at the PPMS call. */
+  @SneakyThrows
+  private ProviderContactsResponse providerContact(String id) {
+    return ppmsClient.providerContactsForId(id);
+  }
+
+  /** Read by identifier. */
+  @GetMapping(value = {"/{publicId}"})
+  public Practitioner readByIdentifier(@PathVariable("publicId") String publicId) {
+    return transformer.apply(search(Parameters.forIdentity(publicId)));
+  }
+
+  /**
+   * If a user were to search by a parameter other then family or given, the call would be checked
+   * and failed earlier at the PPMS call.
+   */
   private PractitionerWrapper search(MultiValueMap<String, String> parameters) {
     ProviderResponse providerResponse;
     if (parameters.containsKey("identifier")) {
       String identifier = parameters.get("identifier").get(0);
-      providerResponse = client.providersForId(identifier);
+      providerResponse = ppmsClient.providersForId(identifier);
     } else if (parameters.containsKey("name")) {
       String name = parameters.get("name").get(0);
-      providerResponse = client.providersForName(name);
+      providerResponse = ppmsClient.providersForName(name);
     } else {
       String familyAndGiven =
-              parameters.get("family").get(0)
-                      + ", "
-                      + parameters.get("given").get(0);
-
-      providerResponse = client.providersForName(familyAndGiven);
-
+          parameters.get("family").get(0) + ", " + parameters.get("given").get(0);
+      providerResponse = ppmsClient.providersForName(familyAndGiven);
     }
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
-
     ProviderContactsResponse providerContactsResponse = providerContact(providerIdentifier);
-
-    PractitionerWrapper root =
-            PractitionerWrapper.builder()
-                    .providerContactsResponse(providerContactsResponse)
-                    .providerResponse(providerResponse)
-                    .build();
-    return root;
-  }
-
-  @SneakyThrows
-  private ProviderContactsResponse providerContact(String id) {
-    return client.providerContactsForId(id);
-  }
-
-  /** Read by identifier. **/
-  @GetMapping(value = {"/{publicId}"})
-  public Practitioner readByIdentifier(@PathVariable("publicId") String publicId) {
-    return transformer.apply(
-            firstPayloadItem(Collections.singletonList(search(Parameters.forIdentity(publicId)))));
+    return PractitionerWrapper.builder()
+        .providerContactsResponse(providerContactsResponse)
+        .providerResponse(providerResponse)
+        .build();
   }
 
   /** Search by family & given name. */

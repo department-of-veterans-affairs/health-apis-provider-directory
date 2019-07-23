@@ -9,5 +9,4 @@ public final class PractitionerWrapper {
   ProviderResponse providerResponse;
 
   ProviderContactsResponse providerContactsResponse;
-
 }

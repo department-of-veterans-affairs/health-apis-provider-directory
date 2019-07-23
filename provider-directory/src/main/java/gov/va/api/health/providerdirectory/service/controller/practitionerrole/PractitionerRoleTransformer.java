@@ -2,12 +2,10 @@ package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 
-
-
 import gov.va.api.health.providerdirectory.service.PractitionerRoleWrapper;
-import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
 import gov.va.api.health.stu3.api.datatypes.CodeableConcept;
 import gov.va.api.health.stu3.api.datatypes.Coding;
@@ -21,7 +19,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public class PractitionerRoleTransformer implements PractitionerRoleController.Transformer {
@@ -40,7 +37,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
         .active(StringUtils.equalsIgnoreCase(provider.providerStatusReason(), "active"))
         .practitioner(practitionerReference(provider))
         .code(
-                CodeableConcept.builder()
+            CodeableConcept.builder()
                 .coding(codeCodings(ppms.providerSpecialtiesResponse()))
                 .build())
         .id(provider.providerIdentifier().toString())
@@ -56,25 +53,33 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
   }
 
   private List<Coding> codeCodings(ProviderSpecialtiesResponse specialtiesResponse) {
-    if (specialtiesResponse == null) return null;
-    return specialtiesResponse.value().stream()
+    if (specialtiesResponse == null) {
+      return null;
+    }
+    return specialtiesResponse
+        .value()
+        .stream()
         .map(v -> Coding.builder().code(v.codedSpecialty()).display(v.name()).build())
         .collect(Collectors.toList());
   }
 
   private Reference practitionerReference(ProviderResponse.Value provider) {
-    if (provider == null || provider.providerIdentifier() == null) return null;
+    if (provider == null || provider.providerIdentifier() == null) {
+      return null;
+    }
     return Reference.builder()
         .reference(baseUrl + "/Practitioner/" + provider.providerIdentifier())
         .build();
   }
 
   PractitionerContactPoint telecom(String system, String value) {
-    if (value.isEmpty()) return null;
+    if (value.isEmpty()) {
+      return null;
+    }
     return PractitionerContactPoint.builder()
-            .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
-            .value(value)
-            .build();
+        .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
+        .value(value)
+        .build();
   }
 
   List<PractitionerContactPoint> telecoms(ProviderContactsResponse.Value source) {
