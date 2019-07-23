@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Iterables;
-import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
@@ -14,10 +13,9 @@ import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
 import gov.va.api.health.stu3.api.datatypes.ContactPoint;
 import gov.va.api.health.stu3.api.resources.Location;
-import lombok.SneakyThrows;
+import java.util.stream.Collectors;
 import org.junit.Test;
 
-@SuppressWarnings("WeakerAccess")
 public final class LocationControllerTest {
   LocationController.Transformer tx = new LocationTransformer();
 
@@ -31,7 +29,6 @@ public final class LocationControllerTest {
   LocationController controller = new LocationController(tx, bundler, ppmsClient);
 
   @Test
-  @SneakyThrows
   public void searchByCity() {
     when(ppmsClient.careSitesByCity("Sharon"))
         .thenReturn(
@@ -137,18 +134,52 @@ public final class LocationControllerTest {
                             .build()))
                 .build());
 
-    Location.Bundle expected = controller.searchByCity("Sharon", 1, 2);
-    Location.Bundle actual =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream("/LocationTestResource/expected-search-by-city.json"),
-                Location.Bundle.class);
-    assertThat(actual).isEqualTo(expected);
+    Location.Bundle actual = controller.searchByCity("Sharon", 1, 2);
+
+    assertThat(actual.entry().stream().map(e -> e.resource()).collect(Collectors.toList()))
+        .isEqualTo(
+            asList(
+                Location.builder()
+                    .resourceType("Location")
+                    .status(Location.Status.active)
+                    .name("Beacon Orthopaedics & Sports Medicine Ltd")
+                    .telecom(
+                        asList(
+                            ContactPoint.builder()
+                                .system(ContactPoint.ContactPointSystem.phone)
+                                .value("5133543700")
+                                .build()))
+                    .address(
+                        Location.LocationAddress.builder()
+                            .text("500 E Business Way, Sharonville, OH, 45241")
+                            .line(asList("500 E Business Way"))
+                            .city("Sharonville")
+                            .state("OH")
+                            .postalCode("45241")
+                            .build())
+                    .build(),
+                Location.builder()
+                    .resourceType("Location")
+                    .status(Location.Status.active)
+                    .name("Sharon Hospital Medical Practice")
+                    .telecom(
+                        asList(
+                            ContactPoint.builder()
+                                .system(ContactPoint.ContactPointSystem.phone)
+                                .value("8603644511")
+                                .build()))
+                    .address(
+                        Location.LocationAddress.builder()
+                            .text("50 Hospital Hill Rd, Sharon, CT, 06069")
+                            .line(asList("50 Hospital Hill Rd"))
+                            .city("Sharon")
+                            .state("CT")
+                            .postalCode("06069")
+                            .build())
+                    .build()));
   }
 
   @Test
-  @SneakyThrows
   public void searchByIdentifier() {
     when(ppmsClient.providerServicesById("123"))
         .thenReturn(
@@ -175,19 +206,32 @@ public final class LocationControllerTest {
                             .organiztionGroupName("A I Advance Imaging of Tulsa LLC")
                             .build()))
                 .build());
-    Location.Bundle expected = controller.searchByIdentifier("123", 1, 15);
-    Location.Bundle actual =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/LocationTestResource/expected-search-location-by-id.json"),
-                Location.Bundle.class);
-    assertThat(actual).isEqualTo(expected);
+    Location.Bundle actual = controller.searchByIdentifier("123", 1, 15);
+
+    assertThat(Iterables.getOnlyElement(actual.entry()).resource())
+        .isEqualTo(
+            Location.builder()
+                .resourceType("Location")
+                .status(Location.Status.active)
+                .name("A I Advance Imaging of Tulsa LLC")
+                .telecom(
+                    asList(
+                        ContactPoint.builder()
+                            .system(ContactPoint.ContactPointSystem.phone)
+                            .value("9185230002")
+                            .build()))
+                .address(
+                    Location.LocationAddress.builder()
+                        .text("6711 S Yale Ave Ste 212, Tulsa, OK, 74136")
+                        .line(asList("6711 S Yale Ave Ste 212"))
+                        .city("Tulsa")
+                        .state("OK")
+                        .postalCode("74136")
+                        .build())
+                .build());
   }
 
   @Test
-  @SneakyThrows
   public void searchByName() {
     when(ppmsClient.providerServicesByName("A I Advance Imaging of Tulsa LLC"))
         .thenReturn(
@@ -241,7 +285,6 @@ public final class LocationControllerTest {
   }
 
   @Test
-  @SneakyThrows
   public void searchByState() {
     when(ppmsClient.careSitesByState("Fl"))
         .thenReturn(
@@ -348,17 +391,51 @@ public final class LocationControllerTest {
                 .build());
 
     Location.Bundle expected = controller.searchByState("Fl", 1, 2);
-    Location.Bundle actual =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream("/LocationTestResource/expected-search-by-state.json"),
-                Location.Bundle.class);
-    assertThat(actual).isEqualTo(expected);
+
+    assertThat(expected.entry().stream().map(e -> e.resource()).collect(Collectors.toList()))
+        .isEqualTo(
+            asList(
+                Location.builder()
+                    .resourceType("Location")
+                    .status(Location.Status.active)
+                    .name("Beacon Orthopaedics & Sports Medicine Ltd")
+                    .telecom(
+                        asList(
+                            ContactPoint.builder()
+                                .system(ContactPoint.ContactPointSystem.phone)
+                                .value("5133543700")
+                                .build()))
+                    .address(
+                        Location.LocationAddress.builder()
+                            .text("500 E Business Way, Sharonville, OH, 45241")
+                            .line(asList("500 E Business Way"))
+                            .city("Sharonville")
+                            .state("OH")
+                            .postalCode("45241")
+                            .build())
+                    .build(),
+                Location.builder()
+                    .resourceType("Location")
+                    .status(Location.Status.active)
+                    .name("Sharon Hospital Medical Practice")
+                    .telecom(
+                        asList(
+                            ContactPoint.builder()
+                                .system(ContactPoint.ContactPointSystem.phone)
+                                .value("8603644511")
+                                .build()))
+                    .address(
+                        Location.LocationAddress.builder()
+                            .text("50 Hospital Hill Rd, Sharon, CT, 06069")
+                            .line(asList("50 Hospital Hill Rd"))
+                            .city("Sharon")
+                            .state("CT")
+                            .postalCode("06069")
+                            .build())
+                    .build()));
   }
 
   @Test
-  @SneakyThrows
   public void searchByZip() {
     when(ppmsClient.careSitesByZip("45341"))
         .thenReturn(
@@ -464,12 +541,48 @@ public final class LocationControllerTest {
                             .build()))
                 .build());
 
-    Location.Bundle expected = controller.searchByZip("45341", 1, 2);
-    Location.Bundle actual =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass().getResourceAsStream("/LocationTestResource/expected-search-by-zip.json"),
-                Location.Bundle.class);
-    assertThat(actual).isEqualTo(expected);
+    Location.Bundle actual = controller.searchByZip("45341", 1, 2);
+
+    assertThat(actual.entry().stream().map(e -> e.resource()).collect(Collectors.toList()))
+        .isEqualTo(
+            asList(
+                Location.builder()
+                    .resourceType("Location")
+                    .status(Location.Status.active)
+                    .name("Beacon Orthopaedics & Sports Medicine Ltd")
+                    .telecom(
+                        asList(
+                            ContactPoint.builder()
+                                .system(ContactPoint.ContactPointSystem.phone)
+                                .value("5133543700")
+                                .build()))
+                    .address(
+                        Location.LocationAddress.builder()
+                            .text("500 E Business Way, Sharonville, OH, 45241")
+                            .line(asList("500 E Business Way"))
+                            .city("Sharonville")
+                            .state("OH")
+                            .postalCode("45241")
+                            .build())
+                    .build(),
+                Location.builder()
+                    .resourceType("Location")
+                    .status(Location.Status.active)
+                    .name("Sharon Hospital Medical Practice")
+                    .telecom(
+                        asList(
+                            ContactPoint.builder()
+                                .system(ContactPoint.ContactPointSystem.phone)
+                                .value("8603644511")
+                                .build()))
+                    .address(
+                        Location.LocationAddress.builder()
+                            .text("50 Hospital Hill Rd, Sharon, CT, 06069")
+                            .line(asList("50 Hospital Hill Rd"))
+                            .city("Sharon")
+                            .state("CT")
+                            .postalCode("06069")
+                            .build())
+                    .build()));
   }
 }
