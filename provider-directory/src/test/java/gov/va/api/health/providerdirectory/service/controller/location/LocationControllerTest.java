@@ -40,13 +40,7 @@ public final class LocationControllerTest {
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-response-address-1.json"),
                 ProviderServicesResponse.class);
-    ProviderServicesResponse locationTwo =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/LocationTestResource/mock-provider-response-address-2.json"),
-                ProviderServicesResponse.class);
+
     CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
@@ -57,7 +51,30 @@ public final class LocationControllerTest {
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(locationOne);
     when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
-        .thenReturn(locationTwo);
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .name("Clark, Alexander  - Orthopaedic Surgery - Sports Medicine ")
+                            .affiliationName("TriWest - Choice")
+                            .relationshipName("Choice")
+                            .providerName("Clark, Alexander")
+                            .specialtyName("Orthopaedic Surgery - Sports Medicine")
+                            .hpp("Unknown")
+                            .highPerformingProvider("TriWest - Choice(U)")
+                            .careSiteName("Sharon Hospital Medical Practice")
+                            .careSiteLocationAddress("50 Hospital Hill Rd, Sharon, CT, 06069")
+                            .careSiteAddressStreet("50 Hospital Hill Rd")
+                            .careSiteAddressCity("Sharon")
+                            .careSiteAddressState("CT")
+                            .careSiteAddressZipCode("06069")
+                            .latitude("41.88094667")
+                            .longitude("-73.48159833")
+                            .careSitePhoneNumber("8603644511")
+                            .build()))
+                .build());
+
     Location.Bundle expected = controller.searchByCity("Sharon", 1, 2);
     Location.Bundle actual =
         JacksonConfig.createMapper()
@@ -171,13 +188,6 @@ public final class LocationControllerTest {
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-response-address-1.json"),
                 ProviderServicesResponse.class);
-    ProviderServicesResponse locationTwo =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/LocationTestResource/mock-provider-response-address-2.json"),
-                ProviderServicesResponse.class);
     CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
@@ -188,7 +198,30 @@ public final class LocationControllerTest {
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(locationOne);
     when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
-        .thenReturn(locationTwo);
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .name("Clark, Alexander  - Orthopaedic Surgery - Sports Medicine ")
+                            .affiliationName("TriWest - Choice")
+                            .relationshipName("Choice")
+                            .providerName("Clark, Alexander")
+                            .specialtyName("Orthopaedic Surgery - Sports Medicine")
+                            .hpp("Unknown")
+                            .highPerformingProvider("TriWest - Choice(U)")
+                            .careSiteName("Sharon Hospital Medical Practice")
+                            .careSiteLocationAddress("50 Hospital Hill Rd, Sharon, CT, 06069")
+                            .careSiteAddressStreet("50 Hospital Hill Rd")
+                            .careSiteAddressCity("Sharon")
+                            .careSiteAddressState("CT")
+                            .careSiteAddressZipCode("06069")
+                            .latitude("41.88094667")
+                            .longitude("-73.48159833")
+                            .careSitePhoneNumber("8603644511")
+                            .build()))
+                .build());
+
     Location.Bundle expected = controller.searchByState("Fl", 1, 2);
     Location.Bundle actual =
         JacksonConfig.createMapper()
@@ -209,13 +242,6 @@ public final class LocationControllerTest {
                     .getResourceAsStream(
                         "/LocationTestResource/mock-provider-response-address-1.json"),
                 ProviderServicesResponse.class);
-    ProviderServicesResponse locationTwo =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/LocationTestResource/mock-provider-response-address-2.json"),
-                ProviderServicesResponse.class);
     CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
@@ -226,7 +252,30 @@ public final class LocationControllerTest {
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(locationOne);
     when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
-        .thenReturn(locationTwo);
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .name("Clark, Alexander  - Orthopaedic Surgery - Sports Medicine ")
+                            .affiliationName("TriWest - Choice")
+                            .relationshipName("Choice")
+                            .providerName("Clark, Alexander")
+                            .specialtyName("Orthopaedic Surgery - Sports Medicine")
+                            .hpp("Unknown")
+                            .highPerformingProvider("TriWest - Choice(U)")
+                            .careSiteName("Sharon Hospital Medical Practice")
+                            .careSiteLocationAddress("50 Hospital Hill Rd, Sharon, CT, 06069")
+                            .careSiteAddressStreet("50 Hospital Hill Rd")
+                            .careSiteAddressCity("Sharon")
+                            .careSiteAddressState("CT")
+                            .careSiteAddressZipCode("06069")
+                            .latitude("41.88094667")
+                            .longitude("-73.48159833")
+                            .careSitePhoneNumber("8603644511")
+                            .build()))
+                .build());
+
     Location.Bundle expected = controller.searchByZip("45341", 1, 2);
     Location.Bundle actual =
         JacksonConfig.createMapper()
