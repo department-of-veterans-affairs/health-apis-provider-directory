@@ -33,14 +33,6 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByCity() {
-    ProviderServicesResponse locationOne =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/LocationTestResource/mock-provider-response-address-1.json"),
-                ProviderServicesResponse.class);
-
     CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
@@ -49,7 +41,29 @@ public final class LocationControllerTest {
                 CareSitesResponse.class);
     when(ppmsClient.careSitesByCity("Sharon")).thenReturn(careSites);
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
-        .thenReturn(locationOne);
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .name("Razzano Jr, Andrew  - Orthopaedic Surgery - Sports Medicine ")
+                            .affiliationName("TriWest - Choice")
+                            .relationshipName("Choice")
+                            .providerName("Razzano Jr, Andrew")
+                            .specialtyName("Orthopaedic Surgery - Sports Medicine")
+                            .hpp("Unknown")
+                            .highPerformingProvider("TriWest - Choice(U)")
+                            .careSiteName("Beacon Orthopaedics & Sports Medicine Ltd")
+                            .careSiteLocationAddress("500 E Business Way, Sharonville, OH, 45241")
+                            .careSiteAddressStreet("500 E Business Way")
+                            .careSiteAddressCity("Sharonville")
+                            .careSiteAddressState("OH")
+                            .careSiteAddressZipCode("45241")
+                            .latitude("39.285282")
+                            .longitude("-84.365756")
+                            .careSitePhoneNumber("5133543700")
+                            .build()))
+                .build());
     when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
         .thenReturn(
             ProviderServicesResponse.builder()
@@ -181,13 +195,6 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByState() {
-    ProviderServicesResponse locationOne =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/LocationTestResource/mock-provider-response-address-1.json"),
-                ProviderServicesResponse.class);
     CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
@@ -196,7 +203,29 @@ public final class LocationControllerTest {
                 CareSitesResponse.class);
     when(ppmsClient.careSitesByState("Fl")).thenReturn(careSites);
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
-        .thenReturn(locationOne);
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .name("Razzano Jr, Andrew  - Orthopaedic Surgery - Sports Medicine ")
+                            .affiliationName("TriWest - Choice")
+                            .relationshipName("Choice")
+                            .providerName("Razzano Jr, Andrew")
+                            .specialtyName("Orthopaedic Surgery - Sports Medicine")
+                            .hpp("Unknown")
+                            .highPerformingProvider("TriWest - Choice(U)")
+                            .careSiteName("Beacon Orthopaedics & Sports Medicine Ltd")
+                            .careSiteLocationAddress("500 E Business Way, Sharonville, OH, 45241")
+                            .careSiteAddressStreet("500 E Business Way")
+                            .careSiteAddressCity("Sharonville")
+                            .careSiteAddressState("OH")
+                            .careSiteAddressZipCode("45241")
+                            .latitude("39.285282")
+                            .longitude("-84.365756")
+                            .careSitePhoneNumber("5133543700")
+                            .build()))
+                .build());
     when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
         .thenReturn(
             ProviderServicesResponse.builder()
@@ -235,13 +264,6 @@ public final class LocationControllerTest {
   @Test
   @SneakyThrows
   public void searchByZip() {
-    ProviderServicesResponse locationOne =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/LocationTestResource/mock-provider-response-address-1.json"),
-                ProviderServicesResponse.class);
     CareSitesResponse careSites =
         JacksonConfig.createMapper()
             .readValue(
@@ -250,7 +272,29 @@ public final class LocationControllerTest {
                 CareSitesResponse.class);
     when(ppmsClient.careSitesByZip("45341")).thenReturn(careSites);
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
-        .thenReturn(locationOne);
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .name("Razzano Jr, Andrew  - Orthopaedic Surgery - Sports Medicine ")
+                            .affiliationName("TriWest - Choice")
+                            .relationshipName("Choice")
+                            .providerName("Razzano Jr, Andrew")
+                            .specialtyName("Orthopaedic Surgery - Sports Medicine")
+                            .hpp("Unknown")
+                            .highPerformingProvider("TriWest - Choice(U)")
+                            .careSiteName("Beacon Orthopaedics & Sports Medicine Ltd")
+                            .careSiteLocationAddress("500 E Business Way, Sharonville, OH, 45241")
+                            .careSiteAddressStreet("500 E Business Way")
+                            .careSiteAddressCity("Sharonville")
+                            .careSiteAddressState("OH")
+                            .careSiteAddressZipCode("45241")
+                            .latitude("39.285282")
+                            .longitude("-84.365756")
+                            .careSitePhoneNumber("5133543700")
+                            .build()))
+                .build());
     when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
         .thenReturn(
             ProviderServicesResponse.builder()
