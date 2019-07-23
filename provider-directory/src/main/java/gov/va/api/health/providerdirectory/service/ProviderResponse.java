@@ -21,12 +21,25 @@ public final class ProviderResponse {
 
   private List<Value> value;
 
+  private Error error;
+
   /** Lazy getter. */
   public List<Value> value() {
     if (value == null) {
       value = new ArrayList<>();
     }
     return value;
+  }
+
+  @Data
+  @Builder
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  @AllArgsConstructor(access = AccessLevel.PRIVATE)
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+  public static final class Error {
+    private String code;
+
+    private String message;
   }
 
   @Data
