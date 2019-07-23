@@ -3,6 +3,8 @@ package gov.va.api.health.providerdirectory.service.controller.practitioner;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.convert;
 import static java.util.Collections.singletonList;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
@@ -12,9 +14,6 @@ import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
 import gov.va.api.health.stu3.api.datatypes.Address;
 import gov.va.api.health.stu3.api.datatypes.ContactPoint;
 import gov.va.api.health.stu3.api.resources.Practitioner;
-import gov.va.api.health.stu3.api.resources.Practitioner.Gender;
-import gov.va.api.health.stu3.api.resources.Practitioner.PractitionerHumanName;
-import gov.va.api.health.stu3.api.resources.Practitioner.PractitionerIdentifier;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -22,10 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PractitionerTransformer implements PractitionerController.Transformer {
   Boolean active(String active) {
-    if (active.equalsIgnoreCase("active")) {
-      return true;
-    }
-    return false;
+    return equalsIgnoreCase(active, "active");
   }
 
   Address address(ProviderResponse.Value value) {
@@ -54,38 +50,6 @@ public class PractitionerTransformer implements PractitionerController.Transform
 
   @Override
   public Practitioner apply(PractitionerWrapper ppmsData) {
-    return practitioner(ppmsData);
-  }
-
-  Practitioner.Gender gender(String gender) {
-    return convert(gender, ppms -> EnumSearcher.of(Gender.class).find(ppms.trim().toLowerCase()));
-  }
-
-  PractitionerIdentifier identifier(ProviderResponse.Value value) {
-    return convert(
-        value,
-        ppms ->
-            PractitionerIdentifier.builder()
-                .system(ppms.providerIdentifierType())
-                .value(ppms.providerIdentifier().toString())
-                .build());
-  }
-
-  PractitionerHumanName name(String name) {
-    List<String> splitNames = new ArrayList<>();
-    for (String s : name.split(",")) {
-      splitNames.add(s.trim());
-    }
-    return convert(
-        splitNames,
-        ppms ->
-            PractitionerHumanName.builder()
-                .family(ppms.get(0))
-                .given(ppms.subList(1, ppms.size()))
-                .build());
-  }
-
-  private Practitioner practitioner(PractitionerWrapper ppmsData) {
     ProviderResponse.Value response = ppmsData.providerResponse().value().get(0);
     ProviderContactsResponse.Value contacts;
     if (ppmsData.providerContactsResponse().value().size() > 0) {
@@ -93,7 +57,7 @@ public class PractitionerTransformer implements PractitionerController.Transform
     } else {
       contacts = null;
     }
-    List<PractitionerIdentifier> identifiers = new ArrayList<>();
+    List<Practitioner.PractitionerIdentifier> identifiers = new ArrayList<>();
     identifiers.add(identifier(response));
     return Practitioner.builder()
         .resourceType("Practitioner")
@@ -106,6 +70,43 @@ public class PractitionerTransformer implements PractitionerController.Transform
         .birthDate((contacts == null) ? null : contacts.birthday())
         .telecom(telecoms(contacts))
         .build();
+  }
+
+  Practitioner.Gender gender(String gender) {
+    if (isBlank(gender)) {
+      return Practitioner.Gender.unknown;
+    }
+    if (equalsIgnoreCase(gender, "female")) {
+      return Practitioner.Gender.female;
+    }
+    if (equalsIgnoreCase(gender, "male")) {
+      return Practitioner.Gender.male;
+    }
+    return Practitioner.Gender.unknown;
+  }
+
+  Practitioner.PractitionerIdentifier identifier(ProviderResponse.Value value) {
+    return convert(
+        value,
+        ppms ->
+            Practitioner.PractitionerIdentifier.builder()
+                .system(ppms.providerIdentifierType())
+                .value(ppms.providerIdentifier().toString())
+                .build());
+  }
+
+  Practitioner.PractitionerHumanName name(String name) {
+    List<String> splitNames = new ArrayList<>();
+    for (String s : name.split(",")) {
+      splitNames.add(s.trim());
+    }
+    return convert(
+        splitNames,
+        ppms ->
+            Practitioner.PractitionerHumanName.builder()
+                .family(ppms.get(0))
+                .given(ppms.subList(1, ppms.size()))
+                .build());
   }
 
   ContactPoint telecom(String system, String value) {
@@ -136,6 +137,6 @@ public class PractitionerTransformer implements PractitionerController.Transform
     if (source.businessPhone() != null) {
       telecoms.add(telecom("phone", source.businessPhone()));
     }
-      return telecoms;
+    return telecoms;
   }
 }
