@@ -100,7 +100,7 @@ public class PractitionerRoleControllerTest {
                         "/PractitionerRoleTestResources/mock-provider-specialties-response.json"),
                 ProviderSpecialtiesResponse.class);
 
-    when(ppmsClient.providersForName("Klingerman, Michael")).thenReturn(response);
+    when(ppmsClient.providersForName("Klingerman")).thenReturn(response);
     when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     when(ppmsClient.providerSpecialtySearch("1285621557")).thenReturn(specialties);
     Bundle expected = controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);

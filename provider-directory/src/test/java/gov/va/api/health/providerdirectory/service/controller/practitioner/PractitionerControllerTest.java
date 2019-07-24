@@ -77,7 +77,7 @@ public final class PractitionerControllerTest {
                     .getResourceAsStream(
                         "/PractitionerTestResources/mock-provider-contact-response.json"),
                 ProviderContactsResponse.class);
-    when(ppmsClient.providersForName("Klingerman, Michael")).thenReturn(response);
+    when(ppmsClient.providersForName("Klingerman")).thenReturn(response);
     when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
     Bundle expected = controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
     Bundle actual =
