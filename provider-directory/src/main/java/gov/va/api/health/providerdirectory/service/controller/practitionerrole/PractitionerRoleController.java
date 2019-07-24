@@ -9,7 +9,9 @@ import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleCont
 import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
 import gov.va.api.health.providerdirectory.service.controller.Parameters;
 import gov.va.api.health.stu3.api.resources.PractitionerRole;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -78,14 +80,19 @@ public class PractitionerRoleController {
     } else if (parameters.containsKey("name")) {
       String name = parameters.getFirst("name");
       providerResponse = ppmsClient.providersForName(name);
+    } else if (parameters.containsKey("family") && parameters.containsKey("given")) {
+      String familyName = parameters.getFirst("family");
+      String givenName = parameters.get("given").get(0).toLowerCase();
+      providerResponse = ppmsClient.providersForName(familyName);
+      List<ProviderResponse.Value> providerResponseFiltered = new ArrayList<>();
+      for (int i = 0; i < providerResponse.value().size(); i++) {
+        if (providerResponse.value().get(i).name().toLowerCase().contains(givenName)) {
+          providerResponseFiltered.add(providerResponse.value().get(i));
+        }
+      }
+      providerResponse.value(providerResponseFiltered);
     } else {
-      /**
-       * If a user were to search by a parameter other then identifier, name, or family and given,
-       * the call would be checked and failed earlier at the PPMS call.
-       */
-      String familyAndGiven =
-          parameters.get("family").get(0) + ", " + parameters.getFirst("given");
-      providerResponse = ppmsClient.providersForName(familyAndGiven);
+      return null;
     }
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
     ProviderContactsResponse providerContactsResponse =
@@ -135,7 +142,7 @@ public class PractitionerRoleController {
         count);
   }
 
-  /** Placeholder for specialty search */
+  /** Placeholder for specialty search. */
   @GetMapping(params = {"specialty"})
   public PractitionerRole.Bundle searchBySpecialty(
       @RequestParam("specialty") String specialty,
