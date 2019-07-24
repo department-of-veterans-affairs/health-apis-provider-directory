@@ -95,6 +95,9 @@ public class PractitionerTransformer implements PractitionerController.Transform
   }
 
   Practitioner.PractitionerHumanName name(String name) {
+    if (name == null) {
+      return null;
+    }
     List<String> splitNames = new ArrayList<>();
     for (String s : name.split(",")) {
       splitNames.add(s.trim());

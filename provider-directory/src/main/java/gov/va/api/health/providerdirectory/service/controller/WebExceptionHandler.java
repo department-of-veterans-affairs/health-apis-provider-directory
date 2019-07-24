@@ -32,6 +32,7 @@ import org.springframework.web.client.HttpClientErrorException;
 public class WebExceptionHandler {
   @ExceptionHandler({
     BindException.class,
+    HttpClientErrorException.BadRequest.class,
     PpmsClient.BadRequest.class,
     UnsatisfiedServletRequestParameterException.class
   })
