@@ -36,6 +36,10 @@ public interface PpmsClient {
     PpmsException(String message, Throwable cause) {
       super(message + ", " + cause.getMessage(), cause);
     }
+
+    public PpmsException(String message) {
+      super(message);
+    }
   }
 
   /** An unspecified error occurred while performing a search. */

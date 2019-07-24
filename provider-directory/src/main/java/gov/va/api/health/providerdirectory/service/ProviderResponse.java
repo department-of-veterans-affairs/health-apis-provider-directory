@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public final class ProviderResponse {
+public final class ProviderResponse implements PpmsResponse {
   @JsonProperty("@odata.context")
   private String odataContext;
 
@@ -29,17 +29,6 @@ public final class ProviderResponse {
       value = new ArrayList<>();
     }
     return value;
-  }
-
-  @Data
-  @Builder
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  @AllArgsConstructor(access = AccessLevel.PRIVATE)
-  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-  public static final class Error {
-    private String code;
-
-    private String message;
   }
 
   @Data

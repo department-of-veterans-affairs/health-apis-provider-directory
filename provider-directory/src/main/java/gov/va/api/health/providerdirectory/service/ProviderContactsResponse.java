@@ -15,11 +15,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public final class ProviderContactsResponse {
+public final class ProviderContactsResponse implements PpmsResponse {
   @JsonProperty("@odata.context")
   private String odataContext;
 
   private List<Value> value;
+
+  private Error error;
 
   /** Lazy getter. */
   public List<Value> value() {
