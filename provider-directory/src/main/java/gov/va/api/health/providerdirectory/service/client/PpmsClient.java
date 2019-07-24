@@ -33,7 +33,7 @@ public interface PpmsClient {
 
   /** The generic exception for working. */
   public static class PpmsException extends RuntimeException {
-    PpmsException(String message, Throwable cause) {
+    public PpmsException(String message, Throwable cause) {
       super(message + ", " + cause.getMessage(), cause);
     }
 
