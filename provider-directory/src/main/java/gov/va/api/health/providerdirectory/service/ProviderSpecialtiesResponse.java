@@ -19,9 +19,9 @@ public final class ProviderSpecialtiesResponse implements PpmsResponse {
   @JsonProperty("@odata.context")
   private String odataContext;
 
-  private List<Value> value;
-
   private Error error;
+
+  private List<Value> value;
 
   /** Lazy getter. */
   public List<Value> value() {
