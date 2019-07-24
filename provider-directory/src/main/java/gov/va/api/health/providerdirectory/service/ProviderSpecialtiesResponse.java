@@ -2,6 +2,8 @@ package gov.va.api.health.providerdirectory.service;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,7 +25,10 @@ public final class ProviderSpecialtiesResponse implements PpmsResponse {
   private Error error;
 
   /** Lazy getter. */
-  public List<Value> getValue() {
+  public List<Value> value() {
+    if (value == null) {
+      value = new ArrayList<>();
+    }
     return value;
   }
 

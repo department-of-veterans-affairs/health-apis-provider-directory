@@ -36,25 +36,6 @@ public final class RestPpmsClientTest {
 
   @Test
   @SuppressWarnings("unchecked")
-  public void providerContactsForId() {
-    ResponseEntity<ProviderContactsResponse> response = mock(ResponseEntity.class);
-    when(response.getBody()).thenReturn(ProviderContactsResponse.builder().build());
-
-    RestTemplate restTemplate = mock(RestTemplate.class);
-    when(restTemplate.exchange(
-            eq("http://foo.bar/Providers(123)/ProviderContactsResponse"),
-            eq(HttpMethod.GET),
-            any(HttpEntity.class),
-            eq(ProviderContactsResponse.class)))
-        .thenReturn(response);
-
-    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
-    assertThat(client.providerContactsForId("123"))
-        .isEqualTo(ProviderContactsResponse.builder().build());
-  }
-
-  @Test
-  @SuppressWarnings("unchecked")
   public void providerResponseForId() {
     ResponseEntity<ProviderResponse> response = mock(ResponseEntity.class);
     when(response.getBody()).thenReturn(ProviderResponse.builder().build());

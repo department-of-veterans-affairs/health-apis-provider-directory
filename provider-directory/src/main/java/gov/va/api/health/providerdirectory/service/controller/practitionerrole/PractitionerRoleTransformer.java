@@ -2,7 +2,6 @@ package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 
-import gov.va.api.health.providerdirectory.service.PractitionerRoleWrapper;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;

@@ -1,6 +1,5 @@
 package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
-import gov.va.api.health.providerdirectory.service.PractitionerWrapper;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
@@ -91,14 +90,14 @@ public class PractitionerController {
   private PractitionerWrapper search(MultiValueMap<String, String> parameters) {
     ProviderResponse providerResponse;
     if (parameters.containsKey("identifier")) {
-      String identifier = parameters.get("identifier").get(0);
+      String identifier = parameters.getFirst("identifier");
       providerResponse = ppmsClient.providersForId(identifier);
     } else if (parameters.containsKey("name")) {
-      String name = parameters.get("name").get(0);
+      String name = parameters.getFirst("name");
       providerResponse = ppmsClient.providersForName(name);
     } else {
       String familyAndGiven =
-          parameters.get("family").get(0) + ", " + parameters.get("given").get(0);
+          parameters.getFirst("family") + ", " + parameters.getFirst("given");
       providerResponse = ppmsClient.providersForName(familyAndGiven);
     }
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();

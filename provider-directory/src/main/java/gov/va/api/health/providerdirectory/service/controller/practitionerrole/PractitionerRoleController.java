@@ -1,6 +1,5 @@
 package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
-import gov.va.api.health.providerdirectory.service.PractitionerRoleWrapper;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
@@ -74,10 +73,10 @@ public class PractitionerRoleController {
   private PractitionerRoleWrapper search(MultiValueMap<String, String> parameters) {
     ProviderResponse providerResponse;
     if (parameters.containsKey("identifier")) {
-      String identifier = parameters.get("identifier").get(0);
+      String identifier = parameters.getFirst("identifier");
       providerResponse = ppmsClient.providersForId(identifier);
     } else if (parameters.containsKey("name")) {
-      String name = parameters.get("name").get(0);
+      String name = parameters.getFirst("name");
       providerResponse = ppmsClient.providersForName(name);
     } else {
       /**
@@ -85,7 +84,7 @@ public class PractitionerRoleController {
        * the call would be checked and failed earlier at the PPMS call.
        */
       String familyAndGiven =
-          parameters.get("family").get(0) + ", " + parameters.get("given").get(0);
+          parameters.get("family").get(0) + ", " + parameters.getFirst("given");
       providerResponse = ppmsClient.providersForName(familyAndGiven);
     }
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
@@ -136,6 +135,7 @@ public class PractitionerRoleController {
         count);
   }
 
+  /** Placeholder for specialty search */
   @GetMapping(params = {"specialty"})
   public PractitionerRole.Bundle searchBySpecialty(
       @RequestParam("specialty") String specialty,
