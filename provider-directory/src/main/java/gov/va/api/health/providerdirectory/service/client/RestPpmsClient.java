@@ -104,6 +104,23 @@ public class RestPpmsClient implements PpmsClient {
         });
   }
 
+    @Override
+    public CareSitesResponse careSitesByName(String name) {
+      String hackyNameFix = name.split("'")[0].split("/")[0];
+        return handlePpmsExceptions(
+                hackyNameFix,
+                () -> {
+                    String url =
+                            UriComponentsBuilder.fromHttpUrl(baseUrl + "CareSites('" + hackyNameFix + "'")
+                                    .build()
+                                    .toUriString();
+                    HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+                    ResponseEntity<CareSitesResponse> entity =
+                            restTemplate.exchange(url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
+                    return entity.getBody();
+                });
+    }
+
   @Override
   public ProviderContacts providerContactsForId(String id) {
     return handlePpmsExceptions(
@@ -136,15 +153,32 @@ public class RestPpmsClient implements PpmsClient {
           return entity.getBody();
         });
   }
+    @Override
+    public CareSitesResponse careSitesById(String id) {
+        return handlePpmsExceptions(
+                id,
+                () -> {
+                    String url =
+                            UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/CareSites")
+                                    .build()
+                                    .toUriString();
+                    HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+                    ResponseEntity<CareSitesResponse> entity =
+                            restTemplate.exchange(
+                                    url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
+                    return entity.getBody();
+                });
+    }
 
   @Override
   public ProviderServicesResponse providerServicesByName(String name) {
-    return handlePpmsExceptions(
-        name,
+    String hackyNameFix = name.split("'")[0].split("/")[0];
+      return handlePpmsExceptions(
+        hackyNameFix,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(
-                      baseUrl + "CareSites('" + name + "')/ProviderServices")
+                      baseUrl + "CareSites('" + hackyNameFix + "')/ProviderServices")
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
@@ -160,6 +194,8 @@ public class RestPpmsClient implements PpmsClient {
           }
         });
   }
+
+
 
   @Override
   public PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id) {

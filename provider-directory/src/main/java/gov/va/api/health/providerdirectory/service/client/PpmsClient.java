@@ -19,6 +19,10 @@ public interface PpmsClient {
 
   CareSitesResponse careSitesByZip(String zip);
 
+  CareSitesResponse careSitesByName(String zip);
+
+  CareSitesResponse careSitesById(String id);
+
   /** Return the parameters of the failed search. */
   ProviderContacts providerContactsForId(String id);
 

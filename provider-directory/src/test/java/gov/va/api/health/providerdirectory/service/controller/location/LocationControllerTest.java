@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.Iterables;
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
+import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
@@ -232,7 +233,42 @@ public final class LocationControllerTest {
   }
 
   @Test
-  public void searchByName() {
+  public void searchByIdentifierMissingTelecom() {
+    when(ppmsClient.providerServicesById("123"))
+            .thenReturn(
+                    ProviderServicesResponse.builder()
+                            .build());
+    when(ppmsClient.careSitesById("123")).thenReturn(CareSitesResponse.builder().value(asList(CareSitesResponse.Value.builder().state("OK").zipCode("74136").mainSitePhone("9185230002").name("A I Advance Imaging of Tulsa LLC").city("Tulsa").street("6711 S Yale Ave Ste 212").build())).build());
+    when(ppmsClient.providersForId("123")).thenReturn(ProviderResponse.builder().build());
+    Location.Bundle actual = controller.searchByIdentifier("123", 1, 15);
+
+    assertThat(Iterables.getOnlyElement(actual.entry()).resource())
+            .isEqualTo(
+                    Location.builder()
+                            .resourceType("Location")
+                            .status(Location.Status.active)
+                            .name("A I Advance Imaging of Tulsa LLC")
+                            .telecom(
+                                    asList(
+                                            ContactPoint.builder()
+                                                    .system(ContactPoint.ContactPointSystem.phone)
+                                                    .value("9185230002")
+                                                    .build()))
+                            .address(
+                                    Location.LocationAddress.builder()
+                                            .text("6711 S Yale Ave Ste 212, Tulsa, OK, 74136")
+                                            .line(asList("6711 S Yale Ave Ste 212"))
+                                            .city("Tulsa")
+                                            .state("OK")
+                                            .postalCode("74136")
+                                            .build())
+                            .build());
+  }
+
+
+  @Test
+  public void searchByNameHappyPath() {
+    when(ppmsClient.providersForName("A I Advance Imaging of Tulsa LLC")).thenReturn(ProviderResponse.builder().value(asList(ProviderResponse.Value.builder().name("A I Advance Imaging of Tulsa LLC").build())).build());
     when(ppmsClient.providerServicesByName("A I Advance Imaging of Tulsa LLC"))
         .thenReturn(
             ProviderServicesResponse.builder()
@@ -258,7 +294,6 @@ public final class LocationControllerTest {
                             .organiztionGroupName("A I Advance Imaging of Tulsa LLC")
                             .build()))
                 .build());
-
     Location.Bundle actual = controller.searchByName("A I Advance Imaging of Tulsa LLC", 1, 15);
 
     assertThat(Iterables.getOnlyElement(actual.entry()).resource())
@@ -283,6 +318,70 @@ public final class LocationControllerTest {
                         .build())
                 .build());
   }
+
+  @Test
+  public void searchByNameTraversePossiblePaths() {
+    when(ppmsClient.providersForName("No Provider Service By Name")).thenReturn(ProviderResponse.builder().value(asList(ProviderResponse.Value.builder().name("No Provider Service By Name").providerIdentifier(123).build())).build());
+    when(ppmsClient.providerServicesByName("No Provider Service By Name"))
+            .thenReturn(
+                    ProviderServicesResponse.builder().build());
+    when(ppmsClient.providerServicesById("123")).thenReturn(ProviderServicesResponse.builder().value(asList(ProviderServicesResponse.Value.builder().careSiteName("No Provider Service By Name").careSiteAddressCity("Tulsa").careSitePhoneNumber("9185230002").careSiteLocationAddress("6711 S Yale Ave Ste 212, Tulsa, OK, 74136").careSiteAddressZipCode("74136").careSiteAddressState("OK").careSiteAddressStreet("6711 S Yale Ave Ste 212").build())).build());
+
+
+    when(ppmsClient.providersForName("Need CareSite For Telecom")).thenReturn(ProviderResponse.builder().value(asList(ProviderResponse.Value.builder().name("Need CareSite For Telecom").providerIdentifier(456).build())).build());
+    when(ppmsClient.providerServicesByName("Need CareSite For Telecom"))
+            .thenReturn(
+                    ProviderServicesResponse.builder().value(asList(ProviderServicesResponse.Value.builder().name("Need CareSite For Telecom").careSiteName("CareSiteName").organiztionGroupName("Need CareSite For Telecom").build())).build());
+    when(ppmsClient.careSitesByName("CareSiteName")).thenReturn(CareSitesResponse.builder().build());
+    when(ppmsClient.careSitesByName("Need CareSite For Telecom")).thenReturn(CareSitesResponse.builder().value(asList(CareSitesResponse.Value.builder().mainSitePhone("9185230002").city("Tulsa").zipCode("74136").state("OK").street("6711 S Yale Ave Ste 212").build())).build());
+
+    Location.Bundle noProviderServiceByName = controller.searchByName("No Provider Service By Name", 1, 15);
+
+    assertThat(Iterables.getOnlyElement(noProviderServiceByName.entry()).resource())
+            .isEqualTo(
+                    Location.builder()
+                            .resourceType("Location")
+                            .status(Location.Status.active)
+                            .name("No Provider Service By Name")
+                            .telecom(
+                                    asList(
+                                            ContactPoint.builder()
+                                                    .system(ContactPoint.ContactPointSystem.phone)
+                                                    .value("9185230002")
+                                                    .build()))
+                            .address(
+                                    Location.LocationAddress.builder()
+                                            .text("6711 S Yale Ave Ste 212, Tulsa, OK, 74136")
+                                            .line(asList("6711 S Yale Ave Ste 212"))
+                                            .city("Tulsa")
+                                            .state("OK")
+                                            .postalCode("74136")
+                                            .build())
+                            .build());
+    Location.Bundle needCareSiteForTelecom = controller.searchByName("Need CareSite For Telecom",1,15);
+    assertThat(Iterables.getOnlyElement(needCareSiteForTelecom.entry()).resource())
+            .isEqualTo(
+                    Location.builder()
+                            .resourceType("Location")
+                            .status(Location.Status.active)
+                            .name("CareSiteName")
+                            .telecom(
+                                    asList(
+                                            ContactPoint.builder()
+                                                    .system(ContactPoint.ContactPointSystem.phone)
+                                                    .value("9185230002")
+                                                    .build()))
+                            .address(
+                                    Location.LocationAddress.builder()
+                                            .text("6711 S Yale Ave Ste 212, Tulsa, OK, 74136")
+                                            .line(asList("6711 S Yale Ave Ste 212"))
+                                            .city("Tulsa")
+                                            .state("OK")
+                                            .postalCode("74136")
+                                            .build())
+                            .build());
+  }
+
 
   @Test
   public void searchByState() {
