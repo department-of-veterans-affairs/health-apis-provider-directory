@@ -16,6 +16,7 @@ import java.util.function.Function;
 import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
@@ -82,11 +83,12 @@ public class PractitionerRoleController {
       providerResponse = ppmsClient.providersForName(name);
     } else if (parameters.containsKey("family") && parameters.containsKey("given")) {
       String familyName = parameters.getFirst("family");
-      String givenName = parameters.get("given").get(0).toLowerCase();
+      String givenName = parameters.getFirst("given");
       providerResponse = ppmsClient.providersForName(familyName);
       List<ProviderResponse.Value> providerResponseFiltered = new ArrayList<>();
       for (int i = 0; i < providerResponse.value().size(); i++) {
-        if (providerResponse.value().get(i).name().toLowerCase().contains(givenName)) {
+        if (StringUtils
+                .containsIgnoreCase(providerResponse.value().get(i).name(), givenName)) {
           providerResponseFiltered.add(providerResponse.value().get(i));
         }
       }

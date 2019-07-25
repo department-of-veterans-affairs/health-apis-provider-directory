@@ -15,7 +15,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import javax.validation.constraints.Min;
+
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
   value = {"/api/Practitioner"},
   produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class PractitionerController {
 
   private Transformer transformer;
@@ -43,16 +47,6 @@ public class PractitionerController {
   private Bundler bundler;
 
   private PpmsClient ppmsClient;
-
-  /** Controller setup. */
-  public PractitionerController(
-      @Autowired Transformer transformer,
-      @Autowired Bundler bundler,
-      @Autowired PpmsClient ppmsClient) {
-    this.transformer = transformer;
-    this.bundler = bundler;
-    this.ppmsClient = ppmsClient;
-  }
 
   private Practitioner.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
@@ -74,11 +68,6 @@ public class PractitionerController {
             Practitioner.Bundle::new));
   }
 
-  @SneakyThrows
-  private ProviderContactsResponse providerContact(String id) {
-    return ppmsClient.providerContactsForId(id);
-  }
-
   /** Read by identifier. */
   @GetMapping(value = {"/{publicId}"})
   public Practitioner readByIdentifier(@PathVariable("publicId") String publicId) {
@@ -95,11 +84,12 @@ public class PractitionerController {
       providerResponse = ppmsClient.providersForName(name);
     } else if (parameters.containsKey("family") && parameters.containsKey("given")) {
       String familyName = parameters.getFirst("family");
-      String givenName = parameters.get("given").get(0).toLowerCase();
+      String givenName = parameters.getFirst("given");
       providerResponse = ppmsClient.providersForName(familyName);
       List<ProviderResponse.Value> providerResponseFiltered = new ArrayList<>();
       for (int i = 0; i < providerResponse.value().size(); i++) {
-        if (providerResponse.value().get(i).name().toLowerCase().contains(givenName)) {
+        if (StringUtils
+            .containsIgnoreCase(providerResponse.value().get(i).name(), givenName)) {
           providerResponseFiltered.add(providerResponse.value().get(i));
         }
       }
@@ -109,7 +99,7 @@ public class PractitionerController {
     }
 
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
-    ProviderContactsResponse providerContactsResponse = providerContact(providerIdentifier);
+    ProviderContactsResponse providerContactsResponse = ppmsClient.providerContactsForId(providerIdentifier);
     return PractitionerWrapper.builder()
         .providerContactsResponse(providerContactsResponse)
         .providerResponse(providerResponse)
