@@ -9,10 +9,10 @@
   </parent>
   <properties>
     <jacoco.coverage>0.89</jacoco.coverage>
-    <stu3.version>1.0.13</stu3.version>
+    <stu3.version>1.0.18</stu3.version>
   </properties>
   <artifactId>provider-directory</artifactId>
-  <version>1.0.8-SNAPSHOT</version>
+  <version>1.0.8</version>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
