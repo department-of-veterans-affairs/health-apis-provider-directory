@@ -19,8 +19,42 @@ import org.springframework.stereotype.Service;
 public class LocationTransformer implements LocationController.Transformer {
   @Override
   public Location apply(LocationWrapper ppmsData) {
-    return location(ppmsData);
+    ProviderServicesResponse.Value providerServices =
+            ppmsData.providerServicesResponse().value() == null
+                    || ppmsData.providerServicesResponse().value().isEmpty()
+                    ? null
+                    : ppmsData.providerServicesResponse().value().get(0);
+    ProviderResponse.Value providerResponse =
+            ppmsData.providerResponse().value() == null || ppmsData.providerResponse().value().isEmpty()
+                    ? null
+                    : ppmsData.providerResponse().value().get(0);
+    CareSitesResponse.Value careSiteResponse =
+            ppmsData.careSitesResponse().value() == null
+                    || ppmsData.careSitesResponse().value().isEmpty()
+                    ? null
+                    : ppmsData.careSitesResponse().value().get(0);
+    return Location.builder()
+            .resourceType("Location")
+            .name(
+                    providerServices != null
+                            ? providerServices.careSiteName()
+                            : careSiteResponse != null ? careSiteResponse.name() : providerResponse.name())
+            .status(Location.Status.active)
+            .address(
+                    (providerServices != null && providerServices.careSiteAddressCity() != null)
+                            ? providerServicesResponseAddress(providerServices)
+                            : (careSiteResponse != null && careSiteResponse.city() != null)
+                            ? careSiteResponseAddress(careSiteResponse)
+                            : providerResponseAddress(providerResponse))
+            .telecom(
+                    providerServicesTelecoms(providerServices) != null
+                            ? providerServicesTelecoms(providerServices)
+                            : providerTelecoms(providerResponse) != null
+                            ? providerTelecoms(providerResponse)
+                            : careSiteTelecoms(careSiteResponse))
+            .build();
   }
+
 
   LocationAddress careSiteResponseAddress(CareSitesResponse.Value value) {
     return convert(
@@ -53,42 +87,6 @@ public class LocationTransformer implements LocationController.Transformer {
     return telecoms;
   }
 
-  private Location location(LocationWrapper ppmsData) {
-    ProviderServicesResponse.Value providerServices =
-        ppmsData.providerServicesResponse().value() == null
-                || ppmsData.providerServicesResponse().value().isEmpty()
-            ? null
-            : ppmsData.providerServicesResponse().value().get(0);
-    ProviderResponse.Value providerResponse =
-        ppmsData.providerResponse().value() == null || ppmsData.providerResponse().value().isEmpty()
-            ? null
-            : ppmsData.providerResponse().value().get(0);
-    CareSitesResponse.Value careSiteResponse =
-        ppmsData.careSitesResponse().value() == null
-                || ppmsData.careSitesResponse().value().isEmpty()
-            ? null
-            : ppmsData.careSitesResponse().value().get(0);
-    return Location.builder()
-        .resourceType("Location")
-        .name(
-            providerServices != null
-                ? providerServices.careSiteName()
-                : careSiteResponse != null ? careSiteResponse.name() : providerResponse.name())
-        .status(Location.Status.active)
-        .address(
-            (providerServices != null && providerServices.careSiteAddressCity() != null)
-                ? providerServicesResponseAddress(providerServices)
-                : (careSiteResponse != null && careSiteResponse.city() != null)
-                    ? careSiteResponseAddress(careSiteResponse)
-                    : providerResponseAddress(providerResponse))
-        .telecom(
-            providerServicesTelecoms(providerServices) != null
-                ? providerServicesTelecoms(providerServices)
-                : providerTelecoms(providerResponse) != null
-                    ? providerTelecoms(providerResponse)
-                    : careSiteTelecoms(careSiteResponse))
-        .build();
-  }
 
   LocationAddress providerResponseAddress(ProviderResponse.Value value) {
     return convert(

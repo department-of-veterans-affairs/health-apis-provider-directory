@@ -109,7 +109,7 @@ public class RestPpmsClient implements PpmsClient {
         hackyNameFix,
         () -> {
           String url =
-              UriComponentsBuilder.fromHttpUrl(baseUrl + "CareSites('" + hackyNameFix + "'")
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "CareSites('" + hackyNameFix + "')")
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
