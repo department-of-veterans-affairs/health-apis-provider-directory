@@ -64,11 +64,11 @@ server.ssl.key-alias=internal-sys-dev
 server.ssl.key-store-password=$KEYSTORE_PASSWORD
 server.ssl.trust-store=file:target/certs/system/DVP-NONPROD-truststore.jks
 server.ssl.trust-store-password=$KEYSTORE_PASSWORD
-server.ssl.ppmsClient-auth=want
+server.ssl.client-auth=want
 # Client SSL
 ssl.key-store=file:target/certs/system/DVP-DVP-NONPROD.jks
 ssl.key-store-password=$KEYSTORE_PASSWORD
-ssl.ppmsClient-key-password=$KEYSTORE_PASSWORD
+ssl.client-key-password=$KEYSTORE_PASSWORD
 ssl.use-trust-store=true
 ssl.trust-store=file:target/certs/system/DVP-NONPROD-truststore.jks
 ssl.trust-store-password=$KEYSTORE_PASSWORD

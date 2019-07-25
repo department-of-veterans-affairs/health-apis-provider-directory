@@ -67,12 +67,6 @@ public class PractitionerRoleController {
             PractitionerRole.Bundle::new));
   }
 
-  /** Read by identifier. */
-  @GetMapping(value = {"/{publicId}"})
-  public PractitionerRole readByIdentifier(@PathVariable("publicId") String publicId) {
-    return transformer.apply(search(Parameters.forIdentity((publicId))));
-  }
-
   private PractitionerRoleWrapper search(MultiValueMap<String, String> parameters) {
     ProviderResponse providerResponse;
     if (parameters.containsKey("identifier")) {
@@ -81,20 +75,20 @@ public class PractitionerRoleController {
     } else if (parameters.containsKey("name")) {
       String name = parameters.getFirst("name");
       providerResponse = ppmsClient.providersForName(name);
-    } else if (parameters.containsKey("family") && parameters.containsKey("given")) {
+    } else {
       String familyName = parameters.getFirst("family");
       String givenName = parameters.getFirst("given");
       providerResponse = ppmsClient.providersForName(familyName);
       List<ProviderResponse.Value> providerResponseFiltered = new ArrayList<>();
-      for (int i = 0; i < providerResponse.value().size(); i++) {
-        if (StringUtils
-                .containsIgnoreCase(providerResponse.value().get(i).name(), givenName)) {
-          providerResponseFiltered.add(providerResponse.value().get(i));
+      for (ProviderResponse.Value val : providerResponse.value()){
+        if (StringUtils.containsIgnoreCase(val.name(), givenName)) {
+          providerResponseFiltered.add(val);
         }
       }
+      if (providerResponseFiltered.size() == 0) {
+        throw new PpmsClient.PpmsException("No family name and given name found for combination '" + familyName + "' and '" + givenName + "'.");
+      }
       providerResponse.value(providerResponseFiltered);
-    } else {
-      return null;
     }
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
     ProviderContactsResponse providerContactsResponse =
@@ -107,6 +101,12 @@ public class PractitionerRoleController {
         .providerResponse(providerResponse)
         .providerSpecialtiesResponse(providerSpecialty)
         .build();
+  }
+
+  /** Read by identifier. */
+  @GetMapping(value = {"/{publicId}"})
+  public PractitionerRole readByIdentifier(@PathVariable("publicId") String publicId) {
+    return transformer.apply(search(Parameters.forIdentity((publicId))));
   }
 
   /** Search by family and given. */
