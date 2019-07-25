@@ -2,6 +2,7 @@ package gov.va.api.health.providerdirectory.service;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,11 +15,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public final class PpmsProviderSpecialtiesResponse {
+public final class ProviderSpecialtiesResponse implements PpmsResponse {
   @JsonProperty("@odata.context")
   private String odataContext;
 
+  private Error error;
+
   private List<Value> value;
+
+  /** Lazy getter. */
+  public List<Value> value() {
+    if (value == null) {
+      value = new ArrayList<>();
+    }
+    return value;
+  }
 
   @Data
   @Builder
@@ -33,7 +44,7 @@ public final class PpmsProviderSpecialtiesResponse {
     private String name;
 
     @JsonProperty("Grouping")
-    private String gouping;
+    private String grouping;
 
     @JsonProperty("Classification")
     private String classification;

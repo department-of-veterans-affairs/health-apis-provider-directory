@@ -1,20 +1,22 @@
 package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
-import gov.va.api.health.providerdirectory.service.PpmsPractitionerRole;
-import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
-import gov.va.api.health.providerdirectory.service.ProviderContacts;
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
 import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
 import gov.va.api.health.providerdirectory.service.controller.Parameters;
 import gov.va.api.health.stu3.api.resources.PractitionerRole;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
@@ -38,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class PractitionerRoleController {
+
   private PpmsClient ppmsClient;
 
   private Transformer transformer;
@@ -46,29 +49,7 @@ public class PractitionerRoleController {
 
   private PractitionerRole.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
-    ProviderResponse providerResponse;
-    if (parameters.get("identifier") != null) {
-      String identifier = parameters.get("identifier").toArray()[0].toString();
-      providerResponse = ppmsClient.providersForId(identifier);
-    } else if (parameters.get("name") != null) {
-      String name = parameters.get("name").toArray()[0].toString();
-      providerResponse = ppmsClient.providersForName(name);
-    } else {
-      String familyAndGiven =
-          parameters.get("family").toArray()[0].toString()
-              + ", "
-              + parameters.get("given").toArray()[0].toString();
-      providerResponse = ppmsClient.providersForName(familyAndGiven);
-    }
-    String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
-    ProviderContacts providerContacts = ppmsProviderContact(providerIdentifier);
-    PpmsProviderSpecialtiesResponse providerSpecialty = ppmsProviderSpecialty(providerIdentifier);
-    PpmsPractitionerRole root =
-        PpmsPractitionerRole.builder()
-            .providerContacts(providerContacts)
-            .providerResponse(providerResponse)
-            .providerSpecialtiesResponse(providerSpecialty)
-            .build();
+    PractitionerRoleWrapper root = search(parameters);
     LinkConfig linkConfig =
         LinkConfig.builder()
             .path("PractitionerRole")
@@ -86,20 +67,51 @@ public class PractitionerRoleController {
             PractitionerRole.Bundle::new));
   }
 
-  @SneakyThrows
-  private ProviderContacts ppmsProviderContact(String id) {
-    return ppmsClient.providerContactsForId(id);
-  }
-
-  @SneakyThrows
-  private PpmsProviderSpecialtiesResponse ppmsProviderSpecialty(String id) {
-    return ppmsClient.providerSpecialtySearch(id);
-  }
-
   /** Read by identifier. */
   @GetMapping(value = {"/{publicId}"})
-  public PractitionerRole read(@PathVariable("publicId") String publicId) {
-    throw new UnsupportedOperationException();
+  public PractitionerRole readByIdentifier(@PathVariable("publicId") String publicId) {
+    return transformer.apply(search(Parameters.forIdentity((publicId))));
+  }
+
+  private PractitionerRoleWrapper search(MultiValueMap<String, String> parameters) {
+    ProviderResponse providerResponse;
+    if (parameters.containsKey("identifier")) {
+      String identifier = parameters.getFirst("identifier");
+      providerResponse = ppmsClient.providersForId(identifier);
+    } else if (parameters.containsKey("name")) {
+      String name = parameters.getFirst("name");
+      providerResponse = ppmsClient.providersForName(name);
+    } else {
+      String familyName = parameters.getFirst("family");
+      String givenName = parameters.getFirst("given");
+      providerResponse = ppmsClient.providersForName(familyName);
+      List<ProviderResponse.Value> providerResponseFiltered = new ArrayList<>();
+      for (ProviderResponse.Value val : providerResponse.value()) {
+        if (StringUtils.containsIgnoreCase(val.name(), givenName)) {
+          providerResponseFiltered.add(val);
+        }
+      }
+      if (providerResponseFiltered.size() == 0) {
+        throw new PpmsClient.PpmsException(
+            "No family name and given name found for combination '"
+                + familyName
+                + "' and '"
+                + givenName
+                + "'.");
+      }
+      providerResponse.value(providerResponseFiltered);
+    }
+    String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
+    ProviderContactsResponse providerContactsResponse =
+        ppmsClient.providerContactsForId(
+            providerResponse.value().get(0).providerIdentifier().toString());
+    ProviderSpecialtiesResponse providerSpecialty =
+        ppmsClient.providerSpecialtySearch(providerIdentifier);
+    return PractitionerRoleWrapper.builder()
+        .providerContactsResponse(providerContactsResponse)
+        .providerResponse(providerResponse)
+        .providerSpecialtiesResponse(providerSpecialty)
+        .build();
   }
 
   /** Search by family and given. */
@@ -137,6 +149,7 @@ public class PractitionerRoleController {
         count);
   }
 
+  /** Placeholder for specialty search. */
   @GetMapping(params = {"specialty"})
   public PractitionerRole.Bundle searchBySpecialty(
       @RequestParam("specialty") String specialty,
@@ -145,5 +158,5 @@ public class PractitionerRoleController {
     throw new UnsupportedOperationException();
   }
 
-  public interface Transformer extends Function<PpmsPractitionerRole, PractitionerRole> {}
+  public interface Transformer extends Function<PractitionerRoleWrapper, PractitionerRole> {}
 }

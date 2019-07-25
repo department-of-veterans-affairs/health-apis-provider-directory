@@ -1,8 +1,11 @@
 package gov.va.api.health.providerdirectory.service.client;
 
-import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
-import gov.va.api.health.providerdirectory.service.ProviderContacts;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
+import gov.va.api.health.providerdirectory.service.PpmsResponse;
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import lombok.SneakyThrows;
@@ -22,9 +25,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 /** REST implementation of PPMS client. */
 @Component
 public class RestPpmsClient implements PpmsClient {
-  private final RestTemplate restTemplate;
-
   private final String baseUrl;
+
+  private final RestTemplate restTemplate;
 
   public RestPpmsClient(
       @Value("${ppms.url}") String baseUrl, @Autowired RestTemplate restTemplate) {
@@ -33,16 +36,29 @@ public class RestPpmsClient implements PpmsClient {
   }
 
   @SneakyThrows
-  private static <T> T handlePpmsExceptions(String message, Callable<T> callable) {
+  private static <T extends PpmsResponse> T handlePpmsExceptions(
+      String message, Callable<T> callable) {
+    T response;
     try {
-      return callable.call();
+      response = callable.call();
     } catch (HttpClientErrorException.NotFound e) {
-      throw new NotFound(message);
+      throw new NotFound(message, e);
     } catch (HttpClientErrorException.BadRequest e) {
-      throw new BadRequest(message);
+      throw new BadRequest(message, e);
     } catch (HttpStatusCodeException e) {
-      throw new SearchFailed(message);
+      throw new SearchFailed(message, e);
+    } catch (Exception e) {
+      throw new PpmsException(message, e);
     }
+
+    if (response == null) {
+      throw new PpmsException(message + ", no PPMS response");
+    }
+    if (response.error() != null && isNotBlank(response.error().message())) {
+      throw new PpmsException(message + ", " + response.error().message());
+    }
+
+    return response;
   }
 
   private static HttpHeaders headers() {
@@ -52,25 +68,26 @@ public class RestPpmsClient implements PpmsClient {
   }
 
   @Override
-  public ProviderContacts providerContactsForId(String id) {
+  public ProviderContactsResponse providerContactsForId(String id) {
     return handlePpmsExceptions(
-        id,
+        "provider ID: " + id,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderContacts")
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<ProviderContacts> entity =
-              restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderContacts.class);
+          ResponseEntity<ProviderContactsResponse> entity =
+              restTemplate.exchange(
+                  url, HttpMethod.GET, requestEntity, ProviderContactsResponse.class);
           return entity.getBody();
         });
   }
 
   @Override
-  public PpmsProviderSpecialtiesResponse providerSpecialtySearch(String id) {
+  public ProviderSpecialtiesResponse providerSpecialtySearch(String id) {
     return handlePpmsExceptions(
-        id,
+        "provider ID: " + id,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(
@@ -78,9 +95,9 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<PpmsProviderSpecialtiesResponse> entity =
+          ResponseEntity<ProviderSpecialtiesResponse> entity =
               restTemplate.exchange(
-                  url, HttpMethod.GET, requestEntity, PpmsProviderSpecialtiesResponse.class);
+                  url, HttpMethod.GET, requestEntity, ProviderSpecialtiesResponse.class);
           return entity.getBody();
         });
   }
@@ -88,7 +105,7 @@ public class RestPpmsClient implements PpmsClient {
   @Override
   public ProviderResponse providersForId(String id) {
     return handlePpmsExceptions(
-        id,
+        "provider ID: " + id,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")")
@@ -104,7 +121,7 @@ public class RestPpmsClient implements PpmsClient {
   @Override
   public ProviderResponse providersForName(String name) {
     return handlePpmsExceptions(
-        name,
+        "provider name: " + name,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(baseUrl + "GetProviderByName?name=" + name)

@@ -2,10 +2,9 @@ package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 
-import gov.va.api.health.providerdirectory.service.PpmsPractitionerRole;
-import gov.va.api.health.providerdirectory.service.PpmsProviderSpecialtiesResponse;
-import gov.va.api.health.providerdirectory.service.ProviderContacts;
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
 import gov.va.api.health.stu3.api.datatypes.CodeableConcept;
 import gov.va.api.health.stu3.api.datatypes.Coding;
@@ -18,19 +17,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class PractitionerRoleTransformer implements PractitionerRoleController.Transformer {
 
   @Value("${provider-directory.url}")
   String baseUrl;
 
   @Override
-  public PractitionerRole apply(PpmsPractitionerRole ppms) {
+  public PractitionerRole apply(PractitionerRoleWrapper ppms) {
     // TODO organization reference is required
     // location could be populated by caresites
     ProviderResponse.Value provider = ppms.providerResponse().value().get(0);
+
     return PractitionerRole.builder()
         .resourceType("PractitionerRole")
         .active(StringUtils.equalsIgnoreCase(provider.providerStatusReason(), "active"))
@@ -41,9 +41,9 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
                 .build())
         .id(provider.providerIdentifier().toString())
         .telecom(
-            ppms.providerContacts().value().isEmpty()
+            ppms.providerContactsResponse().value().isEmpty()
                 ? telecoms(null)
-                : ppms.providerContacts()
+                : ppms.providerContactsResponse()
                     .value()
                     .stream()
                     .flatMap(v -> telecoms(v).stream())
@@ -51,7 +51,10 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
         .build();
   }
 
-  private List<Coding> codeCodings(PpmsProviderSpecialtiesResponse specialtiesResponse) {
+  private List<Coding> codeCodings(ProviderSpecialtiesResponse specialtiesResponse) {
+    if (specialtiesResponse == null) {
+      return null;
+    }
     return specialtiesResponse
         .value()
         .stream()
@@ -60,24 +63,31 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
   }
 
   private Reference practitionerReference(ProviderResponse.Value provider) {
+    if (provider == null || provider.providerIdentifier() == null) {
+      return null;
+    }
     return Reference.builder()
         .reference(baseUrl + "/Practitioner/" + provider.providerIdentifier())
         .build();
   }
 
   PractitionerContactPoint telecom(String system, String value) {
+    if (value.isEmpty()) {
+      return null;
+    }
     return PractitionerContactPoint.builder()
         .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
         .value(value)
         .build();
   }
 
-  List<PractitionerContactPoint> telecoms(ProviderContacts.Value source) {
+  List<PractitionerContactPoint> telecoms(ProviderContactsResponse.Value source) {
     if (source == null
         || allBlank(source.mobilePhone(), source.businessPhone(), source.email(), source.fax())) {
       return null;
     }
     List<PractitionerContactPoint> telecoms = new ArrayList<>();
+
     if (source.mobilePhone() != null) {
       telecoms.add(telecom("phone", source.mobilePhone()));
     }
@@ -88,7 +98,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
       telecoms.add(telecom("email", source.email()));
     }
     if (source.businessPhone() != null) {
-      telecoms.add(telecom("phone", source.businessPhone()));
+      telecoms.add(telecom("businessPhone", source.businessPhone()));
     }
     return telecoms;
   }

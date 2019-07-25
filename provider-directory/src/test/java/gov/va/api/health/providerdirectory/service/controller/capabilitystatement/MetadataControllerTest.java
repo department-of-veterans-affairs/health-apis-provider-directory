@@ -41,7 +41,7 @@ public class MetadataControllerTest {
                 .description("http://docs.smarthealthit.org/")
                 .build())
         .resourceDocumentation(
-            "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html")
+            "Implemented per specification. See http://hl7.org/fhir/STU3/http.html")
         .build();
   }
 
