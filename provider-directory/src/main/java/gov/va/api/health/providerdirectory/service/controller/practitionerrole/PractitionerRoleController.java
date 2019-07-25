@@ -67,6 +67,12 @@ public class PractitionerRoleController {
             PractitionerRole.Bundle::new));
   }
 
+  /** Read by identifier. */
+  @GetMapping(value = {"/{publicId}"})
+  public PractitionerRole readByIdentifier(@PathVariable("publicId") String publicId) {
+    return transformer.apply(search(Parameters.forIdentity((publicId))));
+  }
+
   private PractitionerRoleWrapper search(MultiValueMap<String, String> parameters) {
     ProviderResponse providerResponse;
     if (parameters.containsKey("identifier")) {
@@ -80,13 +86,18 @@ public class PractitionerRoleController {
       String givenName = parameters.getFirst("given");
       providerResponse = ppmsClient.providersForName(familyName);
       List<ProviderResponse.Value> providerResponseFiltered = new ArrayList<>();
-      for (ProviderResponse.Value val : providerResponse.value()){
+      for (ProviderResponse.Value val : providerResponse.value()) {
         if (StringUtils.containsIgnoreCase(val.name(), givenName)) {
           providerResponseFiltered.add(val);
         }
       }
       if (providerResponseFiltered.size() == 0) {
-        throw new PpmsClient.PpmsException("No family name and given name found for combination '" + familyName + "' and '" + givenName + "'.");
+        throw new PpmsClient.PpmsException(
+            "No family name and given name found for combination '"
+                + familyName
+                + "' and '"
+                + givenName
+                + "'.");
       }
       providerResponse.value(providerResponseFiltered);
     }
@@ -101,12 +112,6 @@ public class PractitionerRoleController {
         .providerResponse(providerResponse)
         .providerSpecialtiesResponse(providerSpecialty)
         .build();
-  }
-
-  /** Read by identifier. */
-  @GetMapping(value = {"/{publicId}"})
-  public PractitionerRole readByIdentifier(@PathVariable("publicId") String publicId) {
-    return transformer.apply(search(Parameters.forIdentity((publicId))));
   }
 
   /** Search by family and given. */
