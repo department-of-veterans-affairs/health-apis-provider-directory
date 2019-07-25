@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LocationTransformer implements LocationController.Transformer {
-
   @Override
   public Location apply(LocationWrapper ppmsData) {
     return location(ppmsData);

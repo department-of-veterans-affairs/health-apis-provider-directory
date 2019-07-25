@@ -40,7 +40,6 @@ import org.springframework.web.bind.annotation.RestController;
   produces = {"application/json", "application/json+fhir", "application/fhir+json"}
 )
 public class LocationController {
-
   private Transformer transformer;
 
   private PpmsClient ppmsClient;
@@ -75,11 +74,11 @@ public class LocationController {
 
     if (parameters.get("identifier") != null) {
       String identifier = parameters.get("identifier").toArray()[0].toString();
-      locationWrapper.providerServicesResponse(ppmsClient.providerServicesById(identifier)).build();
+      locationWrapper.providerServicesResponse(ppmsClient.providerServicesById(identifier));
       if (locationWrapper.build().providerServicesResponse().value() == null
           || locationWrapper.build().providerServicesResponse().value().isEmpty()) {
-        locationWrapper.providerResponse(ppmsClient.providersForId(identifier)).build();
-        locationWrapper.careSitesResponse(ppmsClient.careSitesById(identifier)).build();
+        locationWrapper.providerResponse(ppmsClient.providersForId(identifier));
+        locationWrapper.careSitesResponse(ppmsClient.careSitesById(identifier));
       }
     } else if (parameters.get("name") != null) {
       String name = parameters.get("name").toArray()[0].toString();
@@ -135,7 +134,7 @@ public class LocationController {
             && (currentPage.providerServicesResponse().value() == null
                 || currentPage.providerServicesResponse().value().isEmpty()
                 || currentPage.providerServicesResponse().value().get(0).careSitePhoneNumber()
-                    == null))
+                    == null)) {
           if (currentPage.providerServicesResponse().value() == null
               || currentPage.providerServicesResponse().value().isEmpty()
               || currentPage.providerServicesResponse().value().get(0).name() == null) {
@@ -181,6 +180,7 @@ public class LocationController {
                       .build());
             }
           }
+        }
       }
     } else {
       if (parameters.get("address-city") != null) {
@@ -230,7 +230,7 @@ public class LocationController {
             && (currentPage.providerServicesResponse().value() == null
                 || currentPage.providerServicesResponse().value().isEmpty()
                 || currentPage.providerServicesResponse().value().get(0).careSitePhoneNumber()
-                    == null))
+                    == null)) {
           if (currentPage.careSitesResponse().value() == null
               || currentPage.careSitesResponse().value().isEmpty()
               || currentPage.careSitesResponse().value().get(0).name() == null) {
@@ -295,6 +295,7 @@ public class LocationController {
               }
             }
           }
+        }
       }
     }
 
