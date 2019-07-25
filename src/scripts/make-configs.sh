@@ -15,6 +15,7 @@ Options
 Secrets Configuration
  This bash file is sourced and expected to set the following variables
  - KEYSTORE_PASSWORD
+ - PPMS_URL
 
 $1
 EOF
@@ -47,6 +48,7 @@ echo "Loading secrets: $SECRETS"
 
 MISSING_SECRETS=false
 [ -z "$KEYSTORE_PASSWORD" ] && echo "Missing configuration: KEYSTORE_PASSWORD" && MISSING_SECRETS=true
+[ -z "$PPMS_URL" ] && echo "Missing configuration: PPMS_URL" && MISSING_SECRETS=true
 [ $MISSING_SECRETS == true ] && usage "Missing configuration secrets, please update $SECRETS"
 
 makeConfig() {
@@ -110,9 +112,14 @@ sendMoarSpams() {
 
 makeConfig provider-directory $PROFILE
 
+configValue provider-directory $PROFILE capability.contact.name "$(whoDis)"
+configValue provider-directory $PROFILE capability.contact.email "$(sendMoarSpams)"
+configValue provider-directory $PROFILE capability.security.token-endpoint https://fake.com/token
+configValue provider-directory $PROFILE capability.security.authorize-endpoint https://fake.com/authorize
+configValue provider-directory $PROFILE ppms.url "$PPMS_URL"
+configValue provider-directory $PROFILE provider-directory.url https://localhost:8080
 configValue provider-directory $PROFILE well-known.capabilities "context-standalone-patient, launch-ehr, permission-offline, permission-patient"
 configValue provider-directory $PROFILE well-known.response-type-supported "code, refresh_token"
 configValue provider-directory $PROFILE well-known.scopes-supported "patient/DiagnosticReport.read, patient/Patient.read, offline_access"
-
 
 checkForUnsetValues provider-directory $PROFILE
