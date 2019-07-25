@@ -1,0 +1,22 @@
+{
+    "resourceType" : "PractitionerRole",
+    "id" : "1285621557",
+    "active" : true,
+    "practitioner" : {
+        "reference" : "null/Practitioner/1285621557"
+    },
+    "code" : {
+        "coding" : [
+            {
+                "code" : "207R00000X",
+                "display" : "Internal Medicine"
+            }
+        ]
+    },
+    "telecom" : [
+        {
+            "system" : "email",
+            "value" : "dustin.lehman@email.com"
+        }
+    ]
+}

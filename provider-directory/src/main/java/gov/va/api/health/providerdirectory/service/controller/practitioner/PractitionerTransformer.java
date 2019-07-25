@@ -2,29 +2,25 @@ package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.allBlank;
 import static gov.va.api.health.providerdirectory.service.controller.Transformers.convert;
+import static java.util.Collections.singletonList;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.trimToNull;
 
-import gov.va.api.health.providerdirectory.service.ProviderContacts;
+import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
-import gov.va.api.health.providerdirectory.service.ProviderWrapper;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
 import gov.va.api.health.stu3.api.datatypes.Address;
 import gov.va.api.health.stu3.api.datatypes.ContactPoint;
 import gov.va.api.health.stu3.api.resources.Practitioner;
-import gov.va.api.health.stu3.api.resources.Practitioner.Gender;
-import gov.va.api.health.stu3.api.resources.Practitioner.PractitionerHumanName;
-import gov.va.api.health.stu3.api.resources.Practitioner.PractitionerIdentifier;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PractitionerTransformer implements PractitionerController.Transformer {
-
   Boolean active(String active) {
-    if (active.toLowerCase().equals("active")) {
-      return true;
-    }
-    return false;
+    return equalsIgnoreCase(active, "active");
   }
 
   Address address(ProviderResponse.Value value) {
@@ -39,56 +35,28 @@ public class PractitionerTransformer implements PractitionerController.Transform
   }
 
   List<Address> addresses(ProviderResponse.Value value) {
-    if (value.address() == null) {
+    if (value == null
+        || allBlank(value.addressCity(), value.addressCountry(), value.addressStateProvince())) {
       return null;
     }
-    List<Address> addressList = new ArrayList<>();
-    addressList.add(address(value));
-    return addressList;
+    return singletonList(
+        Address.builder()
+            .city(trimToNull(value.addressCity()))
+            .country(trimToNull(value.addressCountry()))
+            .state(trimToNull(value.addressStateProvince()))
+            .build());
   }
 
   @Override
-  public Practitioner apply(ProviderWrapper ppmsData) {
-    return practitioner(ppmsData);
-  }
-
-  Practitioner.Gender gender(String gender) {
-    return convert(gender.toLowerCase(), ppms -> EnumSearcher.of(Gender.class).find(ppms));
-  }
-
-  PractitionerIdentifier identifier(ProviderResponse.Value value) {
-    return convert(
-        value,
-        ppms ->
-            PractitionerIdentifier.builder()
-                .system(ppms.providerIdentifierType())
-                .value(ppms.providerIdentifier().toString())
-                .build());
-  }
-
-  PractitionerHumanName name(String name) {
-    List<String> splitNames = new ArrayList<>();
-    for (String s : name.split(",")) {
-      splitNames.add(s.trim());
-    }
-    return convert(
-        splitNames,
-        ppms ->
-            PractitionerHumanName.builder()
-                .family(ppms.get(0))
-                .given(ppms.subList(1, ppms.size()))
-                .build());
-  }
-
-  private Practitioner practitioner(ProviderWrapper ppmsData) {
+  public Practitioner apply(PractitionerWrapper ppmsData) {
     ProviderResponse.Value response = ppmsData.providerResponse().value().get(0);
-    ProviderContacts.Value contacts;
-    if (ppmsData.providerContacts().value().size() > 0) {
-      contacts = ppmsData.providerContacts().value().get(0);
+    ProviderContactsResponse.Value contacts;
+    if (ppmsData.providerContactsResponse().value().size() > 0) {
+      contacts = ppmsData.providerContactsResponse().value().get(0);
     } else {
       contacts = null;
     }
-    List<PractitionerIdentifier> identifiers = new ArrayList<>();
+    List<Practitioner.PractitionerIdentifier> identifiers = new ArrayList<>();
     identifiers.add(identifier(response));
     return Practitioner.builder()
         .resourceType("Practitioner")
@@ -103,14 +71,57 @@ public class PractitionerTransformer implements PractitionerController.Transform
         .build();
   }
 
+  Practitioner.Gender gender(String gender) {
+    if (isBlank(gender)) {
+      return Practitioner.Gender.unknown;
+    }
+    if (equalsIgnoreCase(gender, "female")) {
+      return Practitioner.Gender.female;
+    }
+    if (equalsIgnoreCase(gender, "male")) {
+      return Practitioner.Gender.male;
+    }
+    return Practitioner.Gender.unknown;
+  }
+
+  Practitioner.PractitionerIdentifier identifier(ProviderResponse.Value value) {
+    return convert(
+        value,
+        ppms ->
+            Practitioner.PractitionerIdentifier.builder()
+                .system(ppms.providerIdentifierType())
+                .value(ppms.providerIdentifier().toString())
+                .build());
+  }
+
+  Practitioner.PractitionerHumanName name(String name) {
+    if (name == null) {
+      return null;
+    }
+    List<String> splitNames = new ArrayList<>();
+    for (String s : name.split(",")) {
+      splitNames.add(s.trim());
+    }
+    return convert(
+        splitNames,
+        ppms ->
+            Practitioner.PractitionerHumanName.builder()
+                .family(ppms.get(0))
+                .given(ppms.subList(1, ppms.size()))
+                .build());
+  }
+
   ContactPoint telecom(String system, String value) {
+    if (value == null) {
+      return null;
+    }
     return ContactPoint.builder()
         .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
         .value(value)
         .build();
   }
 
-  List<ContactPoint> telecoms(ProviderContacts.Value source) {
+  List<ContactPoint> telecoms(ProviderContactsResponse.Value source) {
     if (source == null
         || allBlank(source.mobilePhone(), source.businessPhone(), source.email(), source.fax())) {
       return null;

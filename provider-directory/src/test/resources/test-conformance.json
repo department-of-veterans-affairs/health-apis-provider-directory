@@ -71,11 +71,11 @@
                     "interaction" : [
                         {
                             "code" : "search-type",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         },
                         {
                             "code" : "read",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         }
                     ],
                     "searchParam" : [
@@ -109,11 +109,11 @@
                     "interaction" : [
                         {
                             "code" : "search-type",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         },
                         {
                             "code" : "read",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         }
                     ],
                     "searchParam" : [
@@ -139,11 +139,11 @@
                     "interaction" : [
                         {
                             "code" : "search-type",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         },
                         {
                             "code" : "read",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         }
                     ],
                     "searchParam" : [
@@ -169,11 +169,11 @@
                     "interaction" : [
                         {
                             "code" : "search-type",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         },
                         {
                             "code" : "read",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         }
                     ],
                     "searchParam" : [
@@ -199,11 +199,11 @@
                     "interaction" : [
                         {
                             "code" : "search-type",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         },
                         {
                             "code" : "read",
-                            "documentation" : "Implemented per specificaton. See http://hl7.org/fhir/STU3/http.html"
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
                         }
                     ],
                     "searchParam" : [
