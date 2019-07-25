@@ -15,13 +15,13 @@ public interface PpmsClient {
 
   CareSitesResponse careSitesByCity(String city);
 
-  CareSitesResponse careSitesByState(String state);
-
-  CareSitesResponse careSitesByZip(String zip);
+  CareSitesResponse careSitesById(String id);
 
   CareSitesResponse careSitesByName(String zip);
 
-  CareSitesResponse careSitesById(String id);
+  CareSitesResponse careSitesByState(String state);
+
+  CareSitesResponse careSitesByZip(String zip);
 
   /** Return the parameters of the failed search. */
   ProviderContacts providerContactsForId(String id);
