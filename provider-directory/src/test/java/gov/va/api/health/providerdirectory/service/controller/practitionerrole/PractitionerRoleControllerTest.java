@@ -17,7 +17,6 @@ import gov.va.api.health.stu3.api.datatypes.Coding;
 import gov.va.api.health.stu3.api.datatypes.ContactPoint;
 import gov.va.api.health.stu3.api.elements.Reference;
 import gov.va.api.health.stu3.api.resources.PractitionerRole;
-import gov.va.api.health.stu3.api.resources.PractitionerRole.Bundle;
 import org.junit.Test;
 
 @SuppressWarnings("WeakerAccess")
@@ -228,7 +227,8 @@ public class PractitionerRoleControllerTest {
                             .build()))
                 .build());
 
-    Bundle actual = controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
+    PractitionerRole.Bundle actual =
+        controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
 
     assertThat(Iterables.getOnlyElement(actual.entry()).resource())
         .isEqualTo(
@@ -341,7 +341,7 @@ public class PractitionerRoleControllerTest {
                             .build()))
                 .build());
 
-    Bundle actual = controller.searchByIdentifier("identifier", 1, 1);
+    PractitionerRole.Bundle actual = controller.searchByIdentifier("identifier", 1, 1);
 
     assertThat(Iterables.getOnlyElement(actual.entry()).resource())
         .isEqualTo(
