@@ -197,16 +197,10 @@ public class RestPpmsClient implements PpmsClient {
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
-          ResponseEntity<ProviderServicesResponse> entity = null;
-          try {
-            entity =
+          ResponseEntity<ProviderServicesResponse> entity =
                 restTemplate.exchange(
                     url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
             return entity.getBody();
-          } catch (Exception e) {
-            log.error("PPMS failed to return data for " + name);
-            return ProviderServicesResponse.builder().build();
-          }
         });
   }
 

@@ -93,8 +93,14 @@ public class LocationController {
               .parallel()
               .mapToObj(
                   i ->
-                      ppmsClient.providerServicesByName(
-                          locationWrapper.build().providerResponse().value().get(i).name()))
+                      {
+                        try{
+                          return ppmsClient.providerServicesByName(locationWrapper.build().providerResponse().value().get(i).name());
+                        }
+                        catch(Exception e){
+                          return ProviderServicesResponse.builder().build();
+                        }
+                      })
               .collect(Collectors.toList());
       providerResponsePages =
           locationWrapper.build().providerResponse().value().subList(fromIndex, toIndex);
