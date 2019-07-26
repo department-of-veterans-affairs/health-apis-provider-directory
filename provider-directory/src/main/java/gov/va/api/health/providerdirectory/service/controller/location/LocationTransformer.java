@@ -29,32 +29,32 @@ public class LocationTransformer implements LocationController.Transformer {
             ? null
             : ppmsData.providerResponse().value().get(0);
     CareSitesResponse.Value careSiteResponse =
-            ppmsData.careSitesResponse().value() == null
-                    || ppmsData.careSitesResponse().value().isEmpty()
-                    ? null
-                    : ppmsData.careSitesResponse().value().get(0);
+        ppmsData.careSitesResponse().value() == null
+                || ppmsData.careSitesResponse().value().isEmpty()
+            ? null
+            : ppmsData.careSitesResponse().value().get(0);
 
     return Location.builder()
-            .resourceType("Location")
-            .id(providerResponse != null ? providerResponse.providerIdentifier().toString() : null)
-            .name(
-                    providerServices != null
-                            ? providerServices.careSiteName()
-                            : careSiteResponse != null ? careSiteResponse.name() : providerResponse.name())
-            .status(Location.Status.active)
-            .address(
-                    (providerServices != null && providerServices.careSiteAddressCity() != null)
-                            ? providerServicesResponseAddress(providerServices)
-                            : (careSiteResponse != null && careSiteResponse.city() != null)
-                            ? careSiteResponseAddress(careSiteResponse)
-                            : providerResponseAddress(providerResponse))
-            .telecom(
-                    providerServicesTelecoms(providerServices) != null
-                            ? providerServicesTelecoms(providerServices)
-                            : providerTelecoms(providerResponse) != null
-                            ? providerTelecoms(providerResponse)
-                            : careSiteTelecoms(careSiteResponse))
-            .build();
+        .resourceType("Location")
+        .id(providerResponse != null ? providerResponse.providerIdentifier().toString() : null)
+        .name(
+            providerServices != null
+                ? providerServices.careSiteName()
+                : careSiteResponse != null ? careSiteResponse.name() : providerResponse.name())
+        .status(Location.Status.active)
+        .address(
+            (providerServices != null && providerServices.careSiteAddressCity() != null)
+                ? providerServicesResponseAddress(providerServices)
+                : (careSiteResponse != null && careSiteResponse.city() != null)
+                    ? careSiteResponseAddress(careSiteResponse)
+                    : providerResponseAddress(providerResponse))
+        .telecom(
+            providerServicesTelecoms(providerServices) != null
+                ? providerServicesTelecoms(providerServices)
+                : providerTelecoms(providerResponse) != null
+                    ? providerTelecoms(providerResponse)
+                    : careSiteTelecoms(careSiteResponse))
+        .build();
   }
 
   LocationAddress careSiteResponseAddress(CareSitesResponse.Value value) {

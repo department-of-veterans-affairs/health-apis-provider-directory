@@ -215,7 +215,7 @@ public final class LocationControllerTest {
                 .resourceType("Location")
                 .status(Location.Status.active)
                 .name("A I Advance Imaging of Tulsa LLC")
-                    .id("123")
+                .id("123")
                 .telecom(
                     asList(
                         ContactPoint.builder()
@@ -286,7 +286,7 @@ public final class LocationControllerTest {
                     asList(
                         ProviderResponse.Value.builder()
                             .name("A I Advance Imaging of Tulsa LLC")
-                                .providerIdentifier(123)
+                            .providerIdentifier(123)
                             .build()))
                 .build());
     when(ppmsClient.providerServicesByName("A I Advance Imaging of Tulsa LLC"))
@@ -321,7 +321,7 @@ public final class LocationControllerTest {
             Location.builder()
                 .resourceType("Location")
                 .status(Location.Status.active)
-                    .id("123")
+                .id("123")
                 .name("A I Advance Imaging of Tulsa LLC")
                 .telecom(
                     asList(
@@ -416,7 +416,7 @@ public final class LocationControllerTest {
                 .resourceType("Location")
                 .status(Location.Status.active)
                 .name("No Provider Service By Name")
-                    .id("123")
+                .id("123")
                 .telecom(
                     asList(
                         ContactPoint.builder()
@@ -440,7 +440,7 @@ public final class LocationControllerTest {
                 .resourceType("Location")
                 .status(Location.Status.active)
                 .name("CareSiteName")
-                    .id("456")
+                .id("456")
                 .telecom(
                     asList(
                         ContactPoint.builder()
