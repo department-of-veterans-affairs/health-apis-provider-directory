@@ -93,15 +93,14 @@ public class LocationController {
           IntStream.range(fromIndex, toIndex)
               .parallel()
               .mapToObj(
-                  i ->
-                      {
-                        try{
-                          return ppmsClient.providerServicesByName(locationWrapper.build().providerResponse().value().get(i).name());
-                        }
-                        catch(Exception e){
-                          return ProviderServicesResponse.builder().build();
-                        }
-                      })
+                  i -> {
+                    try {
+                      return ppmsClient.providerServicesByName(
+                          locationWrapper.build().providerResponse().value().get(i).name());
+                    } catch (Exception e) {
+                      return ProviderServicesResponse.builder().build();
+                    }
+                  })
               .collect(Collectors.toList());
       providerResponsePages =
           locationWrapper.build().providerResponse().value().subList(fromIndex, toIndex);

@@ -198,9 +198,9 @@ public class RestPpmsClient implements PpmsClient {
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
           ResponseEntity<ProviderServicesResponse> entity =
-                restTemplate.exchange(
-                    url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
-            return entity.getBody();
+              restTemplate.exchange(
+                  url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
+          return entity.getBody();
         });
   }
 

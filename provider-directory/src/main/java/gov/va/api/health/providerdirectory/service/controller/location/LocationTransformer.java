@@ -20,14 +20,14 @@ public class LocationTransformer implements LocationController.Transformer {
   @Override
   public Location apply(LocationWrapper ppmsData) {
     ProviderServicesResponse.Value providerServices =
-            ppmsData.providerServicesResponse().value() == null
-                    || ppmsData.providerServicesResponse().value().isEmpty()
-                    ? null
-                    : ppmsData.providerServicesResponse().value().get(0);
+        ppmsData.providerServicesResponse().value() == null
+                || ppmsData.providerServicesResponse().value().isEmpty()
+            ? null
+            : ppmsData.providerServicesResponse().value().get(0);
     ProviderResponse.Value providerResponse =
-            ppmsData.providerResponse().value() == null || ppmsData.providerResponse().value().isEmpty()
-                    ? null
-                    : ppmsData.providerResponse().value().get(0);
+        ppmsData.providerResponse().value() == null || ppmsData.providerResponse().value().isEmpty()
+            ? null
+            : ppmsData.providerResponse().value().get(0);
     CareSitesResponse.Value careSiteResponse =
             ppmsData.careSitesResponse().value() == null
                     || ppmsData.careSitesResponse().value().isEmpty()
@@ -56,7 +56,6 @@ public class LocationTransformer implements LocationController.Transformer {
                             : careSiteTelecoms(careSiteResponse))
             .build();
   }
-
 
   LocationAddress careSiteResponseAddress(CareSitesResponse.Value value) {
     return convert(
@@ -88,7 +87,6 @@ public class LocationTransformer implements LocationController.Transformer {
     }
     return telecoms;
   }
-
 
   LocationAddress providerResponseAddress(ProviderResponse.Value value) {
     return convert(
