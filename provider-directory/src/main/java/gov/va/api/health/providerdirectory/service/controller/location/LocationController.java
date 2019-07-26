@@ -75,6 +75,7 @@ public class LocationController {
     if (parameters.get("identifier") != null) {
       String identifier = parameters.get("identifier").toArray()[0].toString();
       locationWrapper.providerServicesResponse(ppmsClient.providerServicesById(identifier));
+      locationWrapper.providerResponse(ProviderResponse.builder().value(Collections.singletonList(ProviderResponse.Value.builder().providerIdentifier(Integer.parseInt(parameters.get("identifier").toArray()[0].toString())).build())).build());
       if (locationWrapper.build().providerServicesResponse().value() == null
           || locationWrapper.build().providerServicesResponse().value().isEmpty()) {
         locationWrapper.providerResponse(ppmsClient.providersForId(identifier));

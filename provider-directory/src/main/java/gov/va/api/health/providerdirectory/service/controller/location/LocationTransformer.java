@@ -33,8 +33,10 @@ public class LocationTransformer implements LocationController.Transformer {
                     || ppmsData.careSitesResponse().value().isEmpty()
                     ? null
                     : ppmsData.careSitesResponse().value().get(0);
+
     return Location.builder()
             .resourceType("Location")
+            .id(providerResponse != null ? providerResponse.providerIdentifier().toString() : null)
             .name(
                     providerServices != null
                             ? providerServices.careSiteName()
