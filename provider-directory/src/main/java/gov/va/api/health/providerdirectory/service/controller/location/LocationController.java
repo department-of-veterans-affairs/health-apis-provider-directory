@@ -12,6 +12,8 @@ import gov.va.api.health.providerdirectory.service.controller.Parameters;
 import gov.va.api.health.providerdirectory.service.controller.Validator;
 import gov.va.api.health.stu3.api.resources.Location;
 import gov.va.api.health.stu3.api.resources.OperationOutcome;
+
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -115,12 +117,13 @@ public class LocationController {
       }
     } else if (parameters.get("name") != null) {
       String name = parameters.get("name").toArray()[0].toString();
-      locationWrapper.providerResponse(ppmsClient.providersForName(name));
+      locationWrapper.providerResponse(ppmsClient.providersForName(name.split("'")[0].split("/")[0].split("#")[0]));
       totalRecords = locationWrapper.build().providerResponse().value().size();
       fromIndex =
           Math.min((page - 1) * count, locationWrapper.build().providerResponse().value().size());
       toIndex =
           Math.min((fromIndex + count), locationWrapper.build().providerResponse().value().size());
+
       providerServicesResponsePages =
           IntStream.range(fromIndex, toIndex)
               .parallel()
@@ -128,7 +131,7 @@ public class LocationController {
                   i -> {
                     try {
                       return ppmsClient.providerServicesByName(
-                          locationWrapper.build().providerResponse().value().get(i).name());
+                          locationWrapper.build().providerResponse().value().get(i).name().split("'")[0].split("/")[0].split("#")[0]);
                     } catch (Exception e) {
                       return ProviderServicesResponse.builder().build();
                     }
@@ -182,7 +185,7 @@ public class LocationController {
                 currentPage.providerServicesResponse().value().get(0).careSiteName() == null
                     ? CareSitesResponse.builder().build()
                     : ppmsClient.careSitesByName(
-                        currentPage.providerServicesResponse().value().get(0).careSiteName());
+                        currentPage.providerServicesResponse().value().get(0).careSiteName().split("'")[0].split("/")[0].split("#")[0]);
             if (currenCareSiteResponse == null
                 || currenCareSiteResponse.value() == null
                 || currenCareSiteResponse.value().isEmpty()) {
@@ -195,7 +198,7 @@ public class LocationController {
                               .providerServicesResponse()
                               .value()
                               .get(0)
-                              .organiztionGroupName());
+                              .organiztionGroupName().split("'")[0].split("/")[0].split("#")[0]);
             }
             if (currenCareSiteResponse.value() == null
                 || currenCareSiteResponse.value().isEmpty()
@@ -205,7 +208,7 @@ public class LocationController {
               filteredResults.remove(filteredResults.size() - 1);
               filteredResults.add(
                   LocationWrapper.builder()
-                      .careSitesResponse(
+                          .careSitesResponse(
                           CareSitesResponse.builder()
                               .value(
                                   Collections.singletonList(currenCareSiteResponse.value().get(0)))
@@ -242,7 +245,7 @@ public class LocationController {
               .mapToObj(
                   i ->
                       ppmsClient.providerServicesByName(
-                          locationWrapper.build().careSitesResponse().value().get(i).name()))
+                          locationWrapper.build().careSitesResponse().value().get(i).name().split("'")[0].split("/")[0].split("#")[0]))
               .collect(Collectors.toList());
       careSiteResponsePages =
           locationWrapper.build().careSitesResponse().value().subList(fromIndex, toIndex);
@@ -276,7 +279,7 @@ public class LocationController {
                   currentPage.careSitesResponse().value().get(0).owningOrganizationName() == null
                       ? ProviderResponse.builder().build()
                       : ppmsClient.providersForName(
-                          currentPage.careSitesResponse().value().get(0).owningOrganizationName());
+                          currentPage.careSitesResponse().value().get(0).owningOrganizationName().split("'")[0].split("/")[0].split("#")[0]);
             } catch (Exception e) {
               currentProviderResponse = ProviderResponse.builder().build();
             }
@@ -285,7 +288,7 @@ public class LocationController {
               try {
                 currentProviderResponse =
                     ppmsClient.providersForName(
-                        currentPage.careSitesResponse().value().get(0).name());
+                        currentPage.careSitesResponse().value().get(0).name().split("'")[0].split("/")[0].split("#")[0]);
               } catch (Exception e) {
                 currentProviderResponse = ProviderResponse.builder().build();
               }

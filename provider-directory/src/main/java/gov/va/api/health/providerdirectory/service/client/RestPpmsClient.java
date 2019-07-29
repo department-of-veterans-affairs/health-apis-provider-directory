@@ -104,12 +104,11 @@ public class RestPpmsClient implements PpmsClient {
 
   @Override
   public CareSitesResponse careSitesByName(String name) {
-    String hackyNameFix = name.split("'")[0].split("/")[0];
     return handlePpmsExceptions(
-        hackyNameFix,
+        name,
         () -> {
           String url =
-              UriComponentsBuilder.fromHttpUrl(baseUrl + "CareSites('" + hackyNameFix + "')")
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "CareSites('" + name + "')")
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
@@ -187,13 +186,12 @@ public class RestPpmsClient implements PpmsClient {
 
   @Override
   public ProviderServicesResponse providerServicesByName(String name) {
-    String hackyNameFix = name.split("'")[0].split("/")[0];
     return handlePpmsExceptions(
-        hackyNameFix,
+        name,
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(
-                      baseUrl + "CareSites('" + hackyNameFix + "')/ProviderServices")
+                      baseUrl + "CareSites('" + name + "')/ProviderServices")
                   .build()
                   .toUriString();
           HttpEntity<?> requestEntity = new HttpEntity<>(headers());
