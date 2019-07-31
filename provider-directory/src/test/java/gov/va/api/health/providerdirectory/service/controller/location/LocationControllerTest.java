@@ -139,11 +139,6 @@ public final class LocationControllerTest {
                     asList(
                         ProviderServicesResponse.Value.builder().providerName("No Phone").build()))
                 .build());
-    when(ppmsClient.providersForName("No Phone"))
-        .thenReturn(
-            ProviderResponse.builder()
-                .value(asList(ProviderResponse.Value.builder().providerIdentifier(456).build()))
-                .build());
     when(ppmsClient.providerServicesByName("PPMS has nothing for me :("))
         .thenReturn(
             ProviderServicesResponse.builder()
@@ -151,6 +146,29 @@ public final class LocationControllerTest {
                     asList(
                         ProviderServicesResponse.Value.builder()
                             .providerName("PPMS has nothing for me :(")
+                            .build()))
+                .build());
+    when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .name("Clark, Alexander  - Orthopaedic Surgery - Sports Medicine ")
+                            .affiliationName("TriWest - Choice")
+                            .relationshipName("Choice")
+                            .providerName("Clark, Alexander")
+                            .specialtyName("Orthopaedic Surgery - Sports Medicine")
+                            .hpp("Unknown")
+                            .highPerformingProvider("TriWest - Choice(U)")
+                            .careSiteName("Sharon Hospital Medical Practice")
+                            .careSiteLocationAddress("50 Hospital Hill Rd, Sharon, CT, 06069")
+                            .careSiteAddressStreet("50 Hospital Hill Rd")
+                            .careSiteAddressCity("Sharon")
+                            .careSiteAddressState("CT")
+                            .careSiteAddressZipCode("06069")
+                            .latitude("41.88094667")
+                            .longitude("-73.48159833")
                             .build()))
                 .build());
     when(ppmsClient.providerServicesByName("Beacon Orthopaedics & Sports Medicine Ltd"))
@@ -203,30 +221,11 @@ public final class LocationControllerTest {
                             .longitude("-73.48159833")
                             .build()))
                 .build());
-    when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
+    when(ppmsClient.providersForName("No Phone"))
         .thenReturn(
-            ProviderServicesResponse.builder()
-                .value(
-                    asList(
-                        ProviderServicesResponse.Value.builder()
-                            .name("Clark, Alexander  - Orthopaedic Surgery - Sports Medicine ")
-                            .affiliationName("TriWest - Choice")
-                            .relationshipName("Choice")
-                            .providerName("Clark, Alexander")
-                            .specialtyName("Orthopaedic Surgery - Sports Medicine")
-                            .hpp("Unknown")
-                            .highPerformingProvider("TriWest - Choice(U)")
-                            .careSiteName("Sharon Hospital Medical Practice")
-                            .careSiteLocationAddress("50 Hospital Hill Rd, Sharon, CT, 06069")
-                            .careSiteAddressStreet("50 Hospital Hill Rd")
-                            .careSiteAddressCity("Sharon")
-                            .careSiteAddressState("CT")
-                            .careSiteAddressZipCode("06069")
-                            .latitude("41.88094667")
-                            .longitude("-73.48159833")
-                            .build()))
+            ProviderResponse.builder()
+                .value(asList(ProviderResponse.Value.builder().providerIdentifier(456).build()))
                 .build());
-
     when(ppmsClient.providersForName("Clark, Alexander"))
         .thenReturn(
             ProviderResponse.builder()
