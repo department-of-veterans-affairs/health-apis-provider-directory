@@ -31,7 +31,7 @@ public final class LocationControllerTest {
 
   @Test
   public void searchByCity() {
-    when(ppmsClient.careSitesByCity("Sharon"))
+        when(ppmsClient.careSitesByCity("Sharon"))
         .thenReturn(
             CareSitesResponse.builder()
                 .value(
@@ -110,6 +110,9 @@ public final class LocationControllerTest {
                             .careSitePhoneNumber("5133543700")
                             .build()))
                 .build());
+    when(ppmsClient.providersForName("Sharon Hospital Medical Practice")).thenReturn(ProviderResponse.builder().value(asList(ProviderResponse.Value.builder().providerIdentifier(123).build())).build());
+    when(ppmsClient.providersForName("Beacon Orthopaedics & Sports Medicine Ltd")).thenReturn(ProviderResponse.builder().value(asList(ProviderResponse.Value.builder().providerIdentifier(123).build())).build());
+
     when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
         .thenReturn(
             ProviderServicesResponse.builder()
@@ -144,7 +147,7 @@ public final class LocationControllerTest {
                     .resourceType("Location")
                     .status(Location.Status.active)
                     .name("Beacon Orthopaedics & Sports Medicine Ltd")
-                    .telecom(
+                    .id("123").telecom(
                         asList(
                             ContactPoint.builder()
                                 .system(ContactPoint.ContactPointSystem.phone)
@@ -163,7 +166,7 @@ public final class LocationControllerTest {
                     .resourceType("Location")
                     .status(Location.Status.active)
                     .name("Sharon Hospital Medical Practice")
-                    .telecom(
+                    .id("123").telecom(
                         asList(
                             ContactPoint.builder()
                                 .system(ContactPoint.ContactPointSystem.phone)
@@ -460,6 +463,9 @@ public final class LocationControllerTest {
 
   @Test
   public void searchByState() {
+    when(ppmsClient.providersForName("Sharon Hospital Medical Practice")).thenReturn(ProviderResponse.builder().value(asList(ProviderResponse.Value.builder().providerIdentifier(123).build())).build());
+    when(ppmsClient.providersForName("Beacon Orthopaedics & Sports Medicine Ltd")).thenReturn(ProviderResponse.builder().value(asList(ProviderResponse.Value.builder().providerIdentifier(123).build())).build());
+
     when(ppmsClient.careSitesByState("Fl"))
         .thenReturn(
             CareSitesResponse.builder()
@@ -572,7 +578,7 @@ public final class LocationControllerTest {
                 Location.builder()
                     .resourceType("Location")
                     .status(Location.Status.active)
-                    .name("Beacon Orthopaedics & Sports Medicine Ltd")
+                    .id("123").name("Beacon Orthopaedics & Sports Medicine Ltd")
                     .telecom(
                         asList(
                             ContactPoint.builder()
@@ -592,7 +598,7 @@ public final class LocationControllerTest {
                     .resourceType("Location")
                     .status(Location.Status.active)
                     .name("Sharon Hospital Medical Practice")
-                    .telecom(
+                   .id("123") .telecom(
                         asList(
                             ContactPoint.builder()
                                 .system(ContactPoint.ContactPointSystem.phone)
@@ -611,6 +617,9 @@ public final class LocationControllerTest {
 
   @Test
   public void searchByZip() {
+    when(ppmsClient.providersForName("Sharon Hospital Medical Practice")).thenReturn(ProviderResponse.builder().value(asList(ProviderResponse.Value.builder().providerIdentifier(123).build())).build());
+    when(ppmsClient.providersForName("Beacon Orthopaedics & Sports Medicine Ltd")).thenReturn(ProviderResponse.builder().value(asList(ProviderResponse.Value.builder().providerIdentifier(123).build())).build());
+
     when(ppmsClient.careSitesByZip("45341"))
         .thenReturn(
             CareSitesResponse.builder()
@@ -723,7 +732,7 @@ public final class LocationControllerTest {
                 Location.builder()
                     .resourceType("Location")
                     .status(Location.Status.active)
-                    .name("Beacon Orthopaedics & Sports Medicine Ltd")
+                    .id("123").name("Beacon Orthopaedics & Sports Medicine Ltd")
                     .telecom(
                         asList(
                             ContactPoint.builder()
@@ -742,7 +751,7 @@ public final class LocationControllerTest {
                 Location.builder()
                     .resourceType("Location")
                     .status(Location.Status.active)
-                    .name("Sharon Hospital Medical Practice")
+                    .id("123").name("Sharon Hospital Medical Practice")
                     .telecom(
                         asList(
                             ContactPoint.builder()
