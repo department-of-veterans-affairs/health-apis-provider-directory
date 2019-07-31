@@ -42,10 +42,11 @@ public class LocationTransformer implements LocationController.Transformer {
                 ? providerServices.careSiteName()
                 : careSiteResponse != null ? careSiteResponse.name() : providerResponse.name())
         .status(Location.Status.active)
-        .address((careSiteResponse != null && careSiteResponse.city() != null)
-                ? careSiteResponseAddress(careSiteResponse) :
-            (providerServices != null && providerServices.careSiteAddressCity() != null)
-                ? providerServicesResponseAddress(providerServices)
+        .address(
+            (careSiteResponse != null && careSiteResponse.city() != null)
+                ? careSiteResponseAddress(careSiteResponse)
+                : (providerServices != null && providerServices.careSiteAddressCity() != null)
+                    ? providerServicesResponseAddress(providerServices)
                     : providerResponseAddress(providerResponse))
         .telecom(
             providerServicesTelecoms(providerServices) != null
