@@ -140,7 +140,7 @@ public class LocationController {
       providerResponsePages =
           locationWrapper.build().providerResponse().value().subList(fromIndex, toIndex);
       ProviderServicesResponse currentProviderServiceResponse;
-      CareSitesResponse currenCareSiteResponse;
+      CareSitesResponse currentCareSiteResponse;
       for (int i = 0; i < providerServicesResponsePages.size(); i++) {
         currentProviderServiceResponse = providerServicesResponsePages.get(i);
         if (currentProviderServiceResponse.value() == null
@@ -181,15 +181,15 @@ public class LocationController {
               || currentPage.providerServicesResponse().value().get(0).name() == null) {
             filteredResults.remove(filteredResults.size() - 1);
           } else {
-            currenCareSiteResponse =
+            currentCareSiteResponse =
                 currentPage.providerServicesResponse().value().get(0).careSiteName() == null
                     ? CareSitesResponse.builder().build()
                     : ppmsClient.careSitesByName(
                         currentPage.providerServicesResponse().value().get(0).careSiteName().split("'")[0].split("/")[0].split("#")[0]);
-            if (currenCareSiteResponse == null
-                || currenCareSiteResponse.value() == null
-                || currenCareSiteResponse.value().isEmpty()) {
-              currenCareSiteResponse =
+            if (currentCareSiteResponse == null
+                || currentCareSiteResponse.value() == null
+                || currentCareSiteResponse.value().isEmpty()) {
+              currentCareSiteResponse =
                   currentPage.providerServicesResponse().value().get(0).organiztionGroupName()
                           == null
                       ? CareSitesResponse.builder().build()
@@ -200,9 +200,9 @@ public class LocationController {
                               .get(0)
                               .organiztionGroupName().split("'")[0].split("/")[0].split("#")[0]);
             }
-            if (currenCareSiteResponse.value() == null
-                || currenCareSiteResponse.value().isEmpty()
-                || currenCareSiteResponse.value().get(0).mainSitePhone() == null) {
+            if (currentCareSiteResponse.value() == null
+                || currentCareSiteResponse.value().isEmpty()
+                || currentCareSiteResponse.value().get(0).mainSitePhone() == null) {
               filteredResults.remove(filteredResults.size() - 1);
             } else {
               filteredResults.remove(filteredResults.size() - 1);
@@ -211,7 +211,7 @@ public class LocationController {
                           .careSitesResponse(
                           CareSitesResponse.builder()
                               .value(
-                                  Collections.singletonList(currenCareSiteResponse.value().get(0)))
+                                  Collections.singletonList(currentCareSiteResponse.value().get(0)))
                               .build())
                       .providerResponse(
                           ProviderResponse.builder()
@@ -247,91 +247,81 @@ public class LocationController {
                       ppmsClient.providerServicesByName(
                           locationWrapper.build().careSitesResponse().value().get(i).name().split("'")[0].split("/")[0].split("#")[0]))
               .collect(Collectors.toList());
+
       careSiteResponsePages =
           locationWrapper.build().careSitesResponse().value().subList(fromIndex, toIndex);
       ProviderResponse currentProviderResponse;
       ProviderServicesResponse providerServicesResponse;
       for (int i = 0; i < providerServicesResponsePages.size(); i++) {
-        filteredResults.add(
-            LocationWrapper.builder()
-                .providerResponse(ProviderResponse.builder().build())
-                .careSitesResponse(
-                    CareSitesResponse.builder()
-                        .value(Collections.singletonList(careSiteResponsePages.get(i)))
-                        .build())
-                .providerServicesResponse(providerServicesResponsePages.get(i))
-                .build());
-        currentPage = filteredResults.get(filteredResults.size() - 1);
-        if ((currentPage.careSitesResponse().value() == null
-                || currentPage.careSitesResponse().value().isEmpty()
-                || currentPage.careSitesResponse().value().get(0).mainSitePhone() == null)
-            && (currentPage.providerServicesResponse().value() == null
-                || currentPage.providerServicesResponse().value().isEmpty()
-                || currentPage.providerServicesResponse().value().get(0).careSitePhoneNumber()
-                    == null)) {
-          if (currentPage.careSitesResponse().value() == null
-              || currentPage.careSitesResponse().value().isEmpty()
-              || currentPage.careSitesResponse().value().get(0).name() == null) {
-            filteredResults.remove(filteredResults.size() - 1);
-          } else {
-            try {
-              currentProviderResponse =
-                  currentPage.careSitesResponse().value().get(0).owningOrganizationName() == null
-                      ? ProviderResponse.builder().build()
-                      : ppmsClient.providersForName(
-                          currentPage.careSitesResponse().value().get(0).owningOrganizationName().split("'")[0].split("/")[0].split("#")[0]);
-            } catch (Exception e) {
-              currentProviderResponse = ProviderResponse.builder().build();
-            }
-            if (currentProviderResponse.value() == null
+        try {
+          currentProviderResponse =
+                  careSiteResponsePages.get(i).owningOrganizationName() == null
+                          ? ProviderResponse.builder().build()
+                          : ppmsClient.providersForName(
+                          careSiteResponsePages.get(i).owningOrganizationName().split("'")[0].split("/")[0].split("#")[0]);
+        } catch (Exception e) {
+          currentProviderResponse = ProviderResponse.builder().build();
+        }
+        if (currentProviderResponse.value() == null
                 || currentProviderResponse.value().isEmpty()) {
-              try {
-                currentProviderResponse =
+          try {
+            currentProviderResponse =
                     ppmsClient.providersForName(
-                        currentPage.careSitesResponse().value().get(0).name().split("'")[0].split("/")[0].split("#")[0]);
-              } catch (Exception e) {
-                currentProviderResponse = ProviderResponse.builder().build();
-              }
-            }
-            if (currentProviderResponse.value() == null
-                || currentProviderResponse.value().isEmpty()) {
-              filteredResults.remove(filteredResults.size() - 1);
-            } else if (currentProviderResponse.value().get(0).mainPhone() != null) {
-              filteredResults.remove(filteredResults.size() - 1);
-              filteredResults.add(
+                            careSiteResponsePages.get(i).name().split("'")[0].split("/")[0].split("#")[0]);
+          } catch (Exception e) {
+            currentProviderResponse = ProviderResponse.builder().build();
+          }
+        }
+        if(currentProviderResponse.value() == null || currentProviderResponse.value().isEmpty()){
+          try {
+            currentProviderResponse = ppmsClient.providersForName(providerServicesResponsePages.get(i).value().get(0).providerName().split("'")[0].split("/")[0].split("#")[0]);
+          }
+          catch (Exception e){
+            currentProviderResponse = ProviderResponse.builder().build();
+          }
+        }
+        if (currentProviderResponse.value() != null && !currentProviderResponse.value().isEmpty()) {
+          filteredResults.add(
                   LocationWrapper.builder()
-                      .providerResponse(
-                          ProviderResponse.builder().value(currentProviderResponse.value()).build())
-                      .careSitesResponse(
-                          CareSitesResponse.builder()
-                              .value(Collections.singletonList(careSiteResponsePages.get(i)))
-                              .build())
-                      .providerServicesResponse(providerServicesResponsePages.get(i))
-                      .build());
-            } else {
-              providerServicesResponse =
-                  ppmsClient.providerServicesById(
-                      currentProviderResponse.value().get(0).providerIdentifier().toString());
-              if (providerServicesResponse.value() == null
-                  || providerServicesResponse.value().isEmpty()
-                  || providerServicesResponse.value().get(0).careSitePhoneNumber() == null) {
-                filteredResults.remove(filteredResults.size() - 1);
-              } else {
-                filteredResults.remove(filteredResults.size() - 1);
-                filteredResults.add(
-                    LocationWrapper.builder()
-                        .providerResponse(
-                            ProviderResponse.builder()
-                                .value(currentProviderResponse.value())
-                                .build())
-                        .careSitesResponse(
-                            CareSitesResponse.builder()
-                                .value(Collections.singletonList(careSiteResponsePages.get(i)))
-                                .build())
-                        .providerServicesResponse(providerServicesResponse)
-                        .build());
+                          .providerResponse(currentProviderResponse)
+                          .careSitesResponse(
+                                  CareSitesResponse.builder()
+                                          .value(Collections.singletonList(careSiteResponsePages.get(i)))
+                                          .build())
+                          .providerServicesResponse(providerServicesResponsePages.get(i))
+                          .build());
+          currentPage = filteredResults.get(filteredResults.size() - 1);
+          if ((currentPage.careSitesResponse().value() == null
+                  || currentPage.careSitesResponse().value().isEmpty()
+                  || currentPage.careSitesResponse().value().get(0).mainSitePhone() == null)
+                  && (currentPage.providerServicesResponse().value() == null
+                  || currentPage.providerServicesResponse().value().isEmpty()
+                  || currentPage.providerServicesResponse().value().get(0).careSitePhoneNumber()
+                  == null) && (currentPage.providerResponse().value() == null
+                  || currentPage.providerResponse().value().isEmpty()
+                  || currentPage.providerResponse().value().get(0).mainPhone()
+                  == null)) {
+
+                providerServicesResponse =
+                        ppmsClient.providerServicesById(
+                                currentProviderResponse.value().get(0).providerIdentifier().toString());
+                if (providerServicesResponse.value() == null
+                        || providerServicesResponse.value().isEmpty()
+                        || providerServicesResponse.value().get(0).careSitePhoneNumber() == null) {
+                  filteredResults.remove(filteredResults.size() - 1);
+                } else {
+                  filteredResults.remove(filteredResults.size() - 1);
+                  filteredResults.add(
+                          LocationWrapper.builder()
+                                  .providerResponse(
+                                          currentProviderResponse)
+                                  .careSitesResponse(
+                                          CareSitesResponse.builder()
+                                                  .value(Collections.singletonList(careSiteResponsePages.get(i)))
+                                                  .build())
+                                  .providerServicesResponse(providerServicesResponse)
+                                  .build());
               }
-            }
           }
         }
       }
