@@ -92,7 +92,7 @@ public final class ProviderServicesResponse implements PpmsResponse {
     private String careSitePhoneNumber;
 
     @JsonProperty("OrganiztionGroupName")
-    private String organiztionGroupName;
+    private String organizationGroupName;
 
     @JsonProperty("DescriptionOfService")
     private String descriptionOfService;

@@ -204,7 +204,7 @@ public class LocationController {
                 || currentCareSiteResponse.value() == null
                 || currentCareSiteResponse.value().isEmpty()) {
               currentCareSiteResponse =
-                  currentPage.providerServicesResponse().value().get(0).organiztionGroupName()
+                  currentPage.providerServicesResponse().value().get(0).organizationGroupName()
                           == null
                       ? CareSitesResponse.builder().build()
                       : ppmsClient.careSitesByName(
@@ -212,7 +212,7 @@ public class LocationController {
                               .providerServicesResponse()
                               .value()
                               .get(0)
-                              .organiztionGroupName()
+                              .organizationGroupName()
                               .split("'")[0]
                               .split("/")[0]
                               .split("#")[0]);
@@ -338,7 +338,6 @@ public class LocationController {
               && (currentPage.providerResponse().value() == null
                   || currentPage.providerResponse().value().isEmpty()
                   || currentPage.providerResponse().value().get(0).mainPhone() == null)) {
-
             providerServicesResponse =
                 ppmsClient.providerServicesById(
                     currentProviderResponse.value().get(0).providerIdentifier().toString());
