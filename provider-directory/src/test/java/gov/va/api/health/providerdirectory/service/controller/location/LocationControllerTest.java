@@ -404,30 +404,6 @@ public final class LocationControllerTest {
                 .value(asList(ProviderResponse.Value.builder().providerIdentifier(123).build()))
                 .build());
 
-    when(ppmsClient.providerServicesByName("Sharon Hospital Medical Practice"))
-        .thenReturn(
-            ProviderServicesResponse.builder()
-                .value(
-                    asList(
-                        ProviderServicesResponse.Value.builder()
-                            .name("Clark, Alexander  - Orthopaedic Surgery - Sports Medicine ")
-                            .affiliationName("TriWest - Choice")
-                            .relationshipName("Choice")
-                            .providerName("Clark, Alexander")
-                            .specialtyName("Orthopaedic Surgery - Sports Medicine")
-                            .hpp("Unknown")
-                            .highPerformingProvider("TriWest - Choice(U)")
-                            .careSiteName("Sharon Hospital Medical Practice")
-                            .careSiteLocationAddress("50 Hospital Hill Rd, Sharon, CT, 06069")
-                            .careSiteAddressStreet("50 Hospital Hill Rd")
-                            .careSiteAddressCity("Sharon")
-                            .careSiteAddressState("CT")
-                            .careSiteAddressZipCode("06069")
-                            .latitude("41.88094667")
-                            .longitude("-73.48159833")
-                            .careSitePhoneNumber("8603644511")
-                            .build()))
-                .build());
     Location.Bundle actual = controller.searchByCity("Sharon", 1, 2);
     assertThat(actual.entry().stream().map(e -> e.resource()).collect(Collectors.toList()))
         .isEqualTo(
