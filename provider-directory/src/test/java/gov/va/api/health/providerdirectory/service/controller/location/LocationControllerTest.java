@@ -570,7 +570,7 @@ public final class LocationControllerTest {
   }
 
   @Test
-  public void searchByNameHappyPath() {
+  public void searchByName() {
     when(ppmsClient.providersForName("A I Advance Imaging of Tulsa LLC"))
         .thenReturn(
             ProviderResponse.builder()
