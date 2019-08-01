@@ -100,7 +100,6 @@ public class LocationController {
     List<LocationWrapper> filteredResults = new ArrayList<>();
     LocationWrapper currentPage;
     totalRecords = 1;
-
     if (parameters.get("address-city") != null) {
       String city = parameters.getFirst("address-city");
       locationWrapper.careSitesResponse(ppmsClient.careSitesByCity(city));
@@ -124,15 +123,8 @@ public class LocationController {
             .mapToObj(
                 i ->
                     ppmsClient.providerServicesByName(
-                        locationWrapper
-                            .build()
-                            .careSitesResponse()
-                            .value()
-                            .get(i)
-                            .name()
-                            .split("'")[0]
-                            .split("/")[0]
-                            .split("#")[0]))
+                        trimIllegalCharacters(
+                            locationWrapper.build().careSitesResponse().value().get(i).name())))
             .collect(Collectors.toList());
     List<CareSitesResponse.Value> careSiteResponsePages =
         locationWrapper.build().careSitesResponse().value().subList(fromIndex, toIndex);
@@ -144,12 +136,7 @@ public class LocationController {
             careSiteResponsePages.get(i).owningOrganizationName() == null
                 ? ProviderResponse.builder().build()
                 : ppmsClient.providersForName(
-                    careSiteResponsePages
-                        .get(i)
-                        .owningOrganizationName()
-                        .split("'")[0]
-                        .split("/")[0]
-                        .split("#")[0]);
+                    trimIllegalCharacters(careSiteResponsePages.get(i).owningOrganizationName()));
       } catch (Exception e) {
         currentProviderResponse = ProviderResponse.builder().build();
       }
@@ -157,7 +144,7 @@ public class LocationController {
         try {
           currentProviderResponse =
               ppmsClient.providersForName(
-                  careSiteResponsePages.get(i).name().split("'")[0].split("/")[0].split("#")[0]);
+                  trimIllegalCharacters(careSiteResponsePages.get(i).name()));
         } catch (Exception e) {
           currentProviderResponse = ProviderResponse.builder().build();
         }
@@ -166,14 +153,8 @@ public class LocationController {
         try {
           currentProviderResponse =
               ppmsClient.providersForName(
-                  providerServicesResponsePages
-                      .get(i)
-                      .value()
-                      .get(0)
-                      .providerName()
-                      .split("'")[0]
-                      .split("/")[0]
-                      .split("#")[0]);
+                  trimIllegalCharacters(
+                      providerServicesResponsePages.get(i).value().get(0).providerName()));
         } catch (Exception e) {
           currentProviderResponse = ProviderResponse.builder().build();
         }
@@ -332,12 +313,9 @@ public class LocationController {
             .providerResponse(ProviderResponse.builder().build())
             .providerServicesResponse(ProviderServicesResponse.builder().build());
     List<LocationWrapper> filteredResults = new ArrayList<>();
-
     totalRecords = 1;
-
     String name = parameters.get("name").toArray()[0].toString();
-    locationWrapper.providerResponse(
-        ppmsClient.providersForName(name.split("'")[0].split("/")[0].split("#")[0]));
+    locationWrapper.providerResponse(ppmsClient.providersForName(trimIllegalCharacters(name)));
     totalRecords = locationWrapper.build().providerResponse().value().size();
     int page = Integer.parseInt(parameters.getOrDefault("page", singletonList("1")).get(0));
     int count = Integer.parseInt(parameters.getOrDefault("_count", singletonList("15")).get(0));
@@ -352,15 +330,8 @@ public class LocationController {
                 i -> {
                   try {
                     return ppmsClient.providerServicesByName(
-                        locationWrapper
-                            .build()
-                            .providerResponse()
-                            .value()
-                            .get(i)
-                            .name()
-                            .split("'")[0]
-                            .split("/")[0]
-                            .split("#")[0]);
+                        trimIllegalCharacters(
+                            locationWrapper.build().providerResponse().value().get(i).name()));
                   } catch (Exception e) {
                     return ProviderServicesResponse.builder().build();
                   }
@@ -415,14 +386,8 @@ public class LocationController {
               currentPage.providerServicesResponse().value().get(0).careSiteName() == null
                   ? CareSitesResponse.builder().build()
                   : ppmsClient.careSitesByName(
-                      currentPage
-                          .providerServicesResponse()
-                          .value()
-                          .get(0)
-                          .careSiteName()
-                          .split("'")[0]
-                          .split("/")[0]
-                          .split("#")[0]);
+                      trimIllegalCharacters(
+                          currentPage.providerServicesResponse().value().get(0).careSiteName()));
           if (currentCareSiteResponse == null
               || currentCareSiteResponse.value() == null
               || currentCareSiteResponse.value().isEmpty()) {
@@ -431,14 +396,12 @@ public class LocationController {
                         == null
                     ? CareSitesResponse.builder().build()
                     : ppmsClient.careSitesByName(
-                        currentPage
-                            .providerServicesResponse()
-                            .value()
-                            .get(0)
-                            .organizationGroupName()
-                            .split("'")[0]
-                            .split("/")[0]
-                            .split("#")[0]);
+                        trimIllegalCharacters(
+                            currentPage
+                                .providerServicesResponse()
+                                .value()
+                                .get(0)
+                                .organizationGroupName()));
           }
           if (currentCareSiteResponse.value() == null
               || currentCareSiteResponse.value().isEmpty()
@@ -463,6 +426,10 @@ public class LocationController {
       }
     }
     return filteredResults;
+  }
+
+  private String trimIllegalCharacters(String name) {
+    return name.split("'")[0].split("/")[0].split("#")[0];
   }
 
   /** Hey, this is a validate endpoint. It validates. */
