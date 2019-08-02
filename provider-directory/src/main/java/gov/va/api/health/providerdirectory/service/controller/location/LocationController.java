@@ -92,11 +92,7 @@ public class LocationController {
   }
 
   private List<LocationWrapper> searchAddress(MultiValueMap<String, String> parameters) {
-    LocationWrapper.LocationWrapperBuilder locationWrapper =
-        LocationWrapper.builder()
-            .careSitesResponse(CareSitesResponse.builder().build())
-            .providerResponse(ProviderResponse.builder().build())
-            .providerServicesResponse(ProviderServicesResponse.builder().build());
+    LocationWrapper.LocationWrapperBuilder locationWrapper = new LocationWrapper.LocationWrapperBuilder();
     List<LocationWrapper> filteredResults = new ArrayList<>();
     LocationWrapper currentPage;
     totalRecords = 1;
@@ -282,39 +278,29 @@ public class LocationController {
   }
 
   private List<LocationWrapper> searchIdentifier(MultiValueMap<String, String> parameters) {
-    LocationWrapper.LocationWrapperBuilder locationWrapper =
-        LocationWrapper.builder()
-            .careSitesResponse(CareSitesResponse.builder().build())
-            .providerResponse(ProviderResponse.builder().build())
-            .providerServicesResponse(ProviderServicesResponse.builder().build());
+    LocationWrapper.LocationWrapperBuilder locationWrapper = new LocationWrapper.LocationWrapperBuilder();
     String identifier = parameters.getFirst("identifier");
     ProviderServicesResponse providerServicesResponse = ppmsClient.providerServicesById(identifier);
-    locationWrapper.providerResponse(
-        ProviderResponse.builder()
-            .value(
-                singletonList(
-                    ProviderResponse.Value.builder()
-                        .providerIdentifier(
-                            Integer.parseInt(parameters.get("identifier").toArray()[0].toString()))
-                        .build()))
-            .build());
     if (providerServicesResponse.value().isEmpty()) {
-      locationWrapper.providerResponse(ppmsClient.providersForId(identifier));
-      locationWrapper.careSitesResponse(ppmsClient.careSitesById(identifier));
+      return singletonList(locationWrapper.providerResponse(ppmsClient.providersForId(identifier)).careSitesResponse(ppmsClient.careSitesById(identifier)).build());
     }
-    return singletonList(
-        locationWrapper.providerServicesResponse(providerServicesResponse).build());
+    else {
+      return singletonList(locationWrapper.providerResponse(
+              ProviderResponse.builder()
+                      .value(
+                              singletonList(
+                                      ProviderResponse.Value.builder()
+                                              .providerIdentifier(
+                                                      Integer.parseInt(identifier))
+                                              .build()))
+                      .build()).providerServicesResponse(providerServicesResponse).build());
+    }
   }
 
   private List<LocationWrapper> searchName(MultiValueMap<String, String> parameters) {
-    LocationWrapper.LocationWrapperBuilder locationWrapper =
-        LocationWrapper.builder()
-            .careSitesResponse(CareSitesResponse.builder().build())
-            .providerResponse(ProviderResponse.builder().build())
-            .providerServicesResponse(ProviderServicesResponse.builder().build());
+    LocationWrapper.LocationWrapperBuilder locationWrapper = new LocationWrapper.LocationWrapperBuilder();
     List<LocationWrapper> filteredResults = new ArrayList<>();
-    totalRecords = 1;
-    String name = parameters.get("name").toArray()[0].toString();
+    String name = parameters.getFirst("name");
     locationWrapper.providerResponse(ppmsClient.providersForName(trimIllegalCharacters(name)));
     totalRecords = locationWrapper.build().providerResponse().value().size();
     int page = Integer.parseInt(parameters.getOrDefault("page", singletonList("1")).get(0));
@@ -339,13 +325,10 @@ public class LocationController {
             .collect(Collectors.toList());
     List<ProviderResponse.Value> providerResponsePages =
         locationWrapper.build().providerResponse().value().subList(fromIndex, toIndex);
-    ProviderServicesResponse currentProviderServiceResponse;
-    CareSitesResponse currentCareSiteResponse;
-    LocationWrapper currentPage;
+
     for (int i = 0; i < providerServicesResponsePages.size(); i++) {
-      currentProviderServiceResponse = providerServicesResponsePages.get(i);
-      if (currentProviderServiceResponse.value() == null
-          || currentProviderServiceResponse.value().isEmpty()) {
+      ProviderServicesResponse currentProviderServiceResponse = providerServicesResponsePages.get(i);
+      if (currentProviderServiceResponse.value().isEmpty()) {
         try {
           currentProviderServiceResponse =
               ppmsClient.providerServicesById(
@@ -369,7 +352,7 @@ public class LocationController {
                       .build())
               .providerServicesResponse(currentProviderServiceResponse)
               .build());
-      currentPage = filteredResults.get(filteredResults.size() - 1);
+      LocationWrapper currentPage = filteredResults.get(filteredResults.size() - 1);
       if ((currentPage.providerResponse().value() == null
               || currentPage.providerResponse().value().isEmpty()
               || currentPage.providerResponse().value().get(0).mainPhone() == null)
@@ -382,7 +365,7 @@ public class LocationController {
             || currentPage.providerServicesResponse().value().get(0).name() == null) {
           filteredResults.remove(filteredResults.size() - 1);
         } else {
-          currentCareSiteResponse =
+          CareSitesResponse currentCareSiteResponse =
               currentPage.providerServicesResponse().value().get(0).careSiteName() == null
                   ? CareSitesResponse.builder().build()
                   : ppmsClient.careSitesByName(
