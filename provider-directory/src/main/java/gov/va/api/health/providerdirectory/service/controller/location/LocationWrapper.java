@@ -9,7 +9,8 @@ import lombok.Value;
 @Value
 @Builder
 public final class LocationWrapper {
-  @Builder.Default ProviderServicesResponse providerServicesResponse = ProviderServicesResponse.builder().build();
+  @Builder.Default
+  ProviderServicesResponse providerServicesResponse = ProviderServicesResponse.builder().build();
 
   @Builder.Default CareSitesResponse careSitesResponse = CareSitesResponse.builder().build();
 

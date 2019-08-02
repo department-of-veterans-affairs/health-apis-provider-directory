@@ -92,10 +92,10 @@ public class LocationController {
   }
 
   private List<LocationWrapper> searchAddress(MultiValueMap<String, String> parameters) {
-    LocationWrapper.LocationWrapperBuilder locationWrapper = new LocationWrapper.LocationWrapperBuilder();
+    LocationWrapper.LocationWrapperBuilder locationWrapper =
+        new LocationWrapper.LocationWrapperBuilder();
     List<LocationWrapper> filteredResults = new ArrayList<>();
     LocationWrapper currentPage;
-    totalRecords = 1;
     if (parameters.get("address-city") != null) {
       String city = parameters.getFirst("address-city");
       locationWrapper.careSitesResponse(ppmsClient.careSitesByCity(city));
@@ -278,29 +278,40 @@ public class LocationController {
   }
 
   private List<LocationWrapper> searchIdentifier(MultiValueMap<String, String> parameters) {
-    LocationWrapper.LocationWrapperBuilder locationWrapper = new LocationWrapper.LocationWrapperBuilder();
+    LocationWrapper.LocationWrapperBuilder locationWrapper =
+        new LocationWrapper.LocationWrapperBuilder();
     String identifier = parameters.getFirst("identifier");
     ProviderServicesResponse providerServicesResponse = ppmsClient.providerServicesById(identifier);
     if (providerServicesResponse.value().isEmpty()) {
-      return singletonList(locationWrapper.providerResponse(ppmsClient.providersForId(identifier)).careSitesResponse(ppmsClient.careSitesById(identifier)).build());
-    }
-    else {
-      return singletonList(locationWrapper.providerResponse(
-              ProviderResponse.builder()
+      return singletonList(
+          locationWrapper
+              .providerResponse(ppmsClient.providersForId(identifier))
+              .careSitesResponse(ppmsClient.careSitesById(identifier))
+              .build());
+    } else {
+      return singletonList(
+          locationWrapper
+              .providerResponse(
+                  ProviderResponse.builder()
                       .value(
-                              singletonList(
-                                      ProviderResponse.Value.builder()
-                                              .providerIdentifier(
-                                                      Integer.parseInt(identifier))
-                                              .build()))
-                      .build()).providerServicesResponse(providerServicesResponse).build());
+                          singletonList(
+                              ProviderResponse.Value.builder()
+                                  .providerIdentifier(Integer.parseInt(identifier))
+                                  .build()))
+                      .build())
+              .providerServicesResponse(providerServicesResponse)
+              .build());
     }
   }
 
   private List<LocationWrapper> searchName(MultiValueMap<String, String> parameters) {
-    LocationWrapper.LocationWrapperBuilder locationWrapper = new LocationWrapper.LocationWrapperBuilder();
+    LocationWrapper.LocationWrapperBuilder locationWrapper =
+        new LocationWrapper.LocationWrapperBuilder();
     List<LocationWrapper> filteredResults = new ArrayList<>();
     String name = parameters.getFirst("name");
+    if (name == null) {
+      throw new IllegalStateException("Could not parse name");
+    }
     locationWrapper.providerResponse(ppmsClient.providersForName(trimIllegalCharacters(name)));
     totalRecords = locationWrapper.build().providerResponse().value().size();
     int page = Integer.parseInt(parameters.getOrDefault("page", singletonList("1")).get(0));
@@ -327,7 +338,8 @@ public class LocationController {
         locationWrapper.build().providerResponse().value().subList(fromIndex, toIndex);
 
     for (int i = 0; i < providerServicesResponsePages.size(); i++) {
-      ProviderServicesResponse currentProviderServiceResponse = providerServicesResponsePages.get(i);
+      ProviderServicesResponse currentProviderServiceResponse =
+          providerServicesResponsePages.get(i);
       if (currentProviderServiceResponse.value().isEmpty()) {
         try {
           currentProviderServiceResponse =
