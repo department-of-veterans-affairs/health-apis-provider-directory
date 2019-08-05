@@ -2,13 +2,16 @@ package gov.va.api.health.providerdirectory.service.client;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import gov.va.api.health.providerdirectory.service.CareSitesResponse;
 import gov.va.api.health.providerdirectory.service.PpmsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -23,8 +26,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /** REST implementation of PPMS client. */
+@Slf4j
 @Component
 public class RestPpmsClient implements PpmsClient {
+
   private final String baseUrl;
 
   private final RestTemplate restTemplate;
@@ -50,14 +55,12 @@ public class RestPpmsClient implements PpmsClient {
     } catch (Exception e) {
       throw new PpmsException(message, e);
     }
-
     if (response == null) {
       throw new PpmsException(message + ", no PPMS response");
     }
     if (response.error() != null && isNotBlank(response.error().message())) {
       throw new PpmsException(message + ", " + response.error().message());
     }
-
     return response;
   }
 
@@ -65,6 +68,86 @@ public class RestPpmsClient implements PpmsClient {
     HttpHeaders headers = new HttpHeaders();
     headers.setAccept(Collections.singletonList((MediaType.APPLICATION_JSON)));
     return headers;
+  }
+
+  @Override
+  public CareSitesResponse careSitesByCity(String city) {
+    return handlePpmsExceptions(
+        city,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "GetCareSiteByCity?City=" + city)
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<CareSitesResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public CareSitesResponse careSitesById(String id) {
+    return handlePpmsExceptions(
+        id,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/CareSites")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<CareSitesResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public CareSitesResponse careSitesByName(String name) {
+    return handlePpmsExceptions(
+        name,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "CareSites('" + name + "')")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<CareSitesResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public CareSitesResponse careSitesByState(String state) {
+    return handlePpmsExceptions(
+        state,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "GetCareSiteByState?State=" + state)
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<CareSitesResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public CareSitesResponse careSitesByZip(String zip) {
+    return handlePpmsExceptions(
+        zip,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "GetCareSiteByZip?Zip=" + zip)
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<CareSitesResponse> entity =
+              restTemplate.exchange(url, HttpMethod.GET, requestEntity, CareSitesResponse.class);
+          return entity.getBody();
+        });
   }
 
   @Override
@@ -80,6 +163,41 @@ public class RestPpmsClient implements PpmsClient {
           ResponseEntity<ProviderContactsResponse> entity =
               restTemplate.exchange(
                   url, HttpMethod.GET, requestEntity, ProviderContactsResponse.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public ProviderServicesResponse providerServicesById(String id) {
+    return handlePpmsExceptions(
+        id,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "Providers(" + id + ")/ProviderServices")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<ProviderServicesResponse> entity =
+              restTemplate.exchange(
+                  url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
+          return entity.getBody();
+        });
+  }
+
+  @Override
+  public ProviderServicesResponse providerServicesByName(String name) {
+    return handlePpmsExceptions(
+        name,
+        () -> {
+          String url =
+              UriComponentsBuilder.fromHttpUrl(
+                      baseUrl + "CareSites('" + name + "')/ProviderServices")
+                  .build()
+                  .toUriString();
+          HttpEntity<?> requestEntity = new HttpEntity<>(headers());
+          ResponseEntity<ProviderServicesResponse> entity =
+              restTemplate.exchange(
+                  url, HttpMethod.GET, requestEntity, ProviderServicesResponse.class);
           return entity.getBody();
         });
   }

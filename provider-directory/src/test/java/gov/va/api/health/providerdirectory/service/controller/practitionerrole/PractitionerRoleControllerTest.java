@@ -1,154 +1,370 @@
 package gov.va.api.health.providerdirectory.service.controller.practitionerrole;
 
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import gov.va.api.health.autoconfig.configuration.JacksonConfig;
+import com.google.common.collect.Iterables;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
+import gov.va.api.health.stu3.api.datatypes.CodeableConcept;
+import gov.va.api.health.stu3.api.datatypes.Coding;
+import gov.va.api.health.stu3.api.datatypes.ContactPoint;
+import gov.va.api.health.stu3.api.elements.Reference;
 import gov.va.api.health.stu3.api.resources.PractitionerRole;
-import gov.va.api.health.stu3.api.resources.PractitionerRole.Bundle;
-import lombok.SneakyThrows;
-import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 @SuppressWarnings("WeakerAccess")
 public class PractitionerRoleControllerTest {
-  PractitionerRoleController.Transformer tx = new PractitionerRoleTransformer();
+  PpmsClient ppmsClient = mock(PpmsClient.class);
 
-  PractitionerRoleController controller;
-
-  ConfigurableBaseUrlPageLinks configurableBaseUrlPageLinks =
-      new ConfigurableBaseUrlPageLinks("", "");
-
-  Bundler bundler = new Bundler(configurableBaseUrlPageLinks);
-
-  @Mock PpmsClient ppmsClient;
-
-  @Before
-  public void _init() {
-    MockitoAnnotations.initMocks(this);
-    controller = new PractitionerRoleController(ppmsClient, tx, bundler);
-  }
+  PractitionerRoleController controller =
+      new PractitionerRoleController(
+          ppmsClient,
+          new PractitionerRoleTransformer(),
+          new Bundler(new ConfigurableBaseUrlPageLinks("", "")));
 
   @Test
-  @SneakyThrows
   public void readByIdentifier() {
-    ProviderResponse response =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/mock-provider-by-identifier-response.json"),
-                ProviderResponse.class);
-    ProviderContactsResponse contacts =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/mock-provider-contact-response.json"),
-                ProviderContactsResponse.class);
-    ProviderSpecialtiesResponse specialties =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/mock-provider-specialties-response.json"),
-                ProviderSpecialtiesResponse.class);
-    when(ppmsClient.providersForId("identifier")).thenReturn(response);
-    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
-    when(ppmsClient.providerSpecialtySearch("1285621557")).thenReturn(specialties);
+    when(ppmsClient.providersForId("identifier"))
+        .thenReturn(
+            ProviderResponse.builder()
+                .value(
+                    asList(
+                        ProviderResponse.Value.builder()
+                            .providerIdentifier(1285621557)
+                            .providerIdentifierType("Npi")
+                            .name("Klingerman, Michael")
+                            .providerType("Individual")
+                            .providerStatusReason("Active")
+                            .primaryCarePhysician(false)
+                            .isAcceptingNewPatients(true)
+                            .providerGender("Male")
+                            .isExternal(true)
+                            .contactMethodEmail(false)
+                            .contactMethodFax(false)
+                            .contactMethodVirtuPro(false)
+                            .contactMethodHsrm(false)
+                            .contactMethodPhone(false)
+                            .contactMethodMail(false)
+                            .contactMethodRefDoc(false)
+                            .bulkEmails(true)
+                            .bulkMails(false)
+                            .emails(true)
+                            .mails(true)
+                            .phoneCalls(true)
+                            .faxes(true)
+                            .preferredMeansReceivingReferralHsrm(false)
+                            .preferredMeansReceivingReferralSecuredEmail(false)
+                            .preferredMeansReceivingReferralMail(false)
+                            .preferredMeansReceivingReferralFax(false)
+                            .modifiedOnDate("2019-02-09T02:08:16Z")
+                            .build()))
+                .build());
+
+    when(ppmsClient.providerContactsForId("1285621557"))
+        .thenReturn(
+            ProviderContactsResponse.builder()
+                .value(
+                    asList(
+                        ProviderContactsResponse.Value.builder()
+                            .fullName("Dustin Lehman")
+                            .companyName("NEWBURYPORT MA RADIATION CENTER LLC")
+                            .isVeteran(false)
+                            .contactRole("Other")
+                            .isOtherPartyContact(false)
+                            .providerName("NEWBURYPORT MA RADIATION CENTER LLC")
+                            .email("dustin.lehman@email.com")
+                            .preferredMethodOfContact("Any")
+                            .deliveryStatus("NoProblemsHaveOccurred")
+                            .isAddressActive(false)
+                            .isMailingAddress(false)
+                            .addressInvalidReason("AddressDoesNotExist")
+                            .gender("NotSpecified")
+                            .maritalStatus("Single")
+                            .allowEmail(false)
+                            .allowFollowEmail(false)
+                            .allowBulkEmail(false)
+                            .allowPhone(false)
+                            .allowFax(false)
+                            .allowMail(false)
+                            .isTextingAcceptable(false)
+                            .build()))
+                .build());
+
+    when(ppmsClient.providerSpecialtySearch("1285621557"))
+        .thenReturn(
+            ProviderSpecialtiesResponse.builder()
+                .value(
+                    asList(
+                        ProviderSpecialtiesResponse.Value.builder()
+                            .codedSpecialty("207R00000X")
+                            .name("Internal Medicine")
+                            .grouping("Allopathic & Osteopathic Physicians")
+                            .classification("Internal Medicine")
+                            .specialtyDescription(
+                                "A physician who provides long-term, comprehensive care in the office and the hospital, managing both common and complex illness of adolescents, adults and the elderly. Internists are trained in the diagnosis and treatment of cancer, infections and diseases affecting the heart, blood, kidneys, joints and digestive, respiratory and vascular systems. They are also trained in the essentials of primary care internal medicine, which incorporates an understanding of disease prevention, wellness, substance abuse, mental health and effective treatment of common problems of the eyes, ears, skin, nervous system and reproductive organs.")
+                            .providerName("Klingerman, Michael ")
+                            .isPrimaryType("Yes")
+                            .specialtyName("Internal Medicine")
+                            .build()))
+                .build());
+
     PractitionerRole expected = controller.readByIdentifier("identifier");
-    PractitionerRole actual =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/expected-read-by-identifier.json"),
-                PractitionerRole.class);
-    Assertions.assertThat(actual).isEqualTo(expected);
+    assertThat(expected)
+        .isEqualTo(
+            PractitionerRole.builder()
+                .resourceType("PractitionerRole")
+                .id("1285621557")
+                .active(true)
+                .practitioner(Reference.builder().reference("null/Practitioner/1285621557").build())
+                .code(
+                    CodeableConcept.builder()
+                        .coding(
+                            asList(
+                                Coding.builder()
+                                    .code("207R00000X")
+                                    .display("Internal Medicine")
+                                    .build()))
+                        .build())
+                .telecom(
+                    asList(
+                        PractitionerRole.PractitionerContactPoint.builder()
+                            .system(ContactPoint.ContactPointSystem.email)
+                            .value("dustin.lehman@email.com")
+                            .build()))
+                .build());
   }
 
   @Test
-  @SneakyThrows
   public void searchByFamilyAndGiven() {
-    ProviderResponse response =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/mock-provider-by-identifier-response.json"),
-                ProviderResponse.class);
-    ProviderContactsResponse contacts =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/mock-provider-contact-response.json"),
-                ProviderContactsResponse.class);
-    ProviderSpecialtiesResponse specialties =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/mock-provider-specialties-response.json"),
-                ProviderSpecialtiesResponse.class);
+    when(ppmsClient.providersForName("Klingerman"))
+        .thenReturn(
+            ProviderResponse.builder()
+                .value(
+                    asList(
+                        ProviderResponse.Value.builder()
+                            .providerIdentifier(1285621557)
+                            .providerIdentifierType("Npi")
+                            .name("Klingerman, Michael")
+                            .providerType("Individual")
+                            .providerStatusReason("Active")
+                            .primaryCarePhysician(false)
+                            .isAcceptingNewPatients(true)
+                            .providerGender("Male")
+                            .isExternal(true)
+                            .contactMethodEmail(false)
+                            .contactMethodFax(false)
+                            .contactMethodVirtuPro(false)
+                            .contactMethodHsrm(false)
+                            .contactMethodPhone(false)
+                            .contactMethodMail(false)
+                            .contactMethodRefDoc(false)
+                            .bulkEmails(true)
+                            .bulkMails(false)
+                            .emails(true)
+                            .mails(true)
+                            .phoneCalls(true)
+                            .faxes(true)
+                            .preferredMeansReceivingReferralHsrm(false)
+                            .preferredMeansReceivingReferralSecuredEmail(false)
+                            .preferredMeansReceivingReferralMail(false)
+                            .preferredMeansReceivingReferralFax(false)
+                            .modifiedOnDate("2019-02-09T02:08:16Z")
+                            .build()))
+                .build());
 
-    when(ppmsClient.providersForName("Klingerman")).thenReturn(response);
-    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
-    when(ppmsClient.providerSpecialtySearch("1285621557")).thenReturn(specialties);
-    Bundle expected = controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
-    Bundle actual =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/expected-search-by-family-and-given.json"),
-                PractitionerRole.Bundle.class);
-    Assertions.assertThat(actual).isEqualTo(expected);
+    when(ppmsClient.providerContactsForId("1285621557"))
+        .thenReturn(
+            ProviderContactsResponse.builder()
+                .value(
+                    asList(
+                        ProviderContactsResponse.Value.builder()
+                            .fullName("Dustin Lehman")
+                            .companyName("NEWBURYPORT MA RADIATION CENTER LLC")
+                            .isVeteran(false)
+                            .contactRole("Other")
+                            .isOtherPartyContact(false)
+                            .providerName("NEWBURYPORT MA RADIATION CENTER LLC")
+                            .email("dustin.lehman@email.com")
+                            .preferredMethodOfContact("Any")
+                            .deliveryStatus("NoProblemsHaveOccurred")
+                            .isAddressActive(false)
+                            .isMailingAddress(false)
+                            .addressInvalidReason("AddressDoesNotExist")
+                            .gender("NotSpecified")
+                            .maritalStatus("Single")
+                            .allowEmail(false)
+                            .allowFollowEmail(false)
+                            .allowBulkEmail(false)
+                            .allowPhone(false)
+                            .allowFax(false)
+                            .allowMail(false)
+                            .isTextingAcceptable(false)
+                            .build()))
+                .build());
+
+    when(ppmsClient.providerSpecialtySearch("1285621557"))
+        .thenReturn(
+            ProviderSpecialtiesResponse.builder()
+                .value(
+                    asList(
+                        ProviderSpecialtiesResponse.Value.builder()
+                            .codedSpecialty("207R00000X")
+                            .name("Internal Medicine")
+                            .grouping("Allopathic & Osteopathic Physicians")
+                            .classification("Internal Medicine")
+                            .specialtyDescription(
+                                "A physician who provides long-term, comprehensive care in the office and the hospital, managing both common and complex illness of adolescents, adults and the elderly. Internists are trained in the diagnosis and treatment of cancer, infections and diseases affecting the heart, blood, kidneys, joints and digestive, respiratory and vascular systems. They are also trained in the essentials of primary care internal medicine, which incorporates an understanding of disease prevention, wellness, substance abuse, mental health and effective treatment of common problems of the eyes, ears, skin, nervous system and reproductive organs.")
+                            .providerName("Klingerman, Michael ")
+                            .isPrimaryType("Yes")
+                            .specialtyName("Internal Medicine")
+                            .build()))
+                .build());
+
+    PractitionerRole.Bundle actual =
+        controller.searchByFamilyAndGiven("Klingerman", "Michael", 1, 1);
+
+    assertThat(Iterables.getOnlyElement(actual.entry()).resource())
+        .isEqualTo(
+            PractitionerRole.builder()
+                .resourceType("PractitionerRole")
+                .id("1285621557")
+                .active(true)
+                .practitioner(Reference.builder().reference("null/Practitioner/1285621557").build())
+                .code(
+                    CodeableConcept.builder()
+                        .coding(
+                            asList(
+                                Coding.builder()
+                                    .code("207R00000X")
+                                    .display("Internal Medicine")
+                                    .build()))
+                        .build())
+                .telecom(
+                    asList(
+                        PractitionerRole.PractitionerContactPoint.builder()
+                            .system(ContactPoint.ContactPointSystem.email)
+                            .value("dustin.lehman@email.com")
+                            .build()))
+                .build());
   }
 
   @Test
-  @SneakyThrows
   public void searchByIdentifier() {
-    ProviderResponse response =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/mock-provider-by-identifier-response.json"),
-                ProviderResponse.class);
-    ProviderContactsResponse contacts =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/mock-provider-contact-response.json"),
-                ProviderContactsResponse.class);
-    ProviderSpecialtiesResponse specialties =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/mock-provider-specialties-response.json"),
-                ProviderSpecialtiesResponse.class);
-    when(ppmsClient.providersForId("identifier")).thenReturn(response);
-    when(ppmsClient.providerContactsForId("1285621557")).thenReturn(contacts);
-    when(ppmsClient.providerSpecialtySearch("1285621557")).thenReturn(specialties);
-    Bundle expected = controller.searchByIdentifier("identifier", 1, 1);
-    Bundle actual =
-        JacksonConfig.createMapper()
-            .readValue(
-                getClass()
-                    .getResourceAsStream(
-                        "/PractitionerRoleTestResources/expected-search-by-identifier.json"),
-                PractitionerRole.Bundle.class);
-    Assertions.assertThat(actual).isEqualTo(expected);
+    when(ppmsClient.providersForId("identifier"))
+        .thenReturn(
+            ProviderResponse.builder()
+                .value(
+                    asList(
+                        ProviderResponse.Value.builder()
+                            .providerIdentifier(1285621557)
+                            .providerIdentifierType("Npi")
+                            .name("Klingerman, Michael")
+                            .providerType("Individual")
+                            .providerStatusReason("Active")
+                            .primaryCarePhysician(false)
+                            .isAcceptingNewPatients(true)
+                            .providerGender("Male")
+                            .isExternal(true)
+                            .contactMethodEmail(false)
+                            .contactMethodFax(false)
+                            .contactMethodVirtuPro(false)
+                            .contactMethodHsrm(false)
+                            .contactMethodPhone(false)
+                            .contactMethodMail(false)
+                            .contactMethodRefDoc(false)
+                            .bulkEmails(true)
+                            .bulkMails(false)
+                            .emails(true)
+                            .mails(true)
+                            .phoneCalls(true)
+                            .faxes(true)
+                            .preferredMeansReceivingReferralHsrm(false)
+                            .preferredMeansReceivingReferralSecuredEmail(false)
+                            .preferredMeansReceivingReferralMail(false)
+                            .preferredMeansReceivingReferralFax(false)
+                            .modifiedOnDate("2019-02-09T02:08:16Z")
+                            .build()))
+                .build());
+
+    when(ppmsClient.providerContactsForId("1285621557"))
+        .thenReturn(
+            ProviderContactsResponse.builder()
+                .value(
+                    asList(
+                        ProviderContactsResponse.Value.builder()
+                            .fullName("Dustin Lehman")
+                            .companyName("NEWBURYPORT MA RADIATION CENTER LLC")
+                            .isVeteran(false)
+                            .contactRole("Other")
+                            .isOtherPartyContact(false)
+                            .providerName("NEWBURYPORT MA RADIATION CENTER LLC")
+                            .email("dustin.lehman@email.com")
+                            .preferredMethodOfContact("Any")
+                            .deliveryStatus("NoProblemsHaveOccurred")
+                            .isAddressActive(false)
+                            .isMailingAddress(false)
+                            .addressInvalidReason("AddressDoesNotExist")
+                            .gender("NotSpecified")
+                            .maritalStatus("Single")
+                            .allowEmail(false)
+                            .allowFollowEmail(false)
+                            .allowBulkEmail(false)
+                            .allowPhone(false)
+                            .allowFax(false)
+                            .allowMail(false)
+                            .isTextingAcceptable(false)
+                            .build()))
+                .build());
+
+    when(ppmsClient.providerSpecialtySearch("1285621557"))
+        .thenReturn(
+            ProviderSpecialtiesResponse.builder()
+                .value(
+                    asList(
+                        ProviderSpecialtiesResponse.Value.builder()
+                            .codedSpecialty("207R00000X")
+                            .name("Internal Medicine")
+                            .grouping("Allopathic & Osteopathic Physicians")
+                            .classification("Internal Medicine")
+                            .specialtyDescription(
+                                "A physician who provides long-term, comprehensive care in the office and the hospital, managing both common and complex illness of adolescents, adults and the elderly. Internists are trained in the diagnosis and treatment of cancer, infections and diseases affecting the heart, blood, kidneys, joints and digestive, respiratory and vascular systems. They are also trained in the essentials of primary care internal medicine, which incorporates an understanding of disease prevention, wellness, substance abuse, mental health and effective treatment of common problems of the eyes, ears, skin, nervous system and reproductive organs.")
+                            .providerName("Klingerman, Michael ")
+                            .isPrimaryType("Yes")
+                            .specialtyName("Internal Medicine")
+                            .build()))
+                .build());
+
+    PractitionerRole.Bundle actual = controller.searchByIdentifier("identifier", 1, 1);
+
+    assertThat(Iterables.getOnlyElement(actual.entry()).resource())
+        .isEqualTo(
+            PractitionerRole.builder()
+                .resourceType("PractitionerRole")
+                .id("1285621557")
+                .active(true)
+                .practitioner(Reference.builder().reference("null/Practitioner/1285621557").build())
+                .code(
+                    CodeableConcept.builder()
+                        .coding(
+                            asList(
+                                Coding.builder()
+                                    .code("207R00000X")
+                                    .display("Internal Medicine")
+                                    .build()))
+                        .build())
+                .telecom(
+                    asList(
+                        PractitionerRole.PractitionerContactPoint.builder()
+                            .system(ContactPoint.ContactPointSystem.email)
+                            .value("dustin.lehman@email.com")
+                            .build()))
+                .build());
   }
 }

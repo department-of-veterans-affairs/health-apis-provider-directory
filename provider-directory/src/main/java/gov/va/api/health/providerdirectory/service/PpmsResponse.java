@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public interface PpmsResponse {
-
   Error error();
 
   String odataContext();
@@ -19,7 +18,6 @@ public interface PpmsResponse {
   @AllArgsConstructor(access = AccessLevel.PRIVATE)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   public static final class Error {
-
     private String code;
 
     private String message;
