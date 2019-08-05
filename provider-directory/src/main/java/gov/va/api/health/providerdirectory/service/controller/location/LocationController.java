@@ -22,7 +22,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.validation.constraints.Min;
+
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,26 +67,26 @@ public class LocationController {
   }
 
   private Location.Bundle bundle(MultiValueMap<String, String> parameters, int page, int count) {
-    List<LocationWrapper> root = search(parameters);
+    Pair<List<LocationWrapper>, Integer> root = search(parameters);
     LinkConfig linkConfig =
         LinkConfig.builder()
             .path("Location")
             .queryParams(parameters)
             .page(page)
             .recordsPerPage(count)
-            .totalRecords(totalRecords)
+            .totalRecords(root.getValue())
             .build();
     return bundler.bundle(
-        BundleContext.of(linkConfig, root, transformer, Location.Entry::new, Location.Bundle::new));
+        BundleContext.of(linkConfig, root.getKey(), transformer, Location.Entry::new, Location.Bundle::new));
   }
 
   /** Read by identifier. */
   @GetMapping(value = {"/{publicId}"})
   public Location readByIdentifier(@PathVariable("publicId") String publicId) {
-    return transformer.apply(search(Parameters.forIdentity((publicId))).get(0));
+    return transformer.apply(search(Parameters.forIdentity((publicId))).getKey().get(0));
   }
 
-  private List<LocationWrapper> search(MultiValueMap<String, String> parameters) {
+  private Pair<List<LocationWrapper>, Integer> search(MultiValueMap<String, String> parameters) {
     if (parameters.get("identifier") != null) {
       return searchIdentifier(parameters);
     } else if (parameters.get("name") != null) {
@@ -93,7 +96,7 @@ public class LocationController {
     }
   }
 
-  private List<LocationWrapper> searchAddress(MultiValueMap<String, String> parameters) {
+  private Pair<List<LocationWrapper>, Integer> searchAddress(MultiValueMap<String, String> parameters) {
     LocationWrapper.LocationWrapperBuilder locationWrapper =
         new LocationWrapper.LocationWrapperBuilder();
     List<LocationWrapper> filteredResults = new ArrayList<>();
@@ -108,7 +111,6 @@ public class LocationController {
       String zip = parameters.getFirst("address-postalcode");
       locationWrapper.careSitesResponse(ppmsClient.careSitesByZip(zip));
     }
-    totalRecords = locationWrapper.build().careSitesResponse().value().size();
     int page = Integer.parseInt(parameters.getOrDefault("page", singletonList("1")).get(0));
     int count = Integer.parseInt(parameters.getOrDefault("_count", singletonList("15")).get(0));
     int fromIndex =
@@ -200,7 +202,7 @@ public class LocationController {
         }
       }
     }
-    return filteredResults;
+    return new Pair<>(filteredResults, locationWrapper.build().careSitesResponse().value().size());
   }
 
   /** Search by family & given name. */
@@ -279,19 +281,19 @@ public class LocationController {
         count);
   }
 
-  private List<LocationWrapper> searchIdentifier(MultiValueMap<String, String> parameters) {
+  private Pair<List<LocationWrapper>, Integer> searchIdentifier(MultiValueMap<String, String> parameters) {
     LocationWrapper.LocationWrapperBuilder locationWrapper =
         new LocationWrapper.LocationWrapperBuilder();
     String identifier = parameters.getFirst("identifier");
     ProviderServicesResponse providerServicesResponse = ppmsClient.providerServicesById(identifier);
     if (providerServicesResponse.value().isEmpty()) {
-      return singletonList(
+      return new Pair<>(singletonList(
           locationWrapper
               .providerResponse(ppmsClient.providersForId(identifier))
               .careSitesResponse(ppmsClient.careSitesById(identifier))
-              .build());
+              .build()), 1);
     } else {
-      return singletonList(
+      return new Pair<>(singletonList(
           locationWrapper
               .providerResponse(
                   ProviderResponse.builder()
@@ -302,11 +304,11 @@ public class LocationController {
                                   .build()))
                       .build())
               .providerServicesResponse(providerServicesResponse)
-              .build());
+              .build()), 1);
     }
   }
 
-  private List<LocationWrapper> searchName(MultiValueMap<String, String> parameters) {
+  private Pair<List<LocationWrapper>, Integer> searchName(MultiValueMap<String, String> parameters) {
 
     String name = parameters.getFirst("name");
     if (name == null) {
@@ -314,7 +316,6 @@ public class LocationController {
     }
     ProviderResponse providerResponse = ppmsClient.providersForName(trimIllegalCharacters(name));
 
-    totalRecords = providerResponse.value().size();
     int page = Integer.parseInt(parameters.getOrDefault("page", singletonList("1")).get(0));
     int count = Integer.parseInt(parameters.getOrDefault("_count", singletonList("15")).get(0));
     int fromIndex =
@@ -350,7 +351,7 @@ public class LocationController {
         filteredResults.remove(i);
       }
     }
-    return filteredResults;
+    return new Pair<>(filteredResults, providerResponse.value().size());
   }
 
   private LocationWrapper filterSearchByNameResults(ProviderServicesResponse providerServicesResponse, ProviderResponse.Value providerResponse){
