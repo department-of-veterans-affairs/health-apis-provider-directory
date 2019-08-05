@@ -269,7 +269,7 @@ public class LocationController {
     return Pair.of(filteredResults, locationWrapper.build().careSitesResponse().value().size());
   }
 
-  /** Search by family & given name. */
+  /** Search by address city. */
   @GetMapping(params = {"address-city"})
   public Location.Bundle searchByCity(
       @RequestParam("address-city") String city,
@@ -313,7 +313,7 @@ public class LocationController {
         count);
   }
 
-  /** Search by family & given name. */
+  /** Search by address state. */
   @GetMapping(params = {"address-state"})
   public Location.Bundle searchByState(
       @RequestParam("address-state") String state,
@@ -329,7 +329,7 @@ public class LocationController {
         count);
   }
 
-  /** Search by family & given name. */
+  /** Search by address postal code. */
   @GetMapping(params = {"address-postalcode"})
   public Location.Bundle searchByZip(
       @RequestParam("address-postalcode") String zip,
