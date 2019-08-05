@@ -19,11 +19,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.validation.constraints.Min;
-
 import javafx.util.Pair;
+import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,8 +50,6 @@ public class LocationController {
 
   private Bundler bundler;
 
-  private int totalRecords;
-
   /** Controller setup. */
   public LocationController(
       @Autowired LocationController.Transformer transformer,
@@ -75,7 +71,8 @@ public class LocationController {
             .totalRecords(root.getValue())
             .build();
     return bundler.bundle(
-        BundleContext.of(linkConfig, root.getKey(), transformer, Location.Entry::new, Location.Bundle::new));
+        BundleContext.of(
+            linkConfig, root.getKey(), transformer, Location.Entry::new, Location.Bundle::new));
   }
 
   private LocationWrapper filterSearchByNameResults(
@@ -162,7 +159,8 @@ public class LocationController {
     }
   }
 
-  private Pair<List<LocationWrapper>, Integer> searchAddress(MultiValueMap<String, String> parameters) {
+  private Pair<List<LocationWrapper>, Integer> searchAddress(
+      MultiValueMap<String, String> parameters) {
     LocationWrapper.LocationWrapperBuilder locationWrapper =
         new LocationWrapper.LocationWrapperBuilder();
     List<LocationWrapper> filteredResults = new ArrayList<>();
@@ -347,34 +345,40 @@ public class LocationController {
         count);
   }
 
-  private Pair<List<LocationWrapper>, Integer> searchIdentifier(MultiValueMap<String, String> parameters) {
+  private Pair<List<LocationWrapper>, Integer> searchIdentifier(
+      MultiValueMap<String, String> parameters) {
     LocationWrapper.LocationWrapperBuilder locationWrapper =
         new LocationWrapper.LocationWrapperBuilder();
     String identifier = parameters.getFirst("identifier");
     ProviderServicesResponse providerServicesResponse = ppmsClient.providerServicesById(identifier);
     if (providerServicesResponse.value().isEmpty()) {
-      return new Pair<>(singletonList(
-          locationWrapper
-              .providerResponse(ppmsClient.providersForId(identifier))
-              .careSitesResponse(ppmsClient.careSitesById(identifier))
-              .build()), 1);
+      return new Pair<>(
+          singletonList(
+              locationWrapper
+                  .providerResponse(ppmsClient.providersForId(identifier))
+                  .careSitesResponse(ppmsClient.careSitesById(identifier))
+                  .build()),
+          1);
     } else {
-      return new Pair<>(singletonList(
-          locationWrapper
-              .providerResponse(
-                  ProviderResponse.builder()
-                      .value(
-                          singletonList(
-                              ProviderResponse.Value.builder()
-                                  .providerIdentifier(Integer.parseInt(identifier))
-                                  .build()))
-                      .build())
-              .providerServicesResponse(providerServicesResponse)
-              .build()), 1);
+      return new Pair<>(
+          singletonList(
+              locationWrapper
+                  .providerResponse(
+                      ProviderResponse.builder()
+                          .value(
+                              singletonList(
+                                  ProviderResponse.Value.builder()
+                                      .providerIdentifier(Integer.parseInt(identifier))
+                                      .build()))
+                          .build())
+                  .providerServicesResponse(providerServicesResponse)
+                  .build()),
+          1);
     }
   }
 
-  private Pair<List<LocationWrapper>, Integer> searchName(MultiValueMap<String, String> parameters) {
+  private Pair<List<LocationWrapper>, Integer> searchName(
+      MultiValueMap<String, String> parameters) {
 
     String name = parameters.getFirst("name");
     if (name == null) {
