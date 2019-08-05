@@ -19,8 +19,9 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javafx.util.Pair;
 import javax.validation.constraints.Min;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,11 +69,11 @@ public class LocationController {
             .queryParams(parameters)
             .page(page)
             .recordsPerPage(count)
-            .totalRecords(root.getValue())
+            .totalRecords(root.getRight())
             .build();
     return bundler.bundle(
         BundleContext.of(
-            linkConfig, root.getKey(), transformer, Location.Entry::new, Location.Bundle::new));
+            linkConfig, root.getLeft(), transformer, Location.Entry::new, Location.Bundle::new));
   }
 
   private LocationWrapper filterSearchByNameResults(
@@ -266,7 +267,7 @@ public class LocationController {
         }
       }
     }
-    return new Pair<>(filteredResults, locationWrapper.build().careSitesResponse().value().size());
+    return Pair.of(filteredResults, locationWrapper.build().careSitesResponse().value().size());
   }
 
   /** Search by family & given name. */
@@ -352,7 +353,7 @@ public class LocationController {
     String identifier = parameters.getFirst("identifier");
     ProviderServicesResponse providerServicesResponse = ppmsClient.providerServicesById(identifier);
     if (providerServicesResponse.value().isEmpty()) {
-      return new Pair<>(
+      return Pair.of(
           singletonList(
               locationWrapper
                   .providerResponse(ppmsClient.providersForId(identifier))
@@ -360,7 +361,7 @@ public class LocationController {
                   .build()),
           1);
     } else {
-      return new Pair<>(
+      return Pair.of(
           singletonList(
               locationWrapper
                   .providerResponse(
@@ -416,7 +417,7 @@ public class LocationController {
         filteredResults.remove(i);
       }
     }
-    return new Pair<>(filteredResults, providerResponse.value().size());
+    return Pair.of(filteredResults, providerResponse.value().size());
   }
 
   private String trimIllegalCharacters(String name) {
