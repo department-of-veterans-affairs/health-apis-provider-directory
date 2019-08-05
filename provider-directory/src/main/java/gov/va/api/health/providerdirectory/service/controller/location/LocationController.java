@@ -14,6 +14,8 @@ import gov.va.api.health.providerdirectory.service.controller.Parameters;
 import gov.va.api.health.providerdirectory.service.controller.Validator;
 import gov.va.api.health.stu3.api.resources.Location;
 import gov.va.api.health.stu3.api.resources.OperationOutcome;
+
+import java.security.Provider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -305,122 +307,124 @@ public class LocationController {
   }
 
   private List<LocationWrapper> searchName(MultiValueMap<String, String> parameters) {
-    LocationWrapper.LocationWrapperBuilder locationWrapper =
-        new LocationWrapper.LocationWrapperBuilder();
-    List<LocationWrapper> filteredResults = new ArrayList<>();
+
     String name = parameters.getFirst("name");
     if (name == null) {
       throw new IllegalStateException("Could not parse name");
     }
-    locationWrapper.providerResponse(ppmsClient.providersForName(trimIllegalCharacters(name)));
-    totalRecords = locationWrapper.build().providerResponse().value().size();
+    ProviderResponse providerResponse = ppmsClient.providersForName(trimIllegalCharacters(name));
+
+    totalRecords = providerResponse.value().size();
     int page = Integer.parseInt(parameters.getOrDefault("page", singletonList("1")).get(0));
     int count = Integer.parseInt(parameters.getOrDefault("_count", singletonList("15")).get(0));
     int fromIndex =
-        Math.min((page - 1) * count, locationWrapper.build().providerResponse().value().size());
+        Math.min((page - 1) * count, providerResponse.value().size());
     int toIndex =
-        Math.min((fromIndex + count), locationWrapper.build().providerResponse().value().size());
+        Math.min((fromIndex + count), providerResponse.value().size());
+
+    List<ProviderResponse.Value> providerResponsePages =
+            providerResponse.value().subList(fromIndex, toIndex);
+
     List<ProviderServicesResponse> providerServicesResponsePages =
-        IntStream.range(fromIndex, toIndex)
-            .parallel()
-            .mapToObj(
-                i -> {
+        providerResponsePages
+            .parallelStream()
+            .map(
+                prv -> {
                   try {
                     return ppmsClient.providerServicesByName(
                         trimIllegalCharacters(
-                            locationWrapper.build().providerResponse().value().get(i).name()));
+                            prv.name()));
                   } catch (Exception e) {
                     return ProviderServicesResponse.builder().build();
                   }
                 })
             .collect(Collectors.toList());
-    List<ProviderResponse.Value> providerResponsePages =
-        locationWrapper.build().providerResponse().value().subList(fromIndex, toIndex);
 
-    for (int i = 0; i < providerServicesResponsePages.size(); i++) {
-      ProviderServicesResponse currentProviderServiceResponse =
-          providerServicesResponsePages.get(i);
-      if (currentProviderServiceResponse.value().isEmpty()) {
-        try {
-          currentProviderServiceResponse =
-              ppmsClient.providerServicesById(
-                  locationWrapper
-                      .build()
-                      .providerResponse()
-                      .value()
-                      .get(i)
-                      .providerIdentifier()
-                      .toString());
-        } catch (Exception e) {
-          currentProviderServiceResponse = ProviderServicesResponse.builder().build();
-        }
-      }
-      filteredResults.add(
-          LocationWrapper.builder()
-              .careSitesResponse(CareSitesResponse.builder().build())
-              .providerResponse(
-                  ProviderResponse.builder()
-                      .value(singletonList(providerResponsePages.get(i)))
-                      .build())
-              .providerServicesResponse(currentProviderServiceResponse)
-              .build());
-      LocationWrapper currentPage = filteredResults.get(filteredResults.size() - 1);
-      if ((currentPage.providerResponse().value() == null
-              || currentPage.providerResponse().value().isEmpty()
-              || currentPage.providerResponse().value().get(0).mainPhone() == null)
-          && (currentPage.providerServicesResponse().value() == null
-              || currentPage.providerServicesResponse().value().isEmpty()
-              || currentPage.providerServicesResponse().value().get(0).careSitePhoneNumber()
-                  == null)) {
-        if (currentPage.providerServicesResponse().value() == null
-            || currentPage.providerServicesResponse().value().isEmpty()
-            || currentPage.providerServicesResponse().value().get(0).name() == null) {
-          filteredResults.remove(filteredResults.size() - 1);
-        } else {
-          CareSitesResponse currentCareSiteResponse =
-              currentPage.providerServicesResponse().value().get(0).careSiteName() == null
-                  ? CareSitesResponse.builder().build()
-                  : ppmsClient.careSitesByName(
-                      trimIllegalCharacters(
-                          currentPage.providerServicesResponse().value().get(0).careSiteName()));
-          if (currentCareSiteResponse == null
-              || currentCareSiteResponse.value() == null
-              || currentCareSiteResponse.value().isEmpty()) {
-            currentCareSiteResponse =
-                currentPage.providerServicesResponse().value().get(0).organizationGroupName()
-                        == null
-                    ? CareSitesResponse.builder().build()
-                    : ppmsClient.careSitesByName(
-                        trimIllegalCharacters(
-                            currentPage
-                                .providerServicesResponse()
-                                .value()
-                                .get(0)
-                                .organizationGroupName()));
-          }
-          if (currentCareSiteResponse.value() == null
-              || currentCareSiteResponse.value().isEmpty()
-              || currentCareSiteResponse.value().get(0).mainSitePhone() == null) {
-            filteredResults.remove(filteredResults.size() - 1);
-          } else {
-            filteredResults.remove(filteredResults.size() - 1);
-            filteredResults.add(
-                LocationWrapper.builder()
-                    .careSitesResponse(
-                        CareSitesResponse.builder()
-                            .value(singletonList(currentCareSiteResponse.value().get(0)))
-                            .build())
-                    .providerResponse(
-                        ProviderResponse.builder()
-                            .value(singletonList(providerResponsePages.get(i)))
-                            .build())
-                    .providerServicesResponse(currentProviderServiceResponse)
-                    .build());
-          }
-        }
+
+    List<LocationWrapper> filteredResults = IntStream.range(0, providerServicesResponsePages.size()).parallel().mapToObj(
+            i -> filterSearchByNameResults(providerServicesResponsePages.get(i), providerResponsePages.get(i))
+
+    ).collect(Collectors.toList());
+    for(int i = 0; i < filteredResults.size(); i++){
+      if (filteredResults.get(i).providerResponse().value().isEmpty()){
+        filteredResults.remove(i);
       }
     }
     return filteredResults;
+  }
+
+  private LocationWrapper filterSearchByNameResults(ProviderServicesResponse providerServicesResponse, ProviderResponse.Value providerResponse){
+    LocationWrapper.LocationWrapperBuilder filteredResults = new LocationWrapper.LocationWrapperBuilder();
+    if (providerServicesResponse.value().isEmpty()) {
+      try {
+        providerServicesResponse =
+                ppmsClient.providerServicesById(providerResponse
+                                .providerIdentifier()
+                                .toString());
+      } catch (Exception e) {
+        providerServicesResponse = ProviderServicesResponse.builder().build();
+      }
+    }
+    filteredResults.careSitesResponse(CareSitesResponse.builder().build())
+                    .providerResponse(
+                            ProviderResponse.builder()
+                                    .value(singletonList(providerResponse))
+                                    .build())
+                    .providerServicesResponse(providerServicesResponse)
+                    .build();
+    LocationWrapper currentPage = filteredResults.build();
+    if ((currentPage.providerResponse().value() == null
+            || currentPage.providerResponse().value().isEmpty()
+            || currentPage.providerResponse().value().get(0).mainPhone() == null)
+            && (currentPage.providerServicesResponse().value() == null
+            || currentPage.providerServicesResponse().value().isEmpty()
+            || currentPage.providerServicesResponse().value().get(0).careSitePhoneNumber()
+            == null)) {
+      if (currentPage.providerServicesResponse().value() == null
+              || currentPage.providerServicesResponse().value().isEmpty()
+              || currentPage.providerServicesResponse().value().get(0).name() == null) {
+        return LocationWrapper.builder().build();
+      } else {
+        CareSitesResponse currentCareSiteResponse =
+                currentPage.providerServicesResponse().value().get(0).careSiteName() == null
+                        ? CareSitesResponse.builder().build()
+                        : ppmsClient.careSitesByName(
+                        trimIllegalCharacters(
+                                currentPage.providerServicesResponse().value().get(0).careSiteName()));
+        if (currentCareSiteResponse == null
+                || currentCareSiteResponse.value() == null
+                || currentCareSiteResponse.value().isEmpty()) {
+          currentCareSiteResponse =
+                  currentPage.providerServicesResponse().value().get(0).organizationGroupName()
+                          == null
+                          ? CareSitesResponse.builder().build()
+                          : ppmsClient.careSitesByName(
+                          trimIllegalCharacters(
+                                  currentPage
+                                          .providerServicesResponse()
+                                          .value()
+                                          .get(0)
+                                          .organizationGroupName()));
+        }
+        if (currentCareSiteResponse.value() == null
+                || currentCareSiteResponse.value().isEmpty()
+                || currentCareSiteResponse.value().get(0).mainSitePhone() == null) {
+          return filteredResults.build();
+        } else {
+          filteredResults.careSitesResponse(
+                                  CareSitesResponse.builder()
+                                          .value(singletonList(currentCareSiteResponse.value().get(0)))
+                                          .build())
+                          .providerResponse(
+                                  ProviderResponse.builder()
+                                          .value(singletonList(providerResponse))
+                                          .build())
+                          .providerServicesResponse(providerServicesResponse)
+                          .build();
+        }
+      }
+    }
+    return filteredResults.build();
   }
 
   private String trimIllegalCharacters(String name) {
