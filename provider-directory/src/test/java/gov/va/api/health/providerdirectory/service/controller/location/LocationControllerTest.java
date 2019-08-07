@@ -733,7 +733,7 @@ public final class LocationControllerTest {
             ProviderResponse.builder()
                 .value(asList(ProviderResponse.Value.builder().providerIdentifier(123).build()))
                 .build());
-    when(ppmsClient.careSitesByState("Fl"))
+    when(ppmsClient.careSitesByState("FL"))
         .thenReturn(
             CareSitesResponse.builder()
                 .value(
@@ -835,7 +835,7 @@ public final class LocationControllerTest {
                             .careSitePhoneNumber("8603644511")
                             .build()))
                 .build());
-    Location.Bundle expected = controller.searchByState("Fl", 1, 2);
+    Location.Bundle expected = controller.searchByState("FlOrIdA", 1, 2);
     assertThat(expected.entry().stream().map(e -> e.resource()).collect(Collectors.toList()))
         .isEqualTo(
             asList(
