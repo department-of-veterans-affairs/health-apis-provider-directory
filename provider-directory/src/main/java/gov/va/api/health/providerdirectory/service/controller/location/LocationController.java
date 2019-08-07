@@ -16,6 +16,8 @@ import gov.va.api.health.stu3.api.resources.Location;
 import gov.va.api.health.stu3.api.resources.OperationOutcome;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -58,6 +60,62 @@ public class LocationController {
     this.transformer = transformer;
     this.bundler = bundler;
     this.ppmsClient = ppmsClient;
+  }
+
+  private static Map<String, String> stateMap() {
+    Map<String, String> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    map.put("Alabama", "AL");
+    map.put("Alaska", "AK");
+    map.put("Arizona", "AZ");
+    map.put("Arkansas", "AR");
+    map.put("California", "CA");
+    map.put("Colorado", "CO");
+    map.put("Connecticut", "CT");
+    map.put("Delaware", "DE");
+    map.put("District Of Columbia", "DC");
+    map.put("Florida", "FL");
+    map.put("Georgia", "GA");
+    map.put("Hawaii", "HI");
+    map.put("Idaho", "ID");
+    map.put("Illinois", "IL");
+    map.put("Indiana", "IN");
+    map.put("Iowa", "IA");
+    map.put("Kansas", "KS");
+    map.put("Kentucky", "KY");
+    map.put("Louisiana", "LA");
+    map.put("Maine", "ME");
+    map.put("Maryland", "MD");
+    map.put("Massachusetts", "MA");
+    map.put("Michigan", "MI");
+    map.put("Minnesota", "MN");
+    map.put("Mississippi", "MS");
+    map.put("Missouri", "MO");
+    map.put("Montana", "MT");
+    map.put("Nebraska", "NE");
+    map.put("Nevada", "NV");
+    map.put("New Hampshire", "NH");
+    map.put("New Jersey", "NJ");
+    map.put("New Mexico", "NM");
+    map.put("New York", "NY");
+    map.put("North Carolina", "NC");
+    map.put("North Dakota", "ND");
+    map.put("Ohio", "OH");
+    map.put("Oklahoma", "OK");
+    map.put("Oregon", "OR");
+    map.put("Pennsylvania", "PA");
+    map.put("Rhode Island", "RI");
+    map.put("South Carolina", "SC");
+    map.put("South Dakota", "SD");
+    map.put("Tennessee", "TN");
+    map.put("Texas", "TX");
+    map.put("Utah", "UT");
+    map.put("Vermont", "VT");
+    map.put("Virginia", "VA");
+    map.put("Washington", "WA");
+    map.put("West Virginia", "WV");
+    map.put("Wisconsin", "WI");
+    map.put("Wyoming", "WY");
+    return map;
   }
 
   private Location.Bundle bundle(MultiValueMap<String, String> parameters, int page, int count) {
@@ -170,7 +228,9 @@ public class LocationController {
       locationWrapper.careSitesResponse(ppmsClient.careSitesByCity(city));
     } else if (parameters.get("address-state") != null) {
       String state = parameters.getFirst("address-state");
-      locationWrapper.careSitesResponse(ppmsClient.careSitesByState(state));
+
+      locationWrapper.careSitesResponse(
+          ppmsClient.careSitesByState(stateMap().getOrDefault(state, state)));
     } else {
       String zip = parameters.getFirst("address-postalcode");
       locationWrapper.careSitesResponse(ppmsClient.careSitesByZip(zip));
@@ -379,7 +439,6 @@ public class LocationController {
 
   private Pair<List<LocationWrapper>, Integer> searchName(
       MultiValueMap<String, String> parameters) {
-
     String name = parameters.getFirst("name");
     if (name == null) {
       throw new IllegalStateException("Could not parse name");
