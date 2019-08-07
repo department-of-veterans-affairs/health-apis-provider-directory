@@ -228,9 +228,9 @@ public class LocationController {
       locationWrapper.careSitesResponse(ppmsClient.careSitesByCity(city));
     } else if (parameters.get("address-state") != null) {
       String state = parameters.getFirst("address-state");
-      String mappedState = stateMap().get(state);
+
       locationWrapper.careSitesResponse(
-          ppmsClient.careSitesByState(mappedState == null ? state : mappedState));
+          ppmsClient.careSitesByState(stateMap().getOrDefault(state, state)));
     } else {
       String zip = parameters.getFirst("address-postalcode");
       locationWrapper.careSitesResponse(ppmsClient.careSitesByZip(zip));
