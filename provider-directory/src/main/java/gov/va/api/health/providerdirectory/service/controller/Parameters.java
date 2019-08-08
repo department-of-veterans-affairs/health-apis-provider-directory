@@ -3,6 +3,7 @@ package gov.va.api.health.providerdirectory.service.controller;
 import java.util.Arrays;
 import java.util.List;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -15,6 +16,24 @@ public class Parameters {
   /** Create an empty, immutable map. */
   public static MultiValueMap<String, String> empty() {
     return builder().build();
+  }
+
+  /** Return first '_count' value or the default. */
+  public static int countOf(@NonNull MultiValueMap<String, String> parameters) {
+    String count = parameters.getFirst("_count");
+    if (count == null) {
+      return 15;
+    }
+    return Integer.parseInt(count);
+  }
+
+  /** Return first 'page' value or the default. */
+  public static int pageOf(@NonNull MultiValueMap<String, String> parameters) {
+    String page = parameters.getFirst("page");
+    if (page == null) {
+      return 1;
+    }
+    return Integer.parseInt(page);
   }
 
   /** Create a new parameter map with single 'identity' entry. */
