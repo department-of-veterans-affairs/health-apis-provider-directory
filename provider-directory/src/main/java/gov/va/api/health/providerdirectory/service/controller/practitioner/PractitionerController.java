@@ -74,12 +74,9 @@ public class PractitionerController {
   /** Builds the PractitionerWrapper and returns it. */
   private PractitionerWrapper practitionerWrapperBuilder(
       ProviderContactsResponse providerContactsResponse, ProviderResponse.Value providerResponse) {
-    PractitionerWrapper.PractitionerWrapperBuilder filteredResults =
-        new PractitionerWrapper.PractitionerWrapperBuilder();
-    filteredResults
-        .providerResponse(ProviderResponse.builder().value(singletonList(providerResponse)).build())
-        .providerContactsResponse(providerContactsResponse);
-    return filteredResults.build();
+
+    return new PractitionerWrapper.PractitionerWrapperBuilder().providerResponse(ProviderResponse.builder().value(singletonList(providerResponse)).build())
+            .providerContactsResponse(providerContactsResponse).build();
   }
 
   /** Read by identifier. */

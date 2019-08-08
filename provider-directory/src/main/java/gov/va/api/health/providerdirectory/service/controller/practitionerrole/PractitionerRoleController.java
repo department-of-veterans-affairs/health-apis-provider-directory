@@ -168,10 +168,7 @@ public class PractitionerRoleController {
         providerResponsePages
             .parallelStream()
             .map(
-                prv -> {
-                  return ppmsClient.providerContactsForId(prv.providerIdentifier().toString());
-                })
-            .collect(Collectors.toList());
+                prv -> ppmsClient.providerContactsForId(prv.providerIdentifier().toString())).collect(Collectors.toList());
     /** Using providerResponse, retrieve a list of providerSpecialtyResponse from PPMS. */
     List<ProviderSpecialtiesResponse> providerSpecialtiesResponsePages =
         providerResponsePages
