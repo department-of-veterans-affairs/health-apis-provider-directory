@@ -170,11 +170,8 @@ public class PractitionerController {
     List<ProviderContactsResponse> providerContactsResponsePages =
         providerResponsePages
             .parallelStream()
-            .map(
-                prv -> {
-                  return ppmsClient.providerContactsForId(prv.providerIdentifier().toString());
-                })
-            .collect(Collectors.toList());
+            .map(prv ->
+                  ppmsClient.providerContactsForId(prv.providerIdentifier().toString())).collect(Collectors.toList());
     /**
      * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
      */
@@ -225,10 +222,7 @@ public class PractitionerController {
         providerResponsePages
             .parallelStream()
             .map(
-                prv -> {
-                  return ppmsClient.providerContactsForId(prv.providerIdentifier().toString());
-                })
-            .collect(Collectors.toList());
+                prv -> ppmsClient.providerContactsForId(prv.providerIdentifier().toString())).collect(Collectors.toList());
     /**
      * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
      */

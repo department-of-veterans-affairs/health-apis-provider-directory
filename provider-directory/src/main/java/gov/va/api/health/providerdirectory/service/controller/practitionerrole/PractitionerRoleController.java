@@ -76,13 +76,11 @@ public class PractitionerRoleController {
       ProviderContactsResponse providerContactsResponse,
       ProviderResponse.Value providerResponse,
       ProviderSpecialtiesResponse providerSpecialtiesResponse) {
-    PractitionerRoleWrapper.PractitionerRoleWrapperBuilder filteredResults =
-        new PractitionerRoleWrapper.PractitionerRoleWrapperBuilder();
-    filteredResults
-        .providerResponse(ProviderResponse.builder().value(singletonList(providerResponse)).build())
-        .providerContactsResponse(providerContactsResponse)
-        .providerSpecialtiesResponse(providerSpecialtiesResponse);
-    return filteredResults.build();
+
+    return new PractitionerRoleWrapper.PractitionerRoleWrapperBuilder()
+            .providerResponse(ProviderResponse.builder().value(singletonList(providerResponse)).build())
+            .providerContactsResponse(providerContactsResponse)
+            .providerSpecialtiesResponse(providerSpecialtiesResponse).build();
   }
 
   /** Read by identifier. */
@@ -179,12 +177,10 @@ public class PractitionerRoleController {
         providerResponsePages
             .parallelStream()
             .map(
-                prv -> {
-                  return ppmsClient.providerSpecialtySearch(prv.providerIdentifier().toString());
-                })
-            .collect(Collectors.toList());
+                prv -> ppmsClient.providerSpecialtySearch(prv.providerIdentifier().toString())).collect(Collectors.toList());
     /**
-     * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
+     * Wrap providerResponse, providerContacts, and providerSpecialtiesResponse
+     * together to create a list of PractitionerRole (FHIR).
      */
     List<PractitionerRoleWrapper> practitionerWrapperPages =
         IntStream.range(0, providerContactsResponsePages.size())
