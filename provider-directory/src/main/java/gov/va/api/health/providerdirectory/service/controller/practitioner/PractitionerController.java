@@ -155,17 +155,6 @@ public class PractitionerController {
     int count = Integer.parseInt(parameters.getOrDefault("_count", singletonList("15")).get(0));
     int fromIndex = Math.min((page - 1) * count, providerResponse.value().size());
     int toIndex = Math.min((fromIndex + count), providerResponse.value().size());
-
-    //    int page = Integer.parseInt(parameters.getOrDefault("page", singletonList("1")).get(0));
-    //    int count = Integer.parseInt(parameters.getOrDefault("_count",
-    // singletonList("15")).get(0));
-    //    int fromIndex =
-    //            Math.min((page - 1) * count,
-    // locationWrapper.build().careSitesResponse().value().size());
-    //    int toIndex =
-    //            Math.min((fromIndex + count),
-    // locationWrapper.build().careSitesResponse().value().size());
-
     /** Retrieve a list of providerResponse from PPMS using familyName. */
     List<ProviderResponse.Value> providerResponseUnfilteredPages =
         providerResponse.value().subList(fromIndex, toIndex);
