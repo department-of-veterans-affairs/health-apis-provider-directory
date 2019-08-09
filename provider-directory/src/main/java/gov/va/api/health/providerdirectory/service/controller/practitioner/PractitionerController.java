@@ -1,5 +1,10 @@
 package gov.va.api.health.providerdirectory.service.controller.practitioner;
 
+import static gov.va.api.health.providerdirectory.service.controller.Parameters.countOf;
+import static gov.va.api.health.providerdirectory.service.controller.Parameters.pageOf;
+import static java.util.Collections.singletonList;
+
+import gov.va.api.health.providerdirectory.service.CountParameter;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
@@ -11,12 +16,13 @@ import gov.va.api.health.providerdirectory.service.controller.Validator;
 import gov.va.api.health.stu3.api.resources.OperationOutcome;
 import gov.va.api.health.stu3.api.resources.Practitioner;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,19 +54,19 @@ public class PractitionerController {
 
   private Practitioner.Bundle bundle(
       MultiValueMap<String, String> parameters, int page, int count) {
-    PractitionerWrapper root = search(parameters);
+    Pair<List<PractitionerWrapper>, Integer> root = search(parameters);
     LinkConfig linkConfig =
         LinkConfig.builder()
             .path("Practitioner")
             .queryParams(parameters)
             .page(page)
             .recordsPerPage(count)
-            .totalRecords(1)
+            .totalRecords(root.getRight())
             .build();
     return bundler.bundle(
         BundleContext.of(
             linkConfig,
-            Collections.singletonList(root),
+            root.getLeft(),
             transformer,
             Practitioner.Entry::new,
             Practitioner.Bundle::new));
@@ -69,44 +75,18 @@ public class PractitionerController {
   /** Read by identifier. */
   @GetMapping(value = {"/{publicId}"})
   public Practitioner readByIdentifier(@PathVariable("publicId") String publicId) {
-    return transformer.apply(search(Parameters.forIdentity(publicId)));
+    return transformer.apply(search(Parameters.forIdentity((publicId))).getKey().get(0));
   }
 
-  private PractitionerWrapper search(MultiValueMap<String, String> parameters) {
-    ProviderResponse providerResponse;
+  private Pair<List<PractitionerWrapper>, Integer> search(
+      MultiValueMap<String, String> parameters) {
     if (parameters.containsKey("identifier")) {
-      String identifier = parameters.getFirst("identifier");
-      providerResponse = ppmsClient.providersForId(identifier);
+      return searchIdentifier(parameters);
     } else if (parameters.containsKey("name")) {
-      String name = parameters.getFirst("name");
-      providerResponse = ppmsClient.providersForName(name);
+      return searchName(parameters);
     } else {
-      String familyName = parameters.getFirst("family");
-      String givenName = parameters.getFirst("given");
-      providerResponse = ppmsClient.providersForName(familyName);
-      List<ProviderResponse.Value> providerResponseFiltered = new ArrayList<>();
-      for (ProviderResponse.Value val : providerResponse.value()) {
-        if (StringUtils.containsIgnoreCase(val.name(), givenName)) {
-          providerResponseFiltered.add(val);
-        }
-      }
-      if (providerResponseFiltered.size() == 0) {
-        throw new PpmsClient.PpmsException(
-            "No family name and given name found for combination '"
-                + familyName
-                + "' and '"
-                + givenName
-                + "'.");
-      }
-      providerResponse.value(providerResponseFiltered);
+      return searchFamilyGiven(parameters);
     }
-    String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
-    ProviderContactsResponse providerContactsResponse =
-        ppmsClient.providerContactsForId(providerIdentifier);
-    return PractitionerWrapper.builder()
-        .providerContactsResponse(providerContactsResponse)
-        .providerResponse(providerResponse)
-        .build();
   }
 
   /** Search by family & given name. */
@@ -115,7 +95,7 @@ public class PractitionerController {
       @RequestParam("family") String familyName,
       @RequestParam("given") String givenName,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
-      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
+      @CountParameter @Min(0) int count) {
     return bundle(
         Parameters.builder()
             .add("family", familyName)
@@ -132,7 +112,7 @@ public class PractitionerController {
   public Practitioner.Bundle searchByIdentifier(
       @RequestParam("identifier") String identifier,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
-      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
+      @CountParameter @Min(0) int count) {
     return bundle(
         Parameters.builder()
             .add("identifier", identifier)
@@ -148,11 +128,109 @@ public class PractitionerController {
   public Practitioner.Bundle searchByName(
       @RequestParam("name") String name,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
-      @RequestParam(value = "_count", defaultValue = "1") @Min(0) int count) {
+      @CountParameter @Min(0) int count) {
     return bundle(
         Parameters.builder().add("name", name).add("page", page).add("_count", count).build(),
         page,
         count);
+  }
+
+  /** Logic for search by Family and Given. */
+  private Pair<List<PractitionerWrapper>, Integer> searchFamilyGiven(
+      MultiValueMap<String, String> parameters) {
+    String familyName = parameters.getFirst("family");
+    String givenName = parameters.getFirst("given");
+    ProviderResponse providerResponse = ppmsClient.providersForName(familyName);
+    int page = pageOf(parameters);
+    int count = countOf(parameters);
+    int fromIndex = Math.min((page - 1) * count, providerResponse.value().size());
+    int toIndex = Math.min((fromIndex + count), providerResponse.value().size());
+    /* Retrieve a list of providerResponse from PPMS using familyName. */
+    List<ProviderResponse.Value> providerResponseUnfilteredPages =
+        providerResponse.value().subList(fromIndex, toIndex);
+    /* Remove any providerResponse that doesn't contain the givenName. */
+    List<ProviderResponse.Value> providerResponsePages = new ArrayList<>();
+    for (int i = 0; i < providerResponseUnfilteredPages.size(); i++) {
+      if (StringUtils.containsIgnoreCase(
+          providerResponseUnfilteredPages.get(i).name(), givenName)) {
+        providerResponsePages.add(providerResponse.value().get(i));
+      }
+    }
+    /* Using providerResponse, retrieve a list of providerContactsResponse from PPMS. */
+    List<ProviderContactsResponse> providerContactsResponsePages =
+        providerResponsePages
+            .parallelStream()
+            .map(prv -> ppmsClient.providerContactsForId(prv.providerIdentifier().toString()))
+            .collect(Collectors.toList());
+    /*
+     * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
+     */
+    List<PractitionerWrapper> practitionerWrapperPages = new ArrayList<>();
+    for (int i = 0; i < providerContactsResponsePages.size(); i++) {
+      practitionerWrapperPages.add(
+          (PractitionerWrapper.builder()
+                  .providerResponse(
+                      ProviderResponse.builder()
+                          .value(singletonList(providerResponsePages.get(i)))
+                          .build())
+                  .providerContactsResponse(providerContactsResponsePages.get(i)))
+              .build());
+    }
+    return Pair.of(practitionerWrapperPages, providerResponsePages.size());
+  }
+
+  /** Logic for search by Identifier. */
+  private Pair<List<PractitionerWrapper>, Integer> searchIdentifier(
+      MultiValueMap<String, String> parameters) {
+    PractitionerWrapper.PractitionerWrapperBuilder practitionerWrapper =
+        new PractitionerWrapper.PractitionerWrapperBuilder();
+    String identifier = parameters.getFirst("identifier");
+    ProviderResponse providerResponse = ppmsClient.providersForId(identifier);
+    String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
+    ProviderContactsResponse providerContactsResponse =
+        ppmsClient.providerContactsForId(providerIdentifier);
+    return Pair.of(
+        singletonList(
+            practitionerWrapper
+                .providerContactsResponse(providerContactsResponse)
+                .providerResponse(providerResponse)
+                .build()),
+        1);
+  }
+
+  /** Logic for search by Name. */
+  private Pair<List<PractitionerWrapper>, Integer> searchName(
+      MultiValueMap<String, String> parameters) {
+    String name = parameters.getFirst("name");
+    ProviderResponse providerResponse = ppmsClient.providersForName(name);
+    int page = pageOf(parameters);
+    int count = countOf(parameters);
+    int fromIndex = Math.min((page - 1) * count, providerResponse.value().size());
+    int toIndex = Math.min((fromIndex + count), providerResponse.value().size());
+    /* Retrieve a list of providerResponse from PPMS using the name's identifier. */
+    List<ProviderResponse.Value> providerResponsePages =
+        providerResponse.value().subList(fromIndex, toIndex);
+    /* Using providerResponse, retrieve a list of providerContactsResponse from PPMS. */
+    List<ProviderContactsResponse> providerContactsResponsePages =
+        providerResponsePages
+            .parallelStream()
+            .map(prv -> ppmsClient.providerContactsForId(prv.providerIdentifier().toString()))
+            .collect(Collectors.toList());
+    /*
+     * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
+     */
+    List<PractitionerWrapper> practitionerWrapperPages = new ArrayList<>();
+    for (int i = 0; i < providerContactsResponsePages.size(); i++) {
+      practitionerWrapperPages.add(
+          (PractitionerWrapper.builder()
+                  .providerResponse(
+                      ProviderResponse.builder()
+                          .value(singletonList(providerResponsePages.get(i)))
+                          .build())
+                  .providerContactsResponse(providerContactsResponsePages.get(i)))
+              .build());
+    }
+    return Pair.of(practitionerWrapperPages, providerResponse.value().size());
   }
 
   /** Hey, this is a validate endpoint. It validates. */
