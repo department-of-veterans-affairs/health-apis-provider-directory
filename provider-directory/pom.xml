@@ -12,7 +12,7 @@
     <stu3.version>1.0.18</stu3.version>
   </properties>
   <artifactId>provider-directory</artifactId>
-  <version>1.0.12-SNAPSHOT</version>
+  <version>1.0.12</version>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
