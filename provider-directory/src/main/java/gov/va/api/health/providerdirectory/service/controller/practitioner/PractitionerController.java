@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -71,16 +70,6 @@ public class PractitionerController {
             transformer,
             Practitioner.Entry::new,
             Practitioner.Bundle::new));
-  }
-
-  /** Builds the PractitionerWrapper and returns it. */
-  private PractitionerWrapper practitionerWrapper(
-      ProviderContactsResponse providerContactsResponse, ProviderResponse.Value providerResponse) {
-
-    return new PractitionerWrapper.PractitionerWrapperBuilder()
-        .providerResponse(ProviderResponse.builder().value(singletonList(providerResponse)).build())
-        .providerContactsResponse(providerContactsResponse)
-        .build();
   }
 
   /** Read by identifier. */
@@ -176,14 +165,17 @@ public class PractitionerController {
     /*
      * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
      */
-    List<PractitionerWrapper> practitionerWrapperPages =
-        IntStream.range(0, providerContactsResponsePages.size())
-            .parallel()
-            .mapToObj(
-                i ->
-                    practitionerWrapper(
-                        providerContactsResponsePages.get(i), providerResponsePages.get(i)))
-            .collect(Collectors.toList());
+    List<PractitionerWrapper> practitionerWrapperPages = new ArrayList<>();
+    for (int i = 0; i < providerContactsResponsePages.size(); i++) {
+      practitionerWrapperPages.add(
+          (PractitionerWrapper.builder()
+                  .providerResponse(
+                      ProviderResponse.builder()
+                          .value(singletonList(providerResponsePages.get(i)))
+                          .build())
+                  .providerContactsResponse(providerContactsResponsePages.get(i)))
+              .build());
+    }
     return Pair.of(practitionerWrapperPages, providerResponsePages.size());
   }
 
@@ -227,14 +219,17 @@ public class PractitionerController {
     /*
      * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
      */
-    List<PractitionerWrapper> practitionerWrapperPages =
-        IntStream.range(0, providerContactsResponsePages.size())
-            .parallel()
-            .mapToObj(
-                i ->
-                    practitionerWrapper(
-                        providerContactsResponsePages.get(i), providerResponsePages.get(i)))
-            .collect(Collectors.toList());
+    List<PractitionerWrapper> practitionerWrapperPages = new ArrayList<>();
+    for (int i = 0; i < providerContactsResponsePages.size(); i++) {
+      practitionerWrapperPages.add(
+          (PractitionerWrapper.builder()
+                  .providerResponse(
+                      ProviderResponse.builder()
+                          .value(singletonList(providerResponsePages.get(i)))
+                          .build())
+                  .providerContactsResponse(providerContactsResponsePages.get(i)))
+              .build());
+    }
     return Pair.of(practitionerWrapperPages, providerResponse.value().size());
   }
 

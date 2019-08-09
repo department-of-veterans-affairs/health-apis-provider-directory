@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -71,19 +70,6 @@ public class PractitionerRoleController {
             transformer,
             PractitionerRole.Entry::new,
             PractitionerRole.Bundle::new));
-  }
-
-  /** Builds the PractitionerWrapper and returns it. */
-  private PractitionerRoleWrapper practitionerRoleWrapperBuilder(
-      ProviderContactsResponse providerContactsResponse,
-      ProviderResponse.Value providerResponse,
-      ProviderSpecialtiesResponse providerSpecialtiesResponse) {
-
-    return new PractitionerRoleWrapper.PractitionerRoleWrapperBuilder()
-        .providerResponse(ProviderResponse.builder().value(singletonList(providerResponse)).build())
-        .providerContactsResponse(providerContactsResponse)
-        .providerSpecialtiesResponse(providerSpecialtiesResponse)
-        .build();
   }
 
   /** Read by identifier. */
@@ -182,16 +168,18 @@ public class PractitionerRoleController {
      * Wrap providerResponse, providerContacts, and providerSpecialtiesResponse together to create a
      * list of PractitionerRole (FHIR).
      */
-    List<PractitionerRoleWrapper> practitionerWrapperPages =
-        IntStream.range(0, providerContactsResponsePages.size())
-            .parallel()
-            .mapToObj(
-                i ->
-                    practitionerRoleWrapperBuilder(
-                        providerContactsResponsePages.get(i),
-                        providerResponsePages.get(i),
-                        providerSpecialtiesResponsePages.get(i)))
-            .collect(Collectors.toList());
+    List<PractitionerRoleWrapper> practitionerWrapperPages = new ArrayList<>();
+    for (int i = 0; i < providerContactsResponsePages.size(); i++) {
+      practitionerWrapperPages.add(
+          (PractitionerRoleWrapper.builder()
+              .providerResponse(
+                  ProviderResponse.builder()
+                      .value(singletonList(providerResponsePages.get(i)))
+                      .build())
+              .providerContactsResponse(providerContactsResponsePages.get(i))
+              .providerSpecialtiesResponse(providerSpecialtiesResponsePages.get(i))
+              .build()));
+    }
     return Pair.of(practitionerWrapperPages, providerResponsePages.size());
   }
 
