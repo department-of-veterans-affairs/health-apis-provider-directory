@@ -4,10 +4,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,18 +17,11 @@ public class ProviderDirectoryHomeController {
 
   private static final YAMLMapper MAPPER = new YAMLMapper();
 
-  private final Resource openapi;
-
-  @Autowired
-  public ProviderDirectoryHomeController(@Value("classpath:/openapi.yaml") Resource openapi) {
-    this.openapi = openapi;
-  }
-
   /** The OpenAPI specific content in yaml form. */
   @SuppressWarnings("WeakerAccess")
   @Bean
   public String openapiContent() throws IOException {
-    try (InputStream is = openapi.getInputStream()) {
+    try (InputStream is = new ClassPathResource("openapi.yaml").getInputStream()) {
       return StreamUtils.copyToString(is, Charset.defaultCharset());
     }
   }
@@ -45,7 +36,7 @@ public class ProviderDirectoryHomeController {
   )
   @ResponseBody
   public Object openapiJson() throws IOException {
-    return ProviderDirectoryHomeController.MAPPER.readValue(openapiContent(), Object.class);
+    return MAPPER.readValue(openapiContent(), Object.class);
   }
 
   /** Provide access to the OpenAPI yaml via RESTful interface. */

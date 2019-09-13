@@ -57,24 +57,7 @@ makeConfig() {
   local target="$REPO/$project/config/application-${profile}.properties"
   [ -f "$target" ] && mv -v $target $target.$MARKER
   grep -E '(.*= *unset)' "$REPO/$project/src/main/resources/application.properties" \
-    | grep -Ev '(^server\.ssl\.|^ssl\.)' \
     > "$target"
-cat >> "$target" <<EOF
-# Server SSL
-server.ssl.key-store=file:target/certs/system/DVP-DVP-NONPROD.jks
-server.ssl.key-alias=internal-sys-dev
-server.ssl.key-store-password=$KEYSTORE_PASSWORD
-server.ssl.trust-store=file:target/certs/system/DVP-NONPROD-truststore.jks
-server.ssl.trust-store-password=$KEYSTORE_PASSWORD
-server.ssl.client-auth=want
-# Client SSL
-ssl.key-store=file:target/certs/system/DVP-DVP-NONPROD.jks
-ssl.key-store-password=$KEYSTORE_PASSWORD
-ssl.client-key-password=$KEYSTORE_PASSWORD
-ssl.use-trust-store=true
-ssl.trust-store=file:target/certs/system/DVP-NONPROD-truststore.jks
-ssl.trust-store-password=$KEYSTORE_PASSWORD
-EOF
 }
 
 configValue() {
@@ -117,7 +100,7 @@ configValue provider-directory $PROFILE capability.contact.email "$(sendMoarSpam
 configValue provider-directory $PROFILE capability.security.token-endpoint https://fake.com/token
 configValue provider-directory $PROFILE capability.security.authorize-endpoint https://fake.com/authorize
 configValue provider-directory $PROFILE ppms.url "$PPMS_URL"
-configValue provider-directory $PROFILE provider-directory.url https://localhost:8080
+configValue provider-directory $PROFILE provider-directory.url http://localhost:8080
 configValue provider-directory $PROFILE well-known.capabilities "context-standalone-patient, launch-ehr, permission-offline, permission-patient"
 configValue provider-directory $PROFILE well-known.response-type-supported "code, refresh_token"
 configValue provider-directory $PROFILE well-known.scopes-supported "patient/DiagnosticReport.read, patient/Patient.read, offline_access"
