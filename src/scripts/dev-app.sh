@@ -31,7 +31,7 @@ startApp() {
   [ -n "$pid" ] && echo "$app appears to already be running ($pid)" && return
   echo "Starting $app"
   cd $REPO/$app
-  local jar=$(find target -maxdepth 1 -name "$app-*.jar" | head -1)
+  local jar=$(find target -maxdepth 1 -name "$app-*.jar" | grep -v -E 'tests|library')
   [ -z "$jar" ] && echo "Cannot find $app application jar" && exit 1
   java -jar $jar &
 }
