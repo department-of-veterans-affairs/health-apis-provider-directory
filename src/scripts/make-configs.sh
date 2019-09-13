@@ -97,8 +97,8 @@ makeConfig provider-directory $PROFILE
 
 configValue provider-directory $PROFILE capability.contact.name "$(whoDis)"
 configValue provider-directory $PROFILE capability.contact.email "$(sendMoarSpams)"
-configValue provider-directory $PROFILE capability.security.token-endpoint http://fake.com/token
-configValue provider-directory $PROFILE capability.security.authorize-endpoint http://fake.com/authorize
+configValue provider-directory $PROFILE capability.security.token-endpoint https://fake.com/token
+configValue provider-directory $PROFILE capability.security.authorize-endpoint https://fake.com/authorize
 configValue provider-directory $PROFILE ppms.url "$PPMS_URL"
 configValue provider-directory $PROFILE provider-directory.url http://localhost:8080
 configValue provider-directory $PROFILE well-known.capabilities "context-standalone-patient, launch-ehr, permission-offline, permission-patient"
