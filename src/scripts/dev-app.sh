@@ -16,8 +16,8 @@ Options
  -p, --provider-directory    Include Provider Directory
 
 Examples
- # Start both
- $0 -ma s
+ $0 start -p
+ $0 stop --provider-directory
 
 $1
 EOF
@@ -81,7 +81,7 @@ SPRING_PROFILES_ACTIVE=dev
 
 ARGS=$(getopt -n $(basename ${0}) \
     -l "debug,help,provider-directory" \
-    -o "hima" -- "$@")
+    -o "hp" -- "$@")
 [ $? != 0 ] && usage
 eval set -- "$ARGS"
 while true
