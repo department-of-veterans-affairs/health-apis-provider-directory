@@ -1,3 +1,153 @@
 package gov.va.api.health.providerdirectory.service.controller.endpoint;
 
-public class EndpointController {}
+
+import gov.va.api.health.providerdirectory.service.CountParameter;
+import gov.va.api.health.providerdirectory.service.client.PpmsClient;
+import gov.va.api.health.providerdirectory.service.controller.Bundler;
+import gov.va.api.health.providerdirectory.service.controller.Bundler.BundleContext;
+import gov.va.api.health.providerdirectory.service.controller.PageLinks.LinkConfig;
+import gov.va.api.health.providerdirectory.service.controller.Parameters;
+import gov.va.api.health.providerdirectory.service.controller.Validator;
+import gov.va.api.health.stu3.api.resources.Endpoint;
+import gov.va.api.health.stu3.api.resources.OperationOutcome;
+import java.util.List;
+import java.util.function.Function;
+import javax.validation.constraints.Min;
+import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * Request Mappings for Location Resource, see
+ * http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html for
+ * implementation details.
+ */
+@RestController
+@RequestMapping(
+        value = {"/api/Endpoint"},
+        produces = {"application/json", "application/fhir+json", "application/json+fhir"}
+)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
+public class EndpointController {
+
+    private Transformer transformer;
+
+    private Bundler bundler;
+
+    private PpmsClient ppmsClient;
+
+    private Endpoint.Bundle bundle(
+            MultiValueMap<String, String> parameters, int page, int count) {
+        Pair<List<EndpointWrapper>, Integer> root = search(parameters);
+        LinkConfig linkConfig =
+                LinkConfig.builder()
+                        .path("Endpoint")
+                        .queryParams(parameters)
+                        .page(page)
+                        .recordsPerPage(count)
+                        .totalRecords(root.getRight())
+                        .build();
+        return bundler.bundle(
+                BundleContext.of(
+                        linkConfig,
+                        root.getLeft(),
+                        transformer,
+                        Endpoint.Entry::new,
+                        Endpoint.Bundle::new));
+    }
+
+    /** Read by identifier. */
+    @GetMapping(value = {"/{publicId}"})
+    public Endpoint readByIdentifier(@PathVariable("publicId") String publicId) {
+        return transformer.apply(search(Parameters.forIdentity((publicId))).getKey().get(0));
+    }
+
+    private Pair<List<EndpointWrapper>, Integer> search(
+            MultiValueMap<String, String> parameters) {
+        if (parameters.containsKey("identifier")) {
+            return searchIdentifier(parameters);
+        } else if (parameters.containsKey("name")) {
+            return searchName(parameters);
+        } else {
+            return searchOrganization(parameters);
+        }
+    }
+
+    /** Search by identifier. */
+    @GetMapping(params = {"identifier"})
+    public Endpoint.Bundle searchByIdentifier(
+            @RequestParam("identifier") String identifier,
+            @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+            @CountParameter @Min(0) int count) {
+        return bundle(
+                Parameters.builder()
+                        .add("identifier", identifier)
+                        .add("page", page)
+                        .add("_count", count)
+                        .build(),
+                page,
+                count);
+    }
+
+    /** Search by name. */
+    @GetMapping(params = {"name"})
+    public Endpoint.Bundle searchByName(
+            @RequestParam("name") String name,
+            @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+            @CountParameter @Min(0) int count) {
+        return bundle(
+                Parameters.builder().add("name", name).add("page", page).add("_count", count).build(),
+                page,
+                count);
+    }
+
+    /** Search by name. */
+    @GetMapping(params = {"name"})
+    public Endpoint.Bundle searchByOrganization(
+            @RequestParam("name") String name,
+            @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
+            @CountParameter @Min(0) int count) {
+        return bundle(
+                Parameters.builder().add("name", name).add("page", page).add("_count", count).build(),
+                page,
+                count);
+    }
+
+    /** Logic for search by Identifier. */
+    private Pair<List<EndpointWrapper>, Integer> searchOrganization(
+            MultiValueMap<String, String> parameters) {
+        return null;
+    }
+
+    /** Logic for search by Identifier. */
+    private Pair<List<EndpointWrapper>, Integer> searchIdentifier(
+            MultiValueMap<String, String> parameters) {
+             return null;
+    }
+
+    /** Logic for search by Name. */
+    private Pair<List<EndpointWrapper>, Integer> searchName(
+            MultiValueMap<String, String> parameters) {
+        String name = parameters.getFirst("name");
+        return null;
+    }
+
+    /** Hey, this is a validate endpoint. It validates. */
+    @PostMapping(
+            value = "/$validate",
+            consumes = {"application/json", "application/json+fhir", "application/fhir+json"}
+    )
+    public OperationOutcome validate(@RequestBody Endpoint.Bundle bundle) {
+        return Validator.create().validate(bundle);
+    }
+
+    public interface Transformer extends Function<EndpointWrapper, Endpoint> {}
+}
