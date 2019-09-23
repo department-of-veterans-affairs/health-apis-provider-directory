@@ -30,22 +30,17 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
   public PractitionerRole apply(PractitionerRoleWrapper ppmsData) {
     // TODO organization reference is required
     // location could be populated by caresites
-    ProviderResponse.Value providerResponse =
-            ppmsData.providerResponse().value() == null || ppmsData.providerResponse().value().isEmpty()
-                    ? null
-                    : ppmsData.providerResponse().value().get(0);
-
+    ProviderResponse.Value providerResponse = ppmsData.providerResponse().value().get(0);
     ProviderContactsResponse.Value providerContacts =
-            ppmsData.providerContactsResponse().value() == null
-                    || ppmsData.providerContactsResponse().value().isEmpty()
-                    ? null
-                    : ppmsData.providerContactsResponse().value().get(0);
-
+        ppmsData.providerContactsResponse().value() == null
+                || ppmsData.providerContactsResponse().value().isEmpty()
+            ? null
+            : ppmsData.providerContactsResponse().value().get(0);
     ProviderServicesResponse.Value providerServices =
-            ppmsData.providerServicesResponse().value() == null
-                    || ppmsData.providerServicesResponse().value().isEmpty()
-                    ? null
-                    : ppmsData.providerServicesResponse().value().get(0);
+        ppmsData.providerServicesResponse().value() == null
+                || ppmsData.providerServicesResponse().value().isEmpty()
+            ? null
+            : ppmsData.providerServicesResponse().value().get(0);
     return PractitionerRole.builder()
         .resourceType("PractitionerRole")
         .active(StringUtils.equalsIgnoreCase(providerResponse.providerStatusReason(), "active"))
@@ -55,9 +50,12 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
                 .coding(codeCodings(ppmsData.providerSpecialtiesResponse()))
                 .build())
         .id(providerResponse.providerIdentifier().toString())
-        .telecom(providerServicesTelecoms(providerServices) != null
+        .telecom(
+            providerServicesTelecoms(providerServices) != null
                 ? providerServicesTelecoms(providerServices)
-                : providerTelecoms(providerResponse) != null ? providerTelecoms(providerResponse) : providerContactsTelecom(providerContacts))
+                : providerTelecoms(providerResponse) != null
+                    ? providerTelecoms(providerResponse)
+                    : providerContactsTelecom(providerContacts))
         .build();
   }
 
@@ -81,17 +79,6 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
         .build();
   }
 
-  List<PractitionerContactPoint> providerServicesTelecoms(ProviderServicesResponse.Value source) {
-    if (source == null || allBlank(source.careSitePhoneNumber())) {
-      return null;
-    }
-    List<PractitionerContactPoint> telecoms = new ArrayList<>();
-    if (source.careSitePhoneNumber() != null) {
-      telecoms.add(telecom("phone", source.careSitePhoneNumber()));
-    }
-    return telecoms;
-  }
-
   List<PractitionerContactPoint> providerContactsTelecom(ProviderContactsResponse.Value source) {
     if (source == null || allBlank(source.mobilePhone())) {
       return null;
@@ -99,6 +86,17 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
     List<PractitionerContactPoint> telecoms = new ArrayList<>();
     if (source.mobilePhone() != null) {
       telecoms.add(telecom("phone", source.mobilePhone()));
+    }
+    return telecoms;
+  }
+
+  List<PractitionerContactPoint> providerServicesTelecoms(ProviderServicesResponse.Value source) {
+    if (source == null || allBlank(source.careSitePhoneNumber())) {
+      return null;
+    }
+    List<PractitionerContactPoint> telecoms = new ArrayList<>();
+    if (source.careSitePhoneNumber() != null) {
+      telecoms.add(telecom("phone", source.careSitePhoneNumber()));
     }
     return telecoms;
   }
@@ -116,8 +114,8 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
 
   PractitionerContactPoint telecom(String system, String value) {
     return PractitionerContactPoint.builder()
-            .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
-            .value(value)
-            .build();
+        .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
+        .value(value)
+        .build();
   }
 }

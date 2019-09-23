@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PractitionerTransformer implements PractitionerController.Transformer {
+
   Boolean active(String active) {
     return equalsIgnoreCase(active, "active");
   }
@@ -48,25 +49,19 @@ public class PractitionerTransformer implements PractitionerController.Transform
             .build());
   }
 
-
   @Override
   public Practitioner apply(PractitionerWrapper ppmsData) {
-    ProviderResponse.Value providerResponse =
-            ppmsData.providerResponse().value() == null || ppmsData.providerResponse().value().isEmpty()
-                    ? null
-                    : ppmsData.providerResponse().value().get(0);
-
+    ProviderResponse.Value providerResponse = ppmsData.providerResponse().value().get(0);
     ProviderContactsResponse.Value providerContacts =
-            ppmsData.providerContactsResponse().value() == null
-                    || ppmsData.providerContactsResponse().value().isEmpty()
-                    ? null
-                    : ppmsData.providerContactsResponse().value().get(0);
-
+        ppmsData.providerContactsResponse().value() == null
+                || ppmsData.providerContactsResponse().value().isEmpty()
+            ? null
+            : ppmsData.providerContactsResponse().value().get(0);
     ProviderServicesResponse.Value providerServices =
-            ppmsData.providerServicesResponse().value() == null
-                    || ppmsData.providerServicesResponse().value().isEmpty()
-                    ? null
-                    : ppmsData.providerServicesResponse().value().get(0);
+        ppmsData.providerServicesResponse().value() == null
+                || ppmsData.providerServicesResponse().value().isEmpty()
+            ? null
+            : ppmsData.providerServicesResponse().value().get(0);
     List<Practitioner.PractitionerIdentifier> identifiers = new ArrayList<>();
     identifiers.add(identifier(providerResponse));
     return Practitioner.builder()
@@ -80,8 +75,10 @@ public class PractitionerTransformer implements PractitionerController.Transform
         .birthDate((providerContacts == null) ? null : providerContacts.birthday())
         .telecom(
             providerServicesTelecoms(providerServices) != null
-            ? providerServicesTelecoms(providerServices)
-            : providerTelecoms(providerResponse) != null ? providerTelecoms(providerResponse) : providerContactsTelecom(providerContacts))
+                ? providerServicesTelecoms(providerServices)
+                : providerTelecoms(providerResponse) != null
+                    ? providerTelecoms(providerResponse)
+                    : providerContactsTelecom(providerContacts))
         .build();
   }
 
@@ -125,17 +122,6 @@ public class PractitionerTransformer implements PractitionerController.Transform
                 .build());
   }
 
-  List<ContactPoint> providerServicesTelecoms(ProviderServicesResponse.Value source) {
-    if (source == null || allBlank(source.careSitePhoneNumber())) {
-      return null;
-    }
-    List<ContactPoint> telecoms = new ArrayList<>();
-    if (source.careSitePhoneNumber() != null) {
-      telecoms.add(telecom("phone", source.careSitePhoneNumber()));
-    }
-    return telecoms;
-  }
-
   List<ContactPoint> providerContactsTelecom(ProviderContactsResponse.Value source) {
     if (source == null || allBlank(source.mobilePhone())) {
       return null;
@@ -143,6 +129,17 @@ public class PractitionerTransformer implements PractitionerController.Transform
     List<ContactPoint> telecoms = new ArrayList<>();
     if (source.mobilePhone() != null) {
       telecoms.add(telecom("phone", source.mobilePhone()));
+    }
+    return telecoms;
+  }
+
+  List<ContactPoint> providerServicesTelecoms(ProviderServicesResponse.Value source) {
+    if (source == null || allBlank(source.careSitePhoneNumber())) {
+      return null;
+    }
+    List<ContactPoint> telecoms = new ArrayList<>();
+    if (source.careSitePhoneNumber() != null) {
+      telecoms.add(telecom("phone", source.careSitePhoneNumber()));
     }
     return telecoms;
   }
@@ -160,10 +157,8 @@ public class PractitionerTransformer implements PractitionerController.Transform
 
   ContactPoint telecom(String system, String value) {
     return ContactPoint.builder()
-            .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
-            .value(value)
-            .build();
+        .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
+        .value(value)
+        .build();
   }
-
-
 }

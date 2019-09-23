@@ -161,10 +161,10 @@ public class PractitionerRoleController {
             .collect(Collectors.toList());
     /* Using providerResponse, retrieve a list of providerContactsResponse from PPMS. */
     List<ProviderServicesResponse> providerServicesResponsePages =
-            providerResponsePages
-                    .parallelStream()
-                    .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
-                    .collect(Collectors.toList());
+        providerResponsePages
+            .parallelStream()
+            .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
+            .collect(Collectors.toList());
 
     /* Using providerResponse, retrieve a list of providerSpecialtyResponse from PPMS. */
     List<ProviderSpecialtiesResponse> providerSpecialtiesResponsePages =
@@ -186,7 +186,7 @@ public class PractitionerRoleController {
                       .build())
               .providerContactsResponse(providerContactsResponsePages.get(i))
               .providerServicesResponse(providerServicesResponsePages.get(i))
-                  .providerSpecialtiesResponse(providerSpecialtiesResponsePages.get(i))
+              .providerSpecialtiesResponse(providerSpecialtiesResponsePages.get(i))
               .build()));
     }
     return Pair.of(practitionerWrapperPages, providerResponsePages.size());
@@ -203,7 +203,7 @@ public class PractitionerRoleController {
     ProviderContactsResponse providerContactsResponse =
         ppmsClient.providerContactsForId(providerIdentifier);
     ProviderServicesResponse providerServicesResponse =
-            ppmsClient.providerServicesById(providerIdentifier);
+        ppmsClient.providerServicesById(providerIdentifier);
     ProviderSpecialtiesResponse providerSpecialtiesResponse =
         ppmsClient.providerSpecialtySearch(providerIdentifier);
     return Pair.of(
@@ -211,7 +211,7 @@ public class PractitionerRoleController {
             practitionerRoleWrapper
                 .providerContactsResponse(providerContactsResponse)
                 .providerResponse(providerResponse)
-                    .providerServicesResponse(providerServicesResponse)
+                .providerServicesResponse(providerServicesResponse)
                 .providerSpecialtiesResponse(providerSpecialtiesResponse)
                 .build()),
         1);

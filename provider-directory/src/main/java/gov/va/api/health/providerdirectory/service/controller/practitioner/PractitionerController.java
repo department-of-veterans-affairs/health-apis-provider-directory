@@ -165,10 +165,10 @@ public class PractitionerController {
             .collect(Collectors.toList());
 
     List<ProviderServicesResponse> providerServicesResponsePages =
-            providerResponsePages
-                    .parallelStream()
-                    .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
-                    .collect(Collectors.toList());
+        providerResponsePages
+            .parallelStream()
+            .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
+            .collect(Collectors.toList());
     /*
      * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
      */
@@ -181,7 +181,7 @@ public class PractitionerController {
                           .value(singletonList(providerResponsePages.get(i)))
                           .build())
                   .providerContactsResponse(providerContactsResponsePages.get(i))
-          .providerServicesResponse(providerServicesResponsePages.get(i)))
+                  .providerServicesResponse(providerServicesResponsePages.get(i)))
               .build());
     }
     return Pair.of(practitionerWrapperPages, providerResponsePages.size());
@@ -197,13 +197,14 @@ public class PractitionerController {
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
     ProviderContactsResponse providerContactsResponse =
         ppmsClient.providerContactsForId(providerIdentifier);
-    ProviderServicesResponse providerServicesResponse = ppmsClient.providerServicesById(providerIdentifier);
+    ProviderServicesResponse providerServicesResponse =
+        ppmsClient.providerServicesById(providerIdentifier);
     return Pair.of(
         singletonList(
             practitionerWrapper
                 .providerContactsResponse(providerContactsResponse)
                 .providerResponse(providerResponse)
-                    .providerServicesResponse(providerServicesResponse)
+                .providerServicesResponse(providerServicesResponse)
                 .build()),
         1);
   }
@@ -228,10 +229,10 @@ public class PractitionerController {
             .collect(Collectors.toList());
 
     List<ProviderServicesResponse> providerServicesResponsePages =
-            providerResponsePages
-                    .parallelStream()
-                    .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
-                    .collect(Collectors.toList());
+        providerResponsePages
+            .parallelStream()
+            .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
+            .collect(Collectors.toList());
 
     /*
      * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
@@ -245,7 +246,7 @@ public class PractitionerController {
                           .value(singletonList(providerResponsePages.get(i)))
                           .build())
                   .providerContactsResponse(providerContactsResponsePages.get(i)))
-                  .providerServicesResponse(providerServicesResponsePages.get(i))
+              .providerServicesResponse(providerServicesResponsePages.get(i))
               .build());
     }
     return Pair.of(practitionerWrapperPages, providerResponse.value().size());
