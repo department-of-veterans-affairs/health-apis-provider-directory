@@ -6,6 +6,7 @@ import static java.util.Collections.singletonList;
 
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
@@ -158,6 +159,13 @@ public class PractitionerRoleController {
             .parallelStream()
             .map(prv -> ppmsClient.providerContactsForId(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());
+    /* Using providerResponse, retrieve a list of providerContactsResponse from PPMS. */
+    List<ProviderServicesResponse> providerServicesResponsePages =
+            providerResponsePages
+                    .parallelStream()
+                    .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
+                    .collect(Collectors.toList());
+
     /* Using providerResponse, retrieve a list of providerSpecialtyResponse from PPMS. */
     List<ProviderSpecialtiesResponse> providerSpecialtiesResponsePages =
         providerResponsePages
@@ -177,7 +185,8 @@ public class PractitionerRoleController {
                       .value(singletonList(providerResponsePages.get(i)))
                       .build())
               .providerContactsResponse(providerContactsResponsePages.get(i))
-              .providerSpecialtiesResponse(providerSpecialtiesResponsePages.get(i))
+              .providerServicesResponse(providerServicesResponsePages.get(i))
+                  .providerSpecialtiesResponse(providerSpecialtiesResponsePages.get(i))
               .build()));
     }
     return Pair.of(practitionerWrapperPages, providerResponsePages.size());
@@ -193,6 +202,8 @@ public class PractitionerRoleController {
     String providerIdentifier = providerResponse.value().get(0).providerIdentifier().toString();
     ProviderContactsResponse providerContactsResponse =
         ppmsClient.providerContactsForId(providerIdentifier);
+    ProviderServicesResponse providerServicesResponse =
+            ppmsClient.providerServicesById(providerIdentifier);
     ProviderSpecialtiesResponse providerSpecialtiesResponse =
         ppmsClient.providerSpecialtySearch(providerIdentifier);
     return Pair.of(
@@ -200,6 +211,7 @@ public class PractitionerRoleController {
             practitionerRoleWrapper
                 .providerContactsResponse(providerContactsResponse)
                 .providerResponse(providerResponse)
+                    .providerServicesResponse(providerServicesResponse)
                 .providerSpecialtiesResponse(providerSpecialtiesResponse)
                 .build()),
         1);
