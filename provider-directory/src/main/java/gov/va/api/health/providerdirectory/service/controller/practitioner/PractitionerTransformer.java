@@ -15,6 +15,7 @@ import gov.va.api.health.stu3.api.datatypes.Address;
 import gov.va.api.health.stu3.api.datatypes.ContactPoint;
 import gov.va.api.health.stu3.api.resources.Practitioner;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -53,26 +54,23 @@ public class PractitionerTransformer implements PractitionerController.Transform
   public Practitioner apply(PractitionerWrapper ppmsData) {
     ProviderResponse.Value providerResponse = ppmsData.providerResponse().value().get(0);
     ProviderContactsResponse.Value providerContacts =
-        ppmsData.providerContactsResponse().value() == null
-                || ppmsData.providerContactsResponse().value().isEmpty()
+        ppmsData.providerContactsResponse().value().isEmpty()
             ? null
             : ppmsData.providerContactsResponse().value().get(0);
     ProviderServicesResponse.Value providerServices =
-        ppmsData.providerServicesResponse().value() == null
-                || ppmsData.providerServicesResponse().value().isEmpty()
+        ppmsData.providerServicesResponse().value().isEmpty()
             ? null
             : ppmsData.providerServicesResponse().value().get(0);
-    List<Practitioner.PractitionerIdentifier> identifiers = new ArrayList<>();
-    identifiers.add(identifier(providerResponse));
+
     return Practitioner.builder()
         .resourceType("Practitioner")
         .active(active(providerResponse.providerStatusReason()))
         .id(providerResponse.providerIdentifier().toString())
-        .identifier(identifiers)
+        .identifier(Arrays.asList(identifier(providerResponse)))
         .name(name(providerResponse.name()))
         .gender(gender(providerResponse.providerGender()))
         .address(addresses(providerResponse))
-        .birthDate((providerContacts == null) ? null : providerContacts.birthday())
+        .birthDate(providerContacts == null ? null : providerContacts.birthday())
         .telecom(
             providerServicesTelecoms(providerServices) != null
                 ? providerServicesTelecoms(providerServices)
@@ -130,7 +128,7 @@ public class PractitionerTransformer implements PractitionerController.Transform
     if (source.mobilePhone() != null) {
       telecoms.add(telecom("phone", source.mobilePhone()));
     }
-    return telecoms;
+    return telecoms.isEmpty() ? null : telecoms;
   }
 
   List<ContactPoint> providerServicesTelecoms(ProviderServicesResponse.Value source) {
@@ -141,7 +139,7 @@ public class PractitionerTransformer implements PractitionerController.Transform
     if (source.careSitePhoneNumber() != null) {
       telecoms.add(telecom("phone", source.careSitePhoneNumber()));
     }
-    return telecoms;
+    return telecoms.isEmpty() ? null : telecoms;
   }
 
   List<ContactPoint> providerTelecoms(ProviderResponse.Value source) {
@@ -152,7 +150,7 @@ public class PractitionerTransformer implements PractitionerController.Transform
     if (source.mainPhone() != null) {
       telecoms.add(telecom("phone", source.mainPhone()));
     }
-    return telecoms;
+    return telecoms.isEmpty() ? null : telecoms;
   }
 
   ContactPoint telecom(String system, String value) {

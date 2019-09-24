@@ -171,7 +171,8 @@ public class PractitionerController {
             .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());
     /*
-     * Wrap providerResponse, providerServices, and providerContacts together to create a list of Practitioner (FHIR).
+     * Wrap providerResponse, providerServices, and providerContacts
+     * together to create a list of Practitioner (FHIR).
      */
     List<PractitionerWrapper> practitionerWrapperPages = new ArrayList<>();
     for (int i = 0; i < providerContactsResponsePages.size(); i++) {

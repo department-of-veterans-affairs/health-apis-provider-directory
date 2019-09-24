@@ -32,13 +32,11 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
     // location could be populated by caresites
     ProviderResponse.Value providerResponse = ppmsData.providerResponse().value().get(0);
     ProviderContactsResponse.Value providerContacts =
-        ppmsData.providerContactsResponse().value() == null
-                || ppmsData.providerContactsResponse().value().isEmpty()
+        ppmsData.providerContactsResponse().value().isEmpty()
             ? null
             : ppmsData.providerContactsResponse().value().get(0);
     ProviderServicesResponse.Value providerServices =
-        ppmsData.providerServicesResponse().value() == null
-                || ppmsData.providerServicesResponse().value().isEmpty()
+        ppmsData.providerServicesResponse().value().isEmpty()
             ? null
             : ppmsData.providerServicesResponse().value().get(0);
     return PractitionerRole.builder()
@@ -87,7 +85,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
     if (source.mobilePhone() != null) {
       telecoms.add(telecom("phone", source.mobilePhone()));
     }
-    return telecoms;
+    return telecoms.isEmpty() ? null : telecoms;
   }
 
   List<PractitionerContactPoint> providerServicesTelecoms(ProviderServicesResponse.Value source) {
@@ -98,7 +96,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
     if (source.careSitePhoneNumber() != null) {
       telecoms.add(telecom("phone", source.careSitePhoneNumber()));
     }
-    return telecoms;
+    return telecoms.isEmpty() ? null : telecoms;
   }
 
   List<PractitionerContactPoint> providerTelecoms(ProviderResponse.Value source) {
@@ -109,7 +107,7 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
     if (source.mainPhone() != null) {
       telecoms.add(telecom("phone", source.mainPhone()));
     }
-    return telecoms;
+    return telecoms.isEmpty() ? null : telecoms;
   }
 
   PractitionerContactPoint telecom(String system, String value) {
