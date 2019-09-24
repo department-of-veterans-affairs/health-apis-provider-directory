@@ -164,13 +164,14 @@ public class PractitionerController {
             .map(prv -> ppmsClient.providerContactsForId(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());
 
+    /* Using providerResponse, retrieve a list of providerServicesResponse from PPMS. */
     List<ProviderServicesResponse> providerServicesResponsePages =
         providerResponsePages
             .parallelStream()
             .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());
     /*
-     * Wrap providerResponse and providerContacts together to create a list of Practitioner (FHIR).
+     * Wrap providerResponse, providerServices, and providerContacts together to create a list of Practitioner (FHIR).
      */
     List<PractitionerWrapper> practitionerWrapperPages = new ArrayList<>();
     for (int i = 0; i < providerContactsResponsePages.size(); i++) {
@@ -228,6 +229,7 @@ public class PractitionerController {
             .map(prv -> ppmsClient.providerContactsForId(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());
 
+    /* Using providerResponse, retrieve a list of providerServicesResponse from PPMS. */
     List<ProviderServicesResponse> providerServicesResponsePages =
         providerResponsePages
             .parallelStream()
