@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.Iterables;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
@@ -53,6 +54,7 @@ public final class PractitionerControllerTest {
                             .contactMethodPhone(false)
                             .contactMethodMail(false)
                             .contactMethodRefDoc(false)
+                            .mainPhone("1234567890")
                             .bulkEmails(true)
                             .bulkMails(false)
                             .emails(true)
@@ -96,7 +98,11 @@ public final class PractitionerControllerTest {
                             .isTextingAcceptable(false)
                             .build()))
                 .build());
-
+    when(ppmsClient.providerServicesById("1285621557"))
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(asList(ProviderServicesResponse.Value.builder().build()))
+                .build());
     Practitioner actual = controller.readByIdentifier("identifier");
 
     assertThat(actual)
@@ -119,8 +125,8 @@ public final class PractitionerControllerTest {
                 .telecom(
                     asList(
                         ContactPoint.builder()
-                            .system(ContactPoint.ContactPointSystem.email)
-                            .value("dustin.lehman@email.com")
+                            .system(ContactPoint.ContactPointSystem.phone)
+                            .value("1234567890")
                             .build()))
                 .gender(Practitioner.Gender.male)
                 .build());
@@ -163,7 +169,11 @@ public final class PractitionerControllerTest {
                             .modifiedOnDate("2019-02-09T02:08:16Z")
                             .build()))
                 .build());
-
+    when(ppmsClient.providerServicesById("1285621557"))
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(asList(ProviderServicesResponse.Value.builder().build()))
+                .build());
     when(ppmsClient.providerContactsForId("1285621557"))
         .thenReturn(
             ProviderContactsResponse.builder()
@@ -180,6 +190,7 @@ public final class PractitionerControllerTest {
                             .preferredMethodOfContact("Any")
                             .deliveryStatus("NoProblemsHaveOccurred")
                             .isAddressActive(false)
+                            .mobilePhone("1234567890")
                             .isMailingAddress(false)
                             .addressInvalidReason("AddressDoesNotExist")
                             .gender("NotSpecified")
@@ -216,8 +227,8 @@ public final class PractitionerControllerTest {
                 .telecom(
                     asList(
                         ContactPoint.builder()
-                            .system(ContactPoint.ContactPointSystem.email)
-                            .value("dustin.lehman@email.com")
+                            .system(ContactPoint.ContactPointSystem.phone)
+                            .value("1234567890")
                             .build()))
                 .gender(Practitioner.Gender.male)
                 .build());
@@ -260,7 +271,15 @@ public final class PractitionerControllerTest {
                             .modifiedOnDate("2019-02-09T02:08:16Z")
                             .build()))
                 .build());
-
+    when(ppmsClient.providerServicesById("1285621557"))
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .careSitePhoneNumber("1234567890")
+                            .build()))
+                .build());
     when(ppmsClient.providerContactsForId("1285621557"))
         .thenReturn(
             ProviderContactsResponse.builder()
@@ -313,8 +332,8 @@ public final class PractitionerControllerTest {
                 .telecom(
                     asList(
                         ContactPoint.builder()
-                            .system(ContactPoint.ContactPointSystem.email)
-                            .value("dustin.lehman@email.com")
+                            .system(ContactPoint.ContactPointSystem.phone)
+                            .value("1234567890")
                             .build()))
                 .gender(Practitioner.Gender.male)
                 .build());
@@ -357,7 +376,15 @@ public final class PractitionerControllerTest {
                             .modifiedOnDate("2019-02-09T02:08:16Z")
                             .build()))
                 .build());
-
+    when(ppmsClient.providerServicesById("1285621557"))
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .careSitePhoneNumber("1234567890")
+                            .build()))
+                .build());
     when(ppmsClient.providerContactsForId("1285621557"))
         .thenReturn(
             ProviderContactsResponse.builder()
@@ -410,8 +437,8 @@ public final class PractitionerControllerTest {
                 .telecom(
                     asList(
                         ContactPoint.builder()
-                            .system(ContactPoint.ContactPointSystem.email)
-                            .value("dustin.lehman@email.com")
+                            .system(ContactPoint.ContactPointSystem.phone)
+                            .value("1234567890")
                             .build()))
                 .gender(Practitioner.Gender.male)
                 .build());

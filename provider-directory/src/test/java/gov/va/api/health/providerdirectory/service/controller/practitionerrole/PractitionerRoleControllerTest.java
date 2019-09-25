@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.Iterables;
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
@@ -46,6 +47,7 @@ public class PractitionerRoleControllerTest {
                             .isAcceptingNewPatients(true)
                             .providerGender("Male")
                             .isExternal(true)
+                            .mainPhone("1234567890")
                             .contactMethodEmail(false)
                             .contactMethodFax(false)
                             .contactMethodVirtuPro(false)
@@ -67,6 +69,11 @@ public class PractitionerRoleControllerTest {
                             .build()))
                 .build());
 
+    when(ppmsClient.providerServicesById("1285621557"))
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(asList(ProviderServicesResponse.Value.builder().build()))
+                .build());
     when(ppmsClient.providerContactsForId("1285621557"))
         .thenReturn(
             ProviderContactsResponse.builder()
@@ -135,8 +142,8 @@ public class PractitionerRoleControllerTest {
                 .telecom(
                     asList(
                         PractitionerRole.PractitionerContactPoint.builder()
-                            .system(ContactPoint.ContactPointSystem.email)
-                            .value("dustin.lehman@email.com")
+                            .system(ContactPoint.ContactPointSystem.phone)
+                            .value("1234567890")
                             .build()))
                 .build());
   }
@@ -178,6 +185,11 @@ public class PractitionerRoleControllerTest {
                             .modifiedOnDate("2019-02-09T02:08:16Z")
                             .build()))
                 .build());
+    when(ppmsClient.providerServicesById("1285621557"))
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(asList(ProviderServicesResponse.Value.builder().build()))
+                .build());
 
     when(ppmsClient.providerContactsForId("1285621557"))
         .thenReturn(
@@ -203,6 +215,7 @@ public class PractitionerRoleControllerTest {
                             .allowFollowEmail(false)
                             .allowBulkEmail(false)
                             .allowPhone(false)
+                            .mobilePhone("1234567890")
                             .allowFax(false)
                             .allowMail(false)
                             .isTextingAcceptable(false)
@@ -249,8 +262,8 @@ public class PractitionerRoleControllerTest {
                 .telecom(
                     asList(
                         PractitionerRole.PractitionerContactPoint.builder()
-                            .system(ContactPoint.ContactPointSystem.email)
-                            .value("dustin.lehman@email.com")
+                            .system(ContactPoint.ContactPointSystem.phone)
+                            .value("1234567890")
                             .build()))
                 .build());
   }
@@ -290,6 +303,15 @@ public class PractitionerRoleControllerTest {
                             .preferredMeansReceivingReferralMail(false)
                             .preferredMeansReceivingReferralFax(false)
                             .modifiedOnDate("2019-02-09T02:08:16Z")
+                            .build()))
+                .build());
+    when(ppmsClient.providerServicesById("1285621557"))
+        .thenReturn(
+            ProviderServicesResponse.builder()
+                .value(
+                    asList(
+                        ProviderServicesResponse.Value.builder()
+                            .careSitePhoneNumber("1234567890")
                             .build()))
                 .build());
 
@@ -362,8 +384,8 @@ public class PractitionerRoleControllerTest {
                 .telecom(
                     asList(
                         PractitionerRole.PractitionerContactPoint.builder()
-                            .system(ContactPoint.ContactPointSystem.email)
-                            .value("dustin.lehman@email.com")
+                            .system(ContactPoint.ContactPointSystem.phone)
+                            .value("1234567890")
                             .build()))
                 .build());
   }
