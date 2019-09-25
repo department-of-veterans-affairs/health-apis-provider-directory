@@ -48,13 +48,21 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
                 .coding(codeCodings(ppmsData.providerSpecialtiesResponse()))
                 .build())
         .id(providerResponse.providerIdentifier().toString())
-        .telecom(
-            providerServicesTelecoms(providerServices) != null
-                ? providerServicesTelecoms(providerServices)
-                : providerTelecoms(providerResponse) != null
-                    ? providerTelecoms(providerResponse)
-                    : providerContactsTelecom(providerContacts))
+        .telecom(checkForTelecom(providerServices, providerContacts, providerResponse))
         .build();
+  }
+
+  private List<PractitionerContactPoint> checkForTelecom(
+      ProviderServicesResponse.Value providerServices,
+      ProviderContactsResponse.Value providerContacts,
+      ProviderResponse.Value providerResponse) {
+    if (providerServicesTelecoms(providerServices) != null) {
+      return providerServicesTelecoms(providerServices);
+    } else if (providerTelecoms(providerResponse) != null) {
+      return providerTelecoms(providerResponse);
+    } else {
+      return providerContactsTelecom(providerContacts);
+    }
   }
 
   private List<Coding> codeCodings(ProviderSpecialtiesResponse specialtiesResponse) {

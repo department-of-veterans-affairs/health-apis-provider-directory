@@ -71,13 +71,21 @@ public class PractitionerTransformer implements PractitionerController.Transform
         .gender(gender(providerResponse.providerGender()))
         .address(addresses(providerResponse))
         .birthDate(providerContacts == null ? null : providerContacts.birthday())
-        .telecom(
-            providerServicesTelecoms(providerServices) != null
-                ? providerServicesTelecoms(providerServices)
-                : providerTelecoms(providerResponse) != null
-                    ? providerTelecoms(providerResponse)
-                    : providerContactsTelecom(providerContacts))
+        .telecom(checkForTelecom(providerServices, providerContacts, providerResponse))
         .build();
+  }
+
+  private List<ContactPoint> checkForTelecom(
+      ProviderServicesResponse.Value providerServices,
+      ProviderContactsResponse.Value providerContacts,
+      ProviderResponse.Value providerResponse) {
+    if (providerServicesTelecoms(providerServices) != null) {
+      return providerServicesTelecoms(providerServices);
+    } else if (providerTelecoms(providerResponse) != null) {
+      return providerTelecoms(providerResponse);
+    } else {
+      return providerContactsTelecom(providerContacts);
+    }
   }
 
   Practitioner.Gender gender(String gender) {
