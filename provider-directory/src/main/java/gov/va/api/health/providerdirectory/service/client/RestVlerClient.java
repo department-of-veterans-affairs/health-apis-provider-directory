@@ -92,8 +92,8 @@ public class RestVlerClient implements VlerClient {
 
     @SneakyThrows
     private String authHeader(String baseUrl, String url, String dateString) {
-        String pubKey = "5aebf9022f6ced389c205fd3be378f2482f6434a289f5760e0d8f62edbe38187";
-        String prvKey = "8303452cae946091e213b955cb31adefbed6b8863db9c85be488782e7668078c";
+        String pubKey = "${vler.pubkey}";
+        String prvKey = "${vler.prvkey}";
         String endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
         String reqStr = "GET\n" + dateString + "\napplication/json\n" + endpoint;
         System.out.println("\n********\nHere ye be the reqStr:\n----------------------\n" + reqStr + "\n********\n");
@@ -129,8 +129,8 @@ public class RestVlerClient implements VlerClient {
 
     @SneakyThrows
     private RestTemplate secureRestTemplate() {
-        String truststorePassword = "changeit";
-        try (InputStream truststoreInputStream = new FileInputStream(new File("C:/Users/VHAISPNGUYJ/Documents/Software/jdk-12.0.2/lib/security/keystoretest.jks"))) {
+        String truststorePassword = "${vler.truststore.password}";
+        try (InputStream truststoreInputStream = new FileInputStream(new File("${vler.truststore.location}"))) {
             KeyStore ts = KeyStore.getInstance("JKS");
             ts.load(truststoreInputStream, truststorePassword.toCharArray());
             SSLContext sslContext = null;
