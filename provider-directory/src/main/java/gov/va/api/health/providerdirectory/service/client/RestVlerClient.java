@@ -58,42 +58,21 @@ public class RestVlerClient implements VlerClient {
 
     private final RestTemplate restTemplate;
 
+    @Value("${vler.pubkey}") String pubKey;
+    @Value("${vler.prvkey}") String prvKey;
+    @Value("${vler.truststore.password}") String truststorePassword;
+    @Value("${vler.truststore.location}") String truststoreLocation;
+    @Value("${vler.url}") String vlerUrl;
+
     public RestVlerClient(
-            @Value("https://api.test2.direct.va.gov/") String baseUrl, @Autowired RestTemplate restTemplate) {
+            @Value("${vler.url}") String baseUrl, @Autowired RestTemplate restTemplate) {
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
         this.restTemplate = restTemplate;
     }
 
-    /*
-    @SneakyThrows
-    public String vlerTest() {
-        String baseUrl = "https://api.test2.direct.va.gov";
-        String url =
-                UriComponentsBuilder.fromHttpUrl(baseUrl + "/direct/addresses/")
-                        .queryParam("cn", "nguy")
-                        .build()
-                        .toUriString();
-        System.out.println(url);
-        String dateString =
-                DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z").format(ZonedDateTime.now());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Authorization", authHeader(baseUrl, url, dateString));
-        headers.add("Date", dateString);
-        String response =
-                secureRestTemplate()
-                        .exchange(url, HttpMethod.GET, new HttpEntity<>(headers), String.class)
-                        .getBody();
-        System.out.println(response);
-        return response;
-    }
-*/
 
     @SneakyThrows
     private String authHeader(String baseUrl, String url, String dateString) {
-        String pubKey = "${vler.pubkey}";
-        String prvKey = "${vler.prvkey}";
         String endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
         String reqStr = "GET\n" + dateString + "\napplication/json\n" + endpoint;
         System.out.println("\n********\nHere ye be the reqStr:\n----------------------\n" + reqStr + "\n********\n");
@@ -127,10 +106,10 @@ public class RestVlerClient implements VlerClient {
     }
 
 
+/*  Implement this if the above isnt secure enough.
     @SneakyThrows
     private RestTemplate secureRestTemplate() {
-        String truststorePassword = "${vler.truststore.password}";
-        try (InputStream truststoreInputStream = new FileInputStream(new File("${vler.truststore.location}"))) {
+        try (InputStream truststoreInputStream = new FileInputStream(new File(vlerTruststore))) {
             KeyStore ts = KeyStore.getInstance("JKS");
             ts.load(truststoreInputStream, truststorePassword.toCharArray());
             SSLContext sslContext = null;
@@ -140,23 +119,6 @@ public class RestVlerClient implements VlerClient {
             sslContext = SSLContext.getInstance("TLSv1.1");
             sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-
-/*            char[] password = "changeit".toCharArray();
-            SSLContext sslContext2 = SSLContextBuilder.create()
-                    .loadKeyMaterial(keyStore("C:/Users/VHAISPNGUYJ/Documents/Software/jdk-12.0.2/lib/security/keystoretest.jks", password), password)
-                    .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                    .build();
-
-            HttpClient client = HttpClients.custom().setSSLContext(sslContext2).build();
-            RestTemplate template = new RestTemplate(new HttpComponentsClientHttpRequestFactory(client));
-            return template;*/
-
-
-//            SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext,
-//                    new String[]{"TLSv1.2", "TLSv1.1"}, null, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-
-
-
             SSLConnectionSocketFactory socketFactory =
                     new SSLConnectionSocketFactory(
                             new SSLContextBuilder()
@@ -164,19 +126,9 @@ public class RestVlerClient implements VlerClient {
                                     .loadKeyMaterial(ts, truststorePassword.toCharArray())
                                     .build(),
                             new String[]{"TLSv1.1"}, null, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-//                            NoopHostnameVerifier.INSTANCE);
             HttpClient httpsClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
             return new RestTemplate(new HttpComponentsClientHttpRequestFactory(httpsClient));
         }
-    }
-/*
-    private KeyStore keyStore(String file, char[] password) throws Exception {
-        KeyStore keyStore = KeyStore.getInstance("JKS");
-        File key = ResourceUtils.getFile(file);
-        try (InputStream in = new FileInputStream(key)) {
-            keyStore.load(in, password);
-        }
-        return keyStore;
     }*/
 
 
