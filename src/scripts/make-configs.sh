@@ -100,6 +100,7 @@ configValue provider-directory $PROFILE capability.contact.email "$(sendMoarSpam
 configValue provider-directory $PROFILE capability.security.token-endpoint https://fake.com/token
 configValue provider-directory $PROFILE capability.security.authorize-endpoint https://fake.com/authorize
 configValue provider-directory $PROFILE ppms.url "$PPMS_URL"
+configValue provider-directory $PROFILE vler.url "$VLER_URL"
 configValue provider-directory $PROFILE provider-directory.url http://localhost:8080
 configValue provider-directory $PROFILE well-known.capabilities "context-standalone-patient, launch-ehr, permission-offline, permission-patient"
 configValue provider-directory $PROFILE well-known.response-type-supported "code, refresh_token"
