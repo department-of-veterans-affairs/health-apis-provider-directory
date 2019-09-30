@@ -9,16 +9,19 @@ import static org.apache.commons.lang3.StringUtils.trimToNull;
 
 import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
+import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.controller.EnumSearcher;
 import gov.va.api.health.stu3.api.datatypes.Address;
 import gov.va.api.health.stu3.api.datatypes.ContactPoint;
 import gov.va.api.health.stu3.api.resources.Practitioner;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PractitionerTransformer implements PractitionerController.Transformer {
+
   Boolean active(String active) {
     return equalsIgnoreCase(active, "active");
   }
@@ -49,26 +52,40 @@ public class PractitionerTransformer implements PractitionerController.Transform
 
   @Override
   public Practitioner apply(PractitionerWrapper ppmsData) {
-    ProviderResponse.Value response = ppmsData.providerResponse().value().get(0);
-    ProviderContactsResponse.Value contacts;
-    if (ppmsData.providerContactsResponse().value().size() > 0) {
-      contacts = ppmsData.providerContactsResponse().value().get(0);
-    } else {
-      contacts = null;
-    }
-    List<Practitioner.PractitionerIdentifier> identifiers = new ArrayList<>();
-    identifiers.add(identifier(response));
+    ProviderResponse.Value providerResponse = ppmsData.providerResponse().value().get(0);
+    ProviderContactsResponse.Value providerContacts =
+        ppmsData.providerContactsResponse().value().isEmpty()
+            ? null
+            : ppmsData.providerContactsResponse().value().get(0);
+    ProviderServicesResponse.Value providerServices =
+        ppmsData.providerServicesResponse().value().isEmpty()
+            ? null
+            : ppmsData.providerServicesResponse().value().get(0);
+
     return Practitioner.builder()
         .resourceType("Practitioner")
-        .active(active(response.providerStatusReason()))
-        .id(response.providerIdentifier().toString())
-        .identifier(identifiers)
-        .name(name(response.name()))
-        .gender(gender(response.providerGender()))
-        .address(addresses(response))
-        .birthDate((contacts == null) ? null : contacts.birthday())
-        .telecom(telecoms(contacts))
+        .active(active(providerResponse.providerStatusReason()))
+        .id(providerResponse.providerIdentifier().toString())
+        .identifier(Arrays.asList(identifier(providerResponse)))
+        .name(name(providerResponse.name()))
+        .gender(gender(providerResponse.providerGender()))
+        .address(addresses(providerResponse))
+        .birthDate(providerContacts == null ? null : providerContacts.birthday())
+        .telecom(checkForTelecom(providerServices, providerContacts, providerResponse))
         .build();
+  }
+
+  private List<ContactPoint> checkForTelecom(
+      ProviderServicesResponse.Value providerServices,
+      ProviderContactsResponse.Value providerContacts,
+      ProviderResponse.Value providerResponse) {
+    if (providerServicesTelecoms(providerServices) != null) {
+      return providerServicesTelecoms(providerServices);
+    } else if (providerTelecoms(providerResponse) != null) {
+      return providerTelecoms(providerResponse);
+    } else {
+      return providerContactsTelecom(providerContacts);
+    }
   }
 
   Practitioner.Gender gender(String gender) {
@@ -111,34 +128,43 @@ public class PractitionerTransformer implements PractitionerController.Transform
                 .build());
   }
 
-  ContactPoint telecom(String system, String value) {
-    if (value == null) {
-      return null;
-    }
-    return ContactPoint.builder()
-        .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
-        .value(value)
-        .build();
-  }
-
-  List<ContactPoint> telecoms(ProviderContactsResponse.Value source) {
-    if (source == null
-        || allBlank(source.mobilePhone(), source.businessPhone(), source.email(), source.fax())) {
+  List<ContactPoint> providerContactsTelecom(ProviderContactsResponse.Value source) {
+    if (source == null || allBlank(source.mobilePhone())) {
       return null;
     }
     List<ContactPoint> telecoms = new ArrayList<>();
     if (source.mobilePhone() != null) {
       telecoms.add(telecom("phone", source.mobilePhone()));
     }
-    if (source.fax() != null) {
-      telecoms.add(telecom("fax", source.fax()));
+    return telecoms.isEmpty() ? null : telecoms;
+  }
+
+  List<ContactPoint> providerServicesTelecoms(ProviderServicesResponse.Value source) {
+    if (source == null || allBlank(source.careSitePhoneNumber())) {
+      return null;
     }
-    if (source.email() != null) {
-      telecoms.add(telecom("email", source.email()));
+    List<ContactPoint> telecoms = new ArrayList<>();
+    if (source.careSitePhoneNumber() != null) {
+      telecoms.add(telecom("phone", source.careSitePhoneNumber()));
     }
-    if (source.businessPhone() != null) {
-      telecoms.add(telecom("phone", source.businessPhone()));
+    return telecoms.isEmpty() ? null : telecoms;
+  }
+
+  List<ContactPoint> providerTelecoms(ProviderResponse.Value source) {
+    if (source == null || allBlank(source.mainPhone())) {
+      return null;
     }
-    return telecoms;
+    List<ContactPoint> telecoms = new ArrayList<>();
+    if (source.mainPhone() != null) {
+      telecoms.add(telecom("phone", source.mainPhone()));
+    }
+    return telecoms.isEmpty() ? null : telecoms;
+  }
+
+  ContactPoint telecom(String system, String value) {
+    return ContactPoint.builder()
+        .system(EnumSearcher.of(ContactPoint.ContactPointSystem.class).find(system))
+        .value(value)
+        .build();
   }
 }

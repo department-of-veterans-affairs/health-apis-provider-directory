@@ -37,9 +37,12 @@ public class LocationTransformer implements LocationController.Transformer {
     return Location.builder()
         .resourceType("Location")
         .id(providerResponse != null ? providerResponse.providerIdentifier().toString() : null)
-        .name(providerServices != null
+        .name(
+            providerServices != null
                 ? providerServices.careSiteName()
-                        : careSiteResponse != null ? careSiteResponse.name() : providerResponse.name())
+                : careSiteResponse != null
+                    ? careSiteResponse.name()
+                    : providerResponse.name() != null ? providerResponse.name() : null)
         .status(Location.Status.active)
         .address(
             (careSiteResponse != null && careSiteResponse.city() != null)

@@ -16,8 +16,8 @@ Options
  -p, --provider-directory    Include Provider Directory
 
 Examples
- # Start both
- $0 -ma s
+ $0 start -p
+ $0 stop --provider-directory
 
 $1
 EOF
@@ -31,7 +31,7 @@ startApp() {
   [ -n "$pid" ] && echo "$app appears to already be running ($pid)" && return
   echo "Starting $app"
   cd $REPO/$app
-  local jar=$(find target -maxdepth 1 -name "$app-*.jar" | head -1)
+  local jar=$(find target -maxdepth 1 -name "$app-*.jar" | grep -v -E 'tests|library')
   [ -z "$jar" ] && echo "Cannot find $app application jar" && exit 1
   java -jar $jar &
 }
@@ -81,7 +81,7 @@ SPRING_PROFILES_ACTIVE=dev
 
 ARGS=$(getopt -n $(basename ${0}) \
     -l "debug,help,provider-directory" \
-    -o "hima" -- "$@")
+    -o "hp" -- "$@")
 [ $? != 0 ] && usage
 eval set -- "$ARGS"
 while true
