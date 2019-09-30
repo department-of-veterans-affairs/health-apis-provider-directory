@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import gov.va.api.health.providerdirectory.service.AddressResponse;
 import gov.va.api.health.providerdirectory.service.VlerResponse;
+import java.nio.charset.Charset;
 import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -119,8 +120,8 @@ public class RestVlerClient implements VlerClient {
     String endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
     String reqStr = "GET\n" + dateString + "\napplication/json\n" + endpoint;
     Mac encoding = Mac.getInstance("HmacSHA256");
-    encoding.init(new SecretKeySpec(prvKey.getBytes(), "HmacSHA256"));
-    byte[] sha = encoding.doFinal(reqStr.getBytes());
+    encoding.init(new SecretKeySpec(prvKey.getBytes(Charset.forName("UTF-8")), "HmacSHA256"));
+    byte[] sha = encoding.doFinal(reqStr.getBytes(Charset.forName("UTF-8")));
     String encSha = Base64.getEncoder().encodeToString(sha);
     return "DAAS " + pubKey + ":" + encSha;
   }
