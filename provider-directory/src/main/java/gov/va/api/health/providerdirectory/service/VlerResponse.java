@@ -8,16 +8,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public interface VlerResponse {
-    Error error();
+  Error error();
 
-    @Data
-    @Builder
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public static final class Error {
-        private String code;
+  @Data
+  @Builder
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  @AllArgsConstructor(access = AccessLevel.PRIVATE)
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+  public static final class Error {
+    private String code;
 
-        private String message;
-    }
+    private String message;
+  }
 }

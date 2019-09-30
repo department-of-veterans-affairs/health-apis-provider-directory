@@ -18,67 +18,66 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public final class AddressResponse implements VlerResponse {
-    @JsonProperty("contacts")
+  @JsonProperty("contacts")
+  private List<Contacts> contacts;
 
-    private List<Contacts> contacts;
+  private Error error;
 
-    private Error error;
-
-    /** Lazy getter. */
-    public List<Contacts> contacts() {
-        if (contacts == null) {
-            contacts = new ArrayList<>();
-        }
-        return contacts;
+  /** Lazy getter. */
+  public List<Contacts> contacts() {
+    if (contacts == null) {
+      contacts = new ArrayList<>();
     }
+    return contacts;
+  }
 
-    @Data
-    @Builder
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-    public static final class Contacts {
-        /* Map to 'name'. */
-        @JsonProperty("displayname")  // Last, First
-        private String displayname;
+  @Data
+  @Builder
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  @AllArgsConstructor(access = AccessLevel.PRIVATE)
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+  public static final class Contacts {
+    /* Map to 'name'. */
+    @JsonProperty("displayname") // Last, First
+    private String displayname;
 
-        /* Map to 'address'. */
-        @JsonProperty("mail")  // Email address
-        private String mail;
+    /* Map to 'address'. */
+    @JsonProperty("mail") // Email address
+    private String mail;
 
-        @JsonProperty("uid")  // LH of email address
-        private String uid;
+    @JsonProperty("uid") // LH of email address
+    private String uid;
 
-        @JsonProperty("givenname")  // First name
-        private String givenname;
+    @JsonProperty("givenname") // First name
+    private String givenname;
 
-        @JsonProperty("sn")  // Surname
-        private String sn;
+    @JsonProperty("sn") // Surname
+    private String sn;
 
-        @JsonProperty("physicaldeliveryofficename")  // City, State
-        private String physicaldeliveryofficename;
+    @JsonProperty("physicaldeliveryofficename") // City, State
+    private String physicaldeliveryofficename;
 
-        @JsonProperty("o")  // Company  name
-        private String o;
+    @JsonProperty("o") // Company  name
+    private String companyname;
 
-        @JsonProperty("departmentnumber")
-        private String departmentnumber;
+    @JsonProperty("departmentnumber")
+    private String departmentnumber;
 
-        @JsonProperty("mobile")
-        private String mobile;
+    @JsonProperty("mobile")
+    private String mobile;
 
-        @JsonProperty("telephonenumber")
-        private String telephonenumber;
+    @JsonProperty("telephonenumber")
+    private String telephonenumber;
 
-        @JsonProperty("title")
-        private String title;
+    @JsonProperty("title")
+    private String title;
 
-        @JsonProperty("cn")  // First Last
-        private String cn;
+    @JsonProperty("cn") // First Last
+    private String cn;
 
-        /* Map to 'managingOrganization'. */
-        @JsonProperty("facility")
-        private String facility;
-    }
+    /* Map to 'managingOrganization'. */
+    @JsonProperty("facility")
+    private String facility;
+  }
 }
