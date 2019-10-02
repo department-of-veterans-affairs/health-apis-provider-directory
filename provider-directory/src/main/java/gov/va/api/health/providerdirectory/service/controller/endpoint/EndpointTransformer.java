@@ -4,7 +4,7 @@ import gov.va.api.health.providerdirectory.service.AddressResponse;
 import gov.va.api.health.stu3.api.datatypes.CodeableConcept;
 import gov.va.api.health.stu3.api.datatypes.Coding;
 import gov.va.api.health.stu3.api.resources.Endpoint;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -18,34 +18,18 @@ public class EndpointTransformer implements EndpointController.Transformer {
     AddressResponse.Contacts response = vlerData.addressResponse().contacts().get(0);
     return Endpoint.builder()
         .resourceType("Endpoint")
-        .status(status("active"))
-        .connectionType(connectionCodeCodings("direct-project"))
+        .status(Endpoint.Status.active)
+        .connectionType(Coding.builder().code("direct-project").build())
         .name(response.displayName())
         .payloadType(payloadCodeCodings("VLER Direct"))
         .address(response.emailAddress())
         .build();
   }
 
-  Coding connectionCodeCodings(String connectionTypeResponse) {
-    if (connectionTypeResponse == null) {
-      return null;
-    }
-    Coding vlerDefault = Coding.builder().code(connectionTypeResponse).build();
-    return vlerDefault;
-  }
-
   List<CodeableConcept> payloadCodeCodings(String payloadTypeResponse) {
     if (payloadTypeResponse == null) {
       return null;
     }
-    List<Coding> codings = new ArrayList<>();
-    codings.add(Coding.builder().display(payloadTypeResponse).code(payloadTypeResponse).build());
-    List<CodeableConcept> payload = new ArrayList<>();
-    payload.add(CodeableConcept.builder().coding(codings).build());
-    return payload;
-  }
-
-  Endpoint.Status status(String status) {
-    return Endpoint.Status.active;
+    return Arrays.asList(CodeableConcept.builder().coding(Arrays.asList(Coding.builder().display(payloadTypeResponse).code(payloadTypeResponse).build())).build());
   }
 }

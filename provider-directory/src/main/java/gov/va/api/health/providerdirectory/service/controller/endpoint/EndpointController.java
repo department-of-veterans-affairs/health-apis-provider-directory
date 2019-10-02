@@ -114,10 +114,10 @@ public class EndpointController {
     String name = parameters.getFirst("name");
     AddressResponse addressResponse = vlerClient.endpointByAddress(name);
     int filteredCount = 0;
-
+    /* Retrieve the VLER response, which is the full unfiltered body. */
     List<AddressResponse.Contacts> unfilteredAddressResponsePages =
         addressResponse.contacts().subList(0, addressResponse.contacts().size());
-
+    /* Filter the list for contacts that include the search name. */
     List<AddressResponse.Contacts> addressResponsePages = new ArrayList<>();
     for (int i = 0; i < unfilteredAddressResponsePages.size(); i++) {
       if (StringUtils.containsIgnoreCase(
@@ -139,6 +139,14 @@ public class EndpointController {
     }
     return Pair.of(endpointWrapperPages, filteredCount);
   }
+  /*LocationWrapper.builder()
+                .providerResponse(currentProviderResponse)
+                .careSitesResponse(
+                    CareSitesResponse.builder()
+                        .value(singletonList(careSiteResponsePages.get(i)))
+                        .build())
+                .providerServicesResponse(providerServicesResponsePages.get(i))
+                .build());*/
 
   /** Placeholder for search by Organization. */
   private Pair<List<EndpointWrapper>, Integer> searchOrganization(
