@@ -7,5 +7,5 @@ import lombok.Value;
 @Value
 @Builder
 public final class EndpointWrapper {
-  @Builder.Default AddressResponse.Contacts addressResponse;
+  @Builder.Default AddressResponse.Contacts addressResponse = AddressResponse.Contacts.builder().build();
 }
