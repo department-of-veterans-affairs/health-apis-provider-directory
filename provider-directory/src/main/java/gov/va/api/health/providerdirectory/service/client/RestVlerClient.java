@@ -18,6 +18,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+
+import javassist.bytecode.stackmap.BasicBlock;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -93,7 +95,12 @@ public class RestVlerClient implements VlerClient {
 
   @SneakyThrows
   private String authHeader(String baseUrl, String url, String dateString) {
-    String endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
+    String endpoint;
+    try {
+      endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
+    } catch (Exception e){
+      throw new BadRequest("Base URL not found within url ", e);
+    }
     String reqStr = "GET\n" + dateString + "\napplication/json\n" + endpoint;
     Mac encoding = Mac.getInstance("HmacSHA256");
     encoding.init(new SecretKeySpec(privateKey.getBytes(Charset.forName("UTF-8")), "HmacSHA256"));
