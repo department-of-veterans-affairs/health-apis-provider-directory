@@ -7,8 +7,6 @@ IDENTIFIER="$IDENTIFIER"
 NAME="$NAME"
 GIVEN="$GIVEN"
 
-#Current Version(s) available
-VERSION="/api
 
 #Put Health endpoints here if you got them
 PATHS=(/actuator/health \
