@@ -139,14 +139,6 @@ public class EndpointController {
     }
     return Pair.of(endpointWrapperPages, filteredCount);
   }
-  /*LocationWrapper.builder()
-                .providerResponse(currentProviderResponse)
-                .careSitesResponse(
-                    CareSitesResponse.builder()
-                        .value(singletonList(careSiteResponsePages.get(i)))
-                        .build())
-                .providerServicesResponse(providerServicesResponsePages.get(i))
-                .build());*/
 
   /** Placeholder for search by Organization. */
   private Pair<List<EndpointWrapper>, Integer> searchOrganization(
