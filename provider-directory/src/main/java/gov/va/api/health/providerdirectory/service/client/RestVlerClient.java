@@ -49,22 +49,26 @@ public class RestVlerClient implements VlerClient {
 
   private final RestTemplate restTemplate;
 
-  @Value("${vler.key.public}")
-  String publicKey;
+  private final String publicKey;
 
-  @Value("${vler.key.private}")
-  String privateKey;
+  private final String privateKey;
 
-  @Value("${vler.truststore.password}")
-  String vlerTruststorePassword;
+  private final String vlerTruststorePassword;
 
-  @Value("${vler.truststore.location}")
-  String vlerTruststore;
+  private final String vlerTruststore;
 
   public RestVlerClient(
-      @Value("${vler.url}") String baseUrl, @Autowired RestTemplate restTemplate) {
+      @Value("${vler.url}") String baseUrl,
+      @Value("${vler.key.public}") String publicKey,
+      @Value("${vler.key.private}") String privateKey,
+      @Value("${vler.truststore.password}") String vlerTruststorePassword,
+      @Value("${vler.truststore.location}") String vlerTruststore) {
     this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
-    this.restTemplate = restTemplate;
+    this.publicKey = publicKey;
+    this.privateKey = privateKey;
+    this.vlerTruststorePassword = vlerTruststorePassword;
+    this.vlerTruststore = vlerTruststore;
+    this.restTemplate = secureRestTemplate();
   }
 
   @SneakyThrows
@@ -84,9 +88,6 @@ public class RestVlerClient implements VlerClient {
     }
     if (response == null) {
       throw new VlerException(message + ", no VLER response");
-    }
-    if (response.error() != null && isNotBlank(response.error().message())) {
-      throw new VlerException(message + ", " + response.error().message());
     }
     return response;
   }

@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public interface VlerResponse {
-  Error error();
 
   @Data
   @Builder

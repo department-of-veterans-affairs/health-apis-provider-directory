@@ -20,9 +20,9 @@ public class EndpointTransformer implements EndpointController.Transformer {
         .resourceType("Endpoint")
         .status(status("active"))
         .connectionType(connectionCodeCodings("direct-project"))
-        .name(response.displayname())
+        .name(response.displayName())
         .payloadType(payloadCodeCodings("VLER Direct"))
-        .address(response.mail())
+        .address(response.emailAddress())
         .build();
   }
 

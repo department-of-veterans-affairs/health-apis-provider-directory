@@ -121,7 +121,7 @@ public class EndpointController {
     List<AddressResponse.Contacts> addressResponsePages = new ArrayList<>();
     for (int i = 0; i < unfilteredAddressResponsePages.size(); i++) {
       if (StringUtils.containsIgnoreCase(
-          unfilteredAddressResponsePages.get(i).displayname(), name)) {
+          unfilteredAddressResponsePages.get(i).displayName(), name)) {
         addressResponsePages.add(addressResponse.contacts().get(i));
         filteredCount++;
       }

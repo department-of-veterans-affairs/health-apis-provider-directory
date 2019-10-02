@@ -21,8 +21,6 @@ public final class AddressResponse implements VlerResponse {
   @JsonProperty("contacts")
   private List<Contacts> contacts;
 
-  private Error error;
-
   /** Lazy getter. */
   public List<Contacts> contacts() {
     if (contacts == null) {
@@ -38,45 +36,43 @@ public final class AddressResponse implements VlerResponse {
   @AllArgsConstructor(access = AccessLevel.PRIVATE)
   @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
   public static final class Contacts {
-    /* Map to 'name'. */
-    @JsonProperty("displayname") // Last, First
-    private String displayname;
 
-    /* Map to 'address'. */
-    @JsonProperty("mail") // Email address
-    private String mail;
+    @JsonProperty("displayname")
+    private String displayName;
 
-    @JsonProperty("uid") // LH of email address
+    @JsonProperty("mail")
+    private String emailAddress;
+
+    @JsonProperty("uid")
     private String uid;
 
-    @JsonProperty("givenname") // First name
-    private String givenname;
+    @JsonProperty("givenname")
+    private String givenName;
 
-    @JsonProperty("sn") // Surname
-    private String sn;
+    @JsonProperty("sn")
+    private String surname;
 
-    @JsonProperty("physicaldeliveryofficename") // City, State
-    private String physicaldeliveryofficename;
+    @JsonProperty("physicaldeliveryofficename")
+    private String officeCityState;
 
-    @JsonProperty("o") // Company  name
-    private String companyname;
+    @JsonProperty("o")
+    private String companyName;
 
     @JsonProperty("departmentnumber")
-    private String departmentnumber;
+    private String departmentNumber;
 
     @JsonProperty("mobile")
     private String mobile;
 
     @JsonProperty("telephonenumber")
-    private String telephonenumber;
+    private String telephoneNumber;
 
     @JsonProperty("title")
     private String title;
 
-    @JsonProperty("cn") // First Last
-    private String cn;
+    @JsonProperty("cn")
+    private String commonName;
 
-    /* Map to 'managingOrganization'. */
     @JsonProperty("facility")
     private String facility;
   }

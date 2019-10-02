@@ -8,4 +8,5 @@ import lombok.Value;
 @Builder
 public final class EndpointWrapper {
   AddressResponse addressResponse;
+  //@Builder.Default ProviderResponse providerResponse = ProviderResponse.builder().build();
 }
