@@ -1,7 +1,5 @@
 package gov.va.api.health.providerdirectory.service.controller.endpoint;
 
-import static java.util.Collections.singletonList;
-
 import gov.va.api.health.providerdirectory.service.AddressResponse;
 import gov.va.api.health.providerdirectory.service.CountParameter;
 import gov.va.api.health.providerdirectory.service.client.VlerClient;
@@ -22,6 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,23 +61,36 @@ public class EndpointController {
             linkConfig, root.getLeft(), transformer, Endpoint.Entry::new, Endpoint.Bundle::new));
   }
 
+  /** Read by identifier. */
+  @GetMapping(value = {"/{publicId}"})
+  public Endpoint readByIdentifier(@PathVariable("publicId") String publicId) {
+    return transformer.apply(search(Parameters.forIdentity((publicId))).getKey().get(0));
+  }
+
   private Pair<List<EndpointWrapper>, Integer> search(MultiValueMap<String, String> parameters) {
     if (parameters.containsKey("name")) {
-      return searchName(parameters);
+      return searchName(parameters, "name");
     } else if (parameters.containsKey("identifier")) {
-      return searchIdentifier(parameters);
+      return searchName(parameters, "identifier");
     } else {
       return searchOrganization(parameters);
     }
   }
 
-  /** Placeholder for Identifier search. */
+  /** Search for Identifier. */
   @GetMapping(params = {"identifier"})
   public Endpoint.Bundle searchByIdentifier(
       @RequestParam("identifier") String identifier,
       @RequestParam(value = "page", defaultValue = "1") @Min(1) int page,
       @RequestParam(value = "_count", defaultValue = "15") @Min(0) int count) {
-    throw new UnsupportedOperationException();
+    return bundle(
+        Parameters.builder()
+            .add("identifier", identifier)
+            .add("page", page)
+            .add("_count", count)
+            .build(),
+        page,
+        count);
   }
 
   /** Search by Name. */
@@ -102,43 +114,37 @@ public class EndpointController {
     throw new UnsupportedOperationException();
   }
 
-  /** Placeholder for search by Identifier. */
-  private Pair<List<EndpointWrapper>, Integer> searchIdentifier(
-      MultiValueMap<String, String> parameters) {
-    throw new UnsupportedOperationException();
-  }
-
-  /** Logic for search by Name. */
+  /** Logic for search using full body from VLER. */
   private Pair<List<EndpointWrapper>, Integer> searchName(
-      MultiValueMap<String, String> parameters) {
-    String name = parameters.getFirst("name");
-    AddressResponse addressResponse = vlerClient.endpointByAddress(name);
+      MultiValueMap<String, String> parameters, String function) {
+    String searchFunction = parameters.getFirst(function);
+    AddressResponse addressResponse = vlerClient.endpointByAddress(searchFunction);
     int filteredCount = 0;
-    /* Retrieve the VLER response, which is the full unfiltered body. */
     List<AddressResponse.Contacts> unfilteredAddressResponsePages =
         addressResponse.contacts().subList(0, addressResponse.contacts().size());
-    /* Filter the list for contacts that include the search name. */
     List<AddressResponse.Contacts> addressResponsePages = new ArrayList<>();
     for (int i = 0; i < unfilteredAddressResponsePages.size(); i++) {
-      if (StringUtils.containsIgnoreCase(
-          unfilteredAddressResponsePages.get(i).displayName(), name)) {
-        addressResponsePages.add(addressResponse.contacts().get(i));
-        filteredCount++;
+      if (StringUtils.equalsIgnoreCase(function, "name")) {
+        if (StringUtils.containsIgnoreCase(
+            unfilteredAddressResponsePages.get(i).displayName(), searchFunction)) {
+          addressResponsePages.add(addressResponse.contacts().get(i));
+          filteredCount++;
+        }
+      } else if (StringUtils.equalsIgnoreCase(function, "identifier")) {
+        if (StringUtils.containsIgnoreCase(
+            unfilteredAddressResponsePages.get(i).uid(), searchFunction)) {
+          addressResponsePages.add(addressResponse.contacts().get(i));
+          filteredCount++;
+        }
       }
     }
-
     List<EndpointWrapper> endpointWrapperPages = new ArrayList<>();
     for (int i = 0; i < addressResponsePages.size(); i++) {
       endpointWrapperPages.add(
-          (EndpointWrapper
-                  .builder()
-                  .addressResponse(addressResponsePages.get(i)))
-              .build());
+          (EndpointWrapper.builder().addressResponse(addressResponsePages.get(i))).build());
     }
     return Pair.of(endpointWrapperPages, filteredCount);
   }
-
-
 
   /** Placeholder for search by Organization. */
   private Pair<List<EndpointWrapper>, Integer> searchOrganization(

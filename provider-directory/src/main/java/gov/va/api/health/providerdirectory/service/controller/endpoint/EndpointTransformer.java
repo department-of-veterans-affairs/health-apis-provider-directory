@@ -18,6 +18,7 @@ public class EndpointTransformer implements EndpointController.Transformer {
     AddressResponse.Contacts response = vlerData.addressResponse();
     return Endpoint.builder()
         .resourceType("Endpoint")
+        .id(response.uid())
         .status(Endpoint.Status.active)
         .connectionType(Coding.builder().code("direct-project").build())
         .name(response.displayName())
