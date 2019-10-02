@@ -30,6 +30,14 @@ public class EndpointTransformer implements EndpointController.Transformer {
     if (payloadTypeResponse == null) {
       return null;
     }
-    return Arrays.asList(CodeableConcept.builder().coding(Arrays.asList(Coding.builder().display(payloadTypeResponse).code(payloadTypeResponse).build())).build());
+    return Arrays.asList(
+        CodeableConcept.builder()
+            .coding(
+                Arrays.asList(
+                    Coding.builder()
+                        .display(payloadTypeResponse)
+                        .code(payloadTypeResponse)
+                        .build()))
+            .build());
   }
 }

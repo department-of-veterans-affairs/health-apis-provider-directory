@@ -1,7 +1,5 @@
 package gov.va.api.health.providerdirectory.service.client;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import gov.va.api.health.providerdirectory.service.AddressResponse;
 import gov.va.api.health.providerdirectory.service.VlerResponse;
 import java.io.InputStream;
@@ -18,8 +16,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
-
-import javassist.bytecode.stackmap.BasicBlock;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -28,7 +24,6 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -59,6 +54,9 @@ public class RestVlerClient implements VlerClient {
 
   private final String vlerTruststore;
 
+  /**
+   * REST implementation of VLER client. Uses a locally-stored truststore to authenticate with VLER.
+   */
   public RestVlerClient(
       @Value("${vler.url}") String baseUrl,
       @Value("${vler.key.public}") String publicKey,
@@ -99,7 +97,7 @@ public class RestVlerClient implements VlerClient {
     String endpoint;
     try {
       endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
-    } catch (Exception e){
+    } catch (Exception e) {
       throw new BadRequest("Base URL not found within url ", e);
     }
     String reqStr = "GET\n" + dateString + "\napplication/json\n" + endpoint;
