@@ -40,9 +40,9 @@ public class WebExceptionHandlerTest {
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/api/Practitioner/123"))
+        .perform(get("/Practitioner/123"))
         .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
-        .andExpect(jsonPath("text.div", containsString("/api/Practitioner/123")))
+        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
         .andExpect(jsonPath("issue[0].diagnostics", containsString("BadRequest")));
   }
 
@@ -57,9 +57,9 @@ public class WebExceptionHandlerTest {
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/api/Practitioner/123"))
+        .perform(get("/Practitioner/123"))
         .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
-        .andExpect(jsonPath("text.div", containsString("/api/Practitioner/123")))
+        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
         .andExpect(
             jsonPath("issue[0].diagnostics", containsString("ConstraintViolationException")));
   }
@@ -95,9 +95,9 @@ public class WebExceptionHandlerTest {
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/api/Practitioner/123"))
+        .perform(get("/Practitioner/123"))
         .andExpect(status().is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
-        .andExpect(jsonPath("text.div", containsString("/api/Practitioner/123")))
+        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
         .andExpect(jsonPath("issue[0].diagnostics", containsString("Exception")));
   }
 
@@ -112,9 +112,9 @@ public class WebExceptionHandlerTest {
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/api/Practitioner/123"))
+        .perform(get("/Practitioner/123"))
         .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
-        .andExpect(jsonPath("text.div", containsString("/api/Practitioner/123")))
+        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
         .andExpect(jsonPath("issue[0].diagnostics", containsString("NotFound")));
   }
 
@@ -129,9 +129,9 @@ public class WebExceptionHandlerTest {
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/api/Practitioner/123"))
+        .perform(get("/Practitioner/123"))
         .andExpect(status().is(HttpStatus.SERVICE_UNAVAILABLE.value()))
-        .andExpect(jsonPath("text.div", containsString("/api/Practitioner/123")))
+        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
         .andExpect(jsonPath("issue[0].diagnostics", containsString("PpmsException")));
   }
 }

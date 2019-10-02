@@ -10,8 +10,8 @@ GIVEN="$GIVEN"
 
 #Put Health endpoints here if you got them
 PATHS=(/actuator/health \
-$VERSION/openapi.json \
-$VERSION/openapi.yaml)
+/openapi.json \
+/openapi.yaml)
 
 SUCCESS=0
 
@@ -41,7 +41,7 @@ exit 1
 doCurl () {
   if [[ -n "$2" ]]
   then
-    REQUEST_URL="$ENDPOINT_DOMAIN_NAME$BASE_PATH$VERSION${path// /%20}"
+    REQUEST_URL="$ENDPOINT_DOMAIN_NAME$BASE_PATH${path// /%20}"
     status_code=$(curl -k -H "Authorization: Bearer $2" --write-out %{http_code} --silent --output /dev/null "$REQUEST_URL")
   else
     REQUEST_URL="$ENDPOINT_DOMAIN_NAME$BASE_PATH${path// /%20}"
