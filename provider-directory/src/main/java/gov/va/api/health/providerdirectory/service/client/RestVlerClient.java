@@ -4,8 +4,10 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import gov.va.api.health.providerdirectory.service.AddressResponse;
 import gov.va.api.health.providerdirectory.service.VlerResponse;
+import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.security.cert.X509Certificate;
+import java.security.KeyStore;
+import java.security.SecureRandom;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
@@ -13,13 +15,17 @@ import java.util.Collections;
 import java.util.concurrent.Callable;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -43,53 +49,23 @@ public class RestVlerClient implements VlerClient {
 
   private final RestTemplate restTemplate;
 
-  @Value("${vler.pubkey}")
-  String pubKey;
+  @Value("${vler.key.public}")
+  String publicKey;
 
-  @Value("${vler.prvkey}")
-  String prvKey;
+  @Value("${vler.key.private}")
+  String privateKey;
 
   @Value("${vler.truststore.password}")
-  String truststorePassword;
+  String vlerTruststorePassword;
 
   @Value("${vler.truststore.location}")
-  String truststoreLocation;
-
-  @Value("${vler.url}")
-  String vlerUrl;
+  String vlerTruststore;
 
   public RestVlerClient(
       @Value("${vler.url}") String baseUrl, @Autowired RestTemplate restTemplate) {
     this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
     this.restTemplate = restTemplate;
   }
-
-  /*  Implement this if the above isnt secure enough.
-  @SneakyThrows
-  private RestTemplate secureRestTemplate() {
-      try (InputStream truststoreInputStream = new FileInputStream(new File(vlerTruststore))) {
-          KeyStore ts = KeyStore.getInstance("JKS");
-          ts.load(truststoreInputStream, truststorePassword.toCharArray());
-          SSLContext sslContext = null;
-          TrustManagerFactory trustManagerFactory =
-                  TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-          trustManagerFactory.init(ts);
-          sslContext = SSLContext.getInstance("TLSv1.1");
-          sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
-          HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-          SSLConnectionSocketFactory socketFactory =
-                  new SSLConnectionSocketFactory(
-                          new SSLContextBuilder()
-                                  .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                                  .loadKeyMaterial(ts, truststorePassword.toCharArray())
-                                  .build(),
-                          new String[]{"TLSv1.1"},
-                          null,
-                          SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-          HttpClient httpsClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
-          return new RestTemplate(new HttpComponentsClientHttpRequestFactory(httpsClient));
-      }
-  }*/
 
   @SneakyThrows
   private static <T extends VlerResponse> T handleVlerExceptions(
@@ -120,10 +96,10 @@ public class RestVlerClient implements VlerClient {
     String endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
     String reqStr = "GET\n" + dateString + "\napplication/json\n" + endpoint;
     Mac encoding = Mac.getInstance("HmacSHA256");
-    encoding.init(new SecretKeySpec(prvKey.getBytes(Charset.forName("UTF-8")), "HmacSHA256"));
+    encoding.init(new SecretKeySpec(privateKey.getBytes(Charset.forName("UTF-8")), "HmacSHA256"));
     byte[] sha = encoding.doFinal(reqStr.getBytes(Charset.forName("UTF-8")));
     String encSha = Base64.getEncoder().encodeToString(sha);
-    return "DAAS " + pubKey + ":" + encSha;
+    return "DAAS " + publicKey + ":" + encSha;
   }
 
   /** Calls the VLER Direct API by email address search. */
@@ -144,28 +120,47 @@ public class RestVlerClient implements VlerClient {
           headers.setContentType(MediaType.APPLICATION_JSON);
           headers.add("Authorization", authHeader(baseUrl, url, dateString));
           headers.add("Date", dateString);
-          HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-          System.out.println("RequestEntity: " + requestEntity);
           ResponseEntity<AddressResponse> entity =
-              restTemplate().exchange(url, HttpMethod.GET, requestEntity, AddressResponse.class);
+              secureRestTemplate()
+                  .exchange(url, HttpMethod.GET, new HttpEntity<>(headers), AddressResponse.class);
           return entity.getBody();
         });
   }
 
-  /** Acceptance of SSL for Java 12. */
   @SneakyThrows
-  public RestTemplate restTemplate() {
-    TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
-    SSLContext sslContext =
-        org.apache.http.ssl.SSLContexts.custom()
-            .loadTrustMaterial(null, acceptingTrustStrategy)
-            .build();
-    SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-    CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
-    HttpComponentsClientHttpRequestFactory requestFactory =
-        new HttpComponentsClientHttpRequestFactory();
-    requestFactory.setHttpClient(httpClient);
-    RestTemplate restTemplate = new RestTemplate(requestFactory);
-    return restTemplate;
+  private RestTemplate secureRestTemplate() {
+    ClassLoader cl = getClass().getClassLoader();
+    if (cl == null) {
+      throw new ClassLoaderException("Something went wrong getting the class loader");
+    }
+    try (InputStream truststoreInputStream =
+        cl.getResourceAsStream(FilenameUtils.getName(vlerTruststore))) {
+      KeyStore ts = KeyStore.getInstance("JKS");
+      ts.load(truststoreInputStream, vlerTruststorePassword.toCharArray());
+      SSLContext sslContext = null;
+      TrustManagerFactory trustManagerFactory =
+          TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+      trustManagerFactory.init(ts);
+      sslContext = SSLContext.getInstance("TLSv1.1");
+      sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
+      HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+      SSLConnectionSocketFactory socketFactory =
+          new SSLConnectionSocketFactory(
+              new SSLContextBuilder()
+                  .loadTrustMaterial(null, new TrustSelfSignedStrategy())
+                  .loadKeyMaterial(ts, vlerTruststorePassword.toCharArray())
+                  .build(),
+              new String[] {"TLSv1.1"},
+              null,
+              SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+      HttpClient httpsClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
+      return new RestTemplate(new HttpComponentsClientHttpRequestFactory(httpsClient));
+    }
+  }
+
+  public static class ClassLoaderException extends RuntimeException {
+    ClassLoaderException(String message) {
+      super(message);
+    }
   }
 }

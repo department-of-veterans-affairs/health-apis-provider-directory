@@ -16,6 +16,9 @@ Secrets Configuration
  This bash file is sourced and expected to set the following variables
  - KEYSTORE_PASSWORD
  - PPMS_URL
+ - VLER_KEY_PUBLIC
+ - VLER_KEY_PRIVATE
+ - VLER_URL
 
 $1
 EOF
@@ -50,6 +53,8 @@ MISSING_SECRETS=false
 [ -z "$KEYSTORE_PASSWORD" ] && echo "Missing configuration: KEYSTORE_PASSWORD" && MISSING_SECRETS=true
 [ -z "$PPMS_URL" ] && echo "Missing configuration: PPMS_URL" && MISSING_SECRETS=true
 [ -z "$VLER_URL" ] && echo "Missing configuration: VLER_URL" && MISSING_SECRETS=true
+[ -z "$VLER_KEY_PUBLIC" ] && echo "Missing configuration: VLER_KEY_PUBLIC" && MISSING_SECRETS=true
+[ -z "$VLER_KEY_PRIVATE" ] && echo "Missing configuration: VLER_KEY_PRIVATE" && MISSING_SECRETS=true
 [ $MISSING_SECRETS == true ] && usage "Missing configuration secrets, please update $SECRETS"
 
 makeConfig() {
@@ -101,6 +106,8 @@ configValue provider-directory $PROFILE capability.contact.email "$(sendMoarSpam
 configValue provider-directory $PROFILE capability.security.token-endpoint https://fake.com/token
 configValue provider-directory $PROFILE capability.security.authorize-endpoint https://fake.com/authorize
 configValue provider-directory $PROFILE ppms.url "$PPMS_URL"
+configValue provider-directory $PROFILE vler.prvkey "$VLER_KEY_PUBLIC"
+configValue provider-directory $PROFILE vler.pubkey "$VLER_KEY_PRIVATE"
 configValue provider-directory $PROFILE vler.url "$VLER_URL"
 configValue provider-directory $PROFILE provider-directory.url http://localhost:8080
 configValue provider-directory $PROFILE well-known.capabilities "context-standalone-patient, launch-ehr, permission-offline, permission-patient"

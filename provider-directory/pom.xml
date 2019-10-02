@@ -8,7 +8,7 @@
     <relativePath/>
   </parent>
   <properties>
-    <jacoco.coverage>0.87</jacoco.coverage>
+    <jacoco.coverage>0.85</jacoco.coverage>
     <stu3.version>2.0.0</stu3.version>
   </properties>
   <artifactId>provider-directory</artifactId>
@@ -43,6 +43,11 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.3.2</version>
     </dependency>
   </dependencies>
   <build>

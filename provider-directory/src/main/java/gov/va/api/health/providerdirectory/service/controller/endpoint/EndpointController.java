@@ -1,7 +1,5 @@
 package gov.va.api.health.providerdirectory.service.controller.endpoint;
 
-import static gov.va.api.health.providerdirectory.service.controller.Parameters.countOf;
-import static gov.va.api.health.providerdirectory.service.controller.Parameters.pageOf;
 import static java.util.Collections.singletonList;
 
 import gov.va.api.health.providerdirectory.service.AddressResponse;
@@ -19,6 +17,7 @@ import java.util.List;
 import java.util.function.Function;
 import javax.validation.constraints.Min;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
@@ -106,7 +105,7 @@ public class EndpointController {
   /** Placeholder for search by Identifier. */
   private Pair<List<EndpointWrapper>, Integer> searchIdentifier(
       MultiValueMap<String, String> parameters) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   /** Logic for search by Name. */
@@ -114,12 +113,20 @@ public class EndpointController {
       MultiValueMap<String, String> parameters) {
     String name = parameters.getFirst("name");
     AddressResponse addressResponse = vlerClient.endpointByAddress(name);
-    int page = pageOf(parameters);
-    int count = countOf(parameters);
-    int fromIndex = Math.min((page - 1) * count, addressResponse.contacts().size());
-    int toIndex = Math.min((fromIndex + count), addressResponse.contacts().size());
-    List<AddressResponse.Contacts> addressResponsePages =
-        addressResponse.contacts().subList(fromIndex, toIndex);
+    int filteredCount = 0;
+
+    List<AddressResponse.Contacts> unfilteredAddressResponsePages =
+        addressResponse.contacts().subList(0, addressResponse.contacts().size());
+
+    List<AddressResponse.Contacts> addressResponsePages = new ArrayList<>();
+    for (int i = 0; i < unfilteredAddressResponsePages.size(); i++) {
+      if (StringUtils.containsIgnoreCase(
+          unfilteredAddressResponsePages.get(i).displayname(), name)) {
+        addressResponsePages.add(addressResponse.contacts().get(i));
+        filteredCount++;
+      }
+    }
+
     List<EndpointWrapper> endpointWrapperPages = new ArrayList<>();
     for (int i = 0; i < addressResponsePages.size(); i++) {
       endpointWrapperPages.add(
@@ -130,13 +137,13 @@ public class EndpointController {
                           .build()))
               .build());
     }
-    return Pair.of(endpointWrapperPages, addressResponse.contacts().size());
+    return Pair.of(endpointWrapperPages, filteredCount);
   }
 
   /** Placeholder for search by Organization. */
   private Pair<List<EndpointWrapper>, Integer> searchOrganization(
       MultiValueMap<String, String> parameters) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   /** Hey, this is a validate endpoint. It validates. */
