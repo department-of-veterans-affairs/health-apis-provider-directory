@@ -15,7 +15,7 @@ public class EndpointTransformer implements EndpointController.Transformer {
    * connectionType and payloadType are defaults for VLER. */
   @Override
   public Endpoint apply(EndpointWrapper vlerData) {
-    AddressResponse.Contacts response = vlerData.addressResponse().contacts().get(0);
+    AddressResponse.Contacts response = vlerData.addressResponse();
     return Endpoint.builder()
         .resourceType("Endpoint")
         .status(Endpoint.Status.active)

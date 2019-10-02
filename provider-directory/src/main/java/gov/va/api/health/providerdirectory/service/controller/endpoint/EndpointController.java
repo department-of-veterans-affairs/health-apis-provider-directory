@@ -130,15 +130,15 @@ public class EndpointController {
     List<EndpointWrapper> endpointWrapperPages = new ArrayList<>();
     for (int i = 0; i < addressResponsePages.size(); i++) {
       endpointWrapperPages.add(
-          (EndpointWrapper.builder()
-                  .addressResponse(
-                      AddressResponse.builder()
-                          .contacts(singletonList(addressResponsePages.get(i)))
-                          .build()))
+          (EndpointWrapper
+                  .builder()
+                  .addressResponse(addressResponsePages.get(i)))
               .build());
     }
     return Pair.of(endpointWrapperPages, filteredCount);
   }
+
+
 
   /** Placeholder for search by Organization. */
   private Pair<List<EndpointWrapper>, Integer> searchOrganization(
