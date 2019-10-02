@@ -56,6 +56,7 @@ public class EndpointControllerTest {
         .isEqualTo(
             Endpoint.builder()
                 .resourceType("Endpoint")
+                .id("test.pilot")
                 .status(Endpoint.Status.active)
                 .connectionType(Coding.builder().code("direct-project").build())
                 .name("Pilot, Test")
