@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SuppressWarnings("WeakerAccess")
 @RestController
 @RequestMapping(
-  value = {"/api/Location"},
+  value = {"/Location"},
   produces = {"application/json", "application/json+fhir", "application/fhir+json"}
 )
 public class LocationController {

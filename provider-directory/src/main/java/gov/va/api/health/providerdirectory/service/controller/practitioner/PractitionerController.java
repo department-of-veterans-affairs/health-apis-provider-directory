@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(
-  value = {"/api/Practitioner"},
+  value = {"/Practitioner"},
   produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
