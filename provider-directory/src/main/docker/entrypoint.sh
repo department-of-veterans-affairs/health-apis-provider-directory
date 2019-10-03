@@ -99,19 +99,15 @@ regressionTest() {
     done
 
   # Happy Path Practitioner by identifier
-  path="/Practitioner?identifier=$ICN"
+  path="/Practitioner?identifier=$IDENTIFIER"
   doCurl 200
 
   # Happy Path Practitioner by family and given
   path="/Practitioner?family=$NAME&given=$GIVEN"
   doCurl 200
 
-  # Happy Path Practitioner by name
-  path="/Practitioner?family=$NAME"
-  doCurl 200
-
   # Happy Path PractitionerRole by identifier
-  path="/PractitionerRole?identifier=$ICN"
+  path="/PractitionerRole?identifier=$IDENTIFIER"
   doCurl 200
 
   # Happy Path PractitionerRole by family and given
@@ -123,7 +119,7 @@ regressionTest() {
   doCurl 200
 
   # Happy Path Location by identifier
-  path="/Location?identifier=$ICN"
+  path="/Location?identifier=$IDENTIFIER"
   doCurl 200
 
   # Happy Path Location by address-city
