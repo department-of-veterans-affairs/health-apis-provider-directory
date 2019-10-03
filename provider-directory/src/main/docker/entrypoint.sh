@@ -83,7 +83,7 @@ smokeTest() {
 
   # Single unknown parameter check for smoke test
   path="/practitioner?id=$IDENTIFIER"
-  doCurl 500 $TOKEN
+  doCurl 404 $TOKEN
 
   printResults
 }
