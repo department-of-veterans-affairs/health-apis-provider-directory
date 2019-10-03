@@ -25,8 +25,7 @@ public class ConfigurableBaseUrlPageLinks implements PageLinks {
   private final String baseUrl;
 
   @Autowired
-  public ConfigurableBaseUrlPageLinks(
-      @Value("${provider-directory.url}") String baseUrl) {
+  public ConfigurableBaseUrlPageLinks(@Value("${provider-directory.url}") String baseUrl) {
     this.baseUrl = baseUrl;
   }
 

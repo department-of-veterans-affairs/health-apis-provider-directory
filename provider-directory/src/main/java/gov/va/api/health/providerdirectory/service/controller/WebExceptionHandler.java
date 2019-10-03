@@ -47,7 +47,7 @@ public class WebExceptionHandler {
     return responseFor("not-found", e, request);
   }
 
-  @ExceptionHandler({PpmsClient.PpmsException.class, PpmsClient.SearchFailed.class})
+  @ExceptionHandler({PpmsClient.ProviderDirectoryException.class, PpmsClient.SearchFailed.class})
   @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
   public OperationOutcome handleServiceUnavailable(Exception e, HttpServletRequest request) {
     return responseFor("service-unavailable", e, request);

@@ -5,7 +5,6 @@ import gov.va.api.health.providerdirectory.service.VlerResponse;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.security.KeyStore;
-import java.security.SecureRandom;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
@@ -13,8 +12,6 @@ import java.util.Collections;
 import java.util.concurrent.Callable;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -84,10 +81,10 @@ public class RestVlerClient implements VlerClient {
     } catch (HttpStatusCodeException e) {
       throw new SearchFailed(message, e);
     } catch (Exception e) {
-      throw new VlerException(message, e);
+      throw new ProviderDirectoryException(message, e);
     }
     if (response == null) {
-      throw new VlerException(message + ", no VLER response");
+      throw new ProviderDirectoryException(message + ", no VLER response");
     }
     return response;
   }
@@ -108,17 +105,16 @@ public class RestVlerClient implements VlerClient {
     return "DAAS " + publicKey + ":" + encSha;
   }
 
-  /** Calls the VLER Direct API by email address search.
-   * This will always return an unfiltered body. */
+  /**
+   * Calls the VLER Direct API by email address search. This will always return an unfiltered body.
+   */
   @Override
   public AddressResponse endpointByAddress(String address) {
     return handleVlerExceptions(
         address,
         () -> {
           String url =
-              UriComponentsBuilder.fromHttpUrl(baseUrl + "/direct/addresses")
-                  .build()
-                  .toUriString();
+              UriComponentsBuilder.fromHttpUrl(baseUrl + "/direct/addresses").build().toUriString();
           String dateString =
               DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z").format(ZonedDateTime.now());
           HttpHeaders headers = new HttpHeaders();
@@ -134,7 +130,7 @@ public class RestVlerClient implements VlerClient {
   }
 
   @SneakyThrows
-  private RestTemplate restTemplate() throws RuntimeException{
+  private RestTemplate restTemplate() throws RuntimeException {
     try (InputStream truststoreInputStream =
         getClass().getClassLoader().getResourceAsStream(FilenameUtils.getName(vlerTruststore))) {
       KeyStore ts = KeyStore.getInstance("JKS");

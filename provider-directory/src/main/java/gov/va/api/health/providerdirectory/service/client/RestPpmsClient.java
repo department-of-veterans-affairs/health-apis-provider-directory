@@ -53,13 +53,13 @@ public class RestPpmsClient implements PpmsClient {
     } catch (HttpStatusCodeException e) {
       throw new SearchFailed(message, e);
     } catch (Exception e) {
-      throw new PpmsException(message, e);
+      throw new ProviderDirectoryException(message, e);
     }
     if (response == null) {
-      throw new PpmsException(message + ", no PPMS response");
+      throw new ProviderDirectoryException(message + ", no PPMS response");
     }
     if (response.error() != null && isNotBlank(response.error().message())) {
-      throw new PpmsException(message + ", " + response.error().message());
+      throw new ProviderDirectoryException(message + ", " + response.error().message());
     }
     return response;
   }

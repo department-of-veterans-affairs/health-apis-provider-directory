@@ -21,8 +21,7 @@ public final class LocationControllerTest {
 
   LocationController.Transformer tx = new LocationTransformer();
 
-  ConfigurableBaseUrlPageLinks configurableBaseUrlPageLinks =
-      new ConfigurableBaseUrlPageLinks("");
+  ConfigurableBaseUrlPageLinks configurableBaseUrlPageLinks = new ConfigurableBaseUrlPageLinks("");
 
   Bundler bundler = new Bundler(configurableBaseUrlPageLinks);
 

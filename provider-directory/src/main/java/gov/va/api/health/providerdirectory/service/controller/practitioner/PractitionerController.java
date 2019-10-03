@@ -154,23 +154,23 @@ public class PractitionerController {
         providerResponsePages.add(providerResponse.value().get(i));
       }
     }
-      /* Page the results. */
-      int page = pageOf(parameters);
-      int count = countOf(parameters);
-      int fromIndex = Math.min((page - 1) * count, providerResponsePages.size());
-      int toIndex = Math.min((fromIndex + count), providerResponsePages.size());
-      List<ProviderResponse.Value> pagedProviderResponsePages =
-              providerResponsePages.subList(fromIndex, toIndex);
+    /* Page the results. */
+    int page = pageOf(parameters);
+    int count = countOf(parameters);
+    int fromIndex = Math.min((page - 1) * count, providerResponsePages.size());
+    int toIndex = Math.min((fromIndex + count), providerResponsePages.size());
+    List<ProviderResponse.Value> pagedProviderResponsePages =
+        providerResponsePages.subList(fromIndex, toIndex);
     /* Using providerResponse, retrieve a list of providerContactsResponse from PPMS. */
     List<ProviderContactsResponse> providerContactsResponsePages =
-            pagedProviderResponsePages
+        pagedProviderResponsePages
             .parallelStream()
             .map(prv -> ppmsClient.providerContactsForId(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());
 
     /* Using providerResponse, retrieve a list of providerServicesResponse from PPMS. */
     List<ProviderServicesResponse> providerServicesResponsePages =
-            pagedProviderResponsePages
+        pagedProviderResponsePages
             .parallelStream()
             .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());

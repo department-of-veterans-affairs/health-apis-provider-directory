@@ -1,5 +1,8 @@
 package gov.va.api.health.providerdirectory.service.controller.endpoint;
 
+import static gov.va.api.health.providerdirectory.service.controller.Parameters.countOf;
+import static gov.va.api.health.providerdirectory.service.controller.Parameters.pageOf;
+
 import gov.va.api.health.providerdirectory.service.AddressResponse;
 import gov.va.api.health.providerdirectory.service.CountParameter;
 import gov.va.api.health.providerdirectory.service.client.VlerClient;
@@ -26,9 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import static gov.va.api.health.providerdirectory.service.controller.Parameters.countOf;
-import static gov.va.api.health.providerdirectory.service.controller.Parameters.pageOf;
 
 /**
  * Request Mappings for Endpoint Resource, see
@@ -141,10 +141,10 @@ public class EndpointController {
     /* Page the results. */
     int page = pageOf(parameters);
     int count = countOf(parameters);
-    int fromIndex = Math.min((page - 1) * count, addressResponse.contacts().size());
-    int toIndex = Math.min((fromIndex + count), addressResponse.contacts().size());
+    int fromIndex = Math.min((page - 1) * count, addressResponsePages.size());
+    int toIndex = Math.min((fromIndex + count), addressResponsePages.size());
     List<AddressResponse.Contacts> pagedAddressResponsePages =
-            addressResponsePages.subList(fromIndex, toIndex);
+        addressResponsePages.subList(fromIndex, toIndex);
     /* Wrap it together! */
     List<EndpointWrapper> endpointWrapperPages = new ArrayList<>();
     for (int i = 0; i < pagedAddressResponsePages.size(); i++) {

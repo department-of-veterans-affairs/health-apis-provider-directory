@@ -22,9 +22,7 @@ public class EndpointControllerTest {
 
   EndpointController controller =
       new EndpointController(
-          new EndpointTransformer(),
-          new Bundler(new ConfigurableBaseUrlPageLinks("")),
-          vlerClient);
+          new EndpointTransformer(), new Bundler(new ConfigurableBaseUrlPageLinks("")), vlerClient);
 
   @Test
   public void searchByAddress() {

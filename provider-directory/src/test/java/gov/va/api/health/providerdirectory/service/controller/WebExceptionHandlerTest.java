@@ -122,7 +122,8 @@ public class WebExceptionHandlerTest {
   @SneakyThrows
   public void searchFailed() {
     PpmsClient ppmsClient = mock(PpmsClient.class);
-    when(ppmsClient.providersForId("123")).thenThrow(new PpmsClient.PpmsException(null));
+    when(ppmsClient.providersForId("123"))
+        .thenThrow(new PpmsClient.ProviderDirectoryException(null));
     PractitionerController controller =
         new PractitionerController(new PractitionerTransformer(), null, ppmsClient);
     MockMvcBuilders.standaloneSetup(controller)
@@ -132,6 +133,6 @@ public class WebExceptionHandlerTest {
         .perform(get("/Practitioner/123"))
         .andExpect(status().is(HttpStatus.SERVICE_UNAVAILABLE.value()))
         .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
-        .andExpect(jsonPath("issue[0].diagnostics", containsString("PpmsException")));
+        .andExpect(jsonPath("issue[0].diagnostics", containsString("ProviderDirectoryException")));
   }
 }
