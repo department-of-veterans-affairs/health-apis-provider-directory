@@ -138,13 +138,9 @@ public class PractitionerRoleController {
     String familyName = parameters.getFirst("family");
     String givenName = parameters.getFirst("given");
     ProviderResponse providerResponse = ppmsClient.providersForName(familyName);
-    int page = pageOf(parameters);
-    int count = countOf(parameters);
-    int fromIndex = Math.min((page - 1) * count, providerResponse.value().size());
-    int toIndex = Math.min((fromIndex + count), providerResponse.value().size());
     /* Retrieve a list of providerResponse from PPMS using familyName. */
     List<ProviderResponse.Value> providerResponseUnfilteredPages =
-        providerResponse.value().subList(fromIndex, toIndex);
+        providerResponse.value().subList(0, providerResponse.value().size());
     /* Remove any providerResponse that doesn't contain the givenName. */
     List<ProviderResponse.Value> providerResponsePages = new ArrayList<>();
     for (int i = 0; i < providerResponseUnfilteredPages.size(); i++) {
@@ -153,22 +149,28 @@ public class PractitionerRoleController {
         providerResponsePages.add(providerResponse.value().get(i));
       }
     }
+    /* Page the results. */
+    int page = pageOf(parameters);
+    int count = countOf(parameters);
+    int fromIndex = Math.min((page - 1) * count, providerResponsePages.size());
+    int toIndex = Math.min((fromIndex + count), providerResponsePages.size());
+    List<ProviderResponse.Value> pagedProviderResponsePages =
+            providerResponsePages.subList(fromIndex, toIndex);
     /* Using providerResponse, retrieve a list of providerContactsResponse from PPMS. */
     List<ProviderContactsResponse> providerContactsResponsePages =
-        providerResponsePages
+            pagedProviderResponsePages
             .parallelStream()
             .map(prv -> ppmsClient.providerContactsForId(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());
     /* Using providerResponse, retrieve a list of providerContactsResponse from PPMS. */
     List<ProviderServicesResponse> providerServicesResponsePages =
-        providerResponsePages
+            pagedProviderResponsePages
             .parallelStream()
             .map(prv -> ppmsClient.providerServicesById(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());
-
     /* Using providerResponse, retrieve a list of providerSpecialtyResponse from PPMS. */
     List<ProviderSpecialtiesResponse> providerSpecialtiesResponsePages =
-        providerResponsePages
+            pagedProviderResponsePages
             .parallelStream()
             .map(prv -> ppmsClient.providerSpecialtySearch(prv.providerIdentifier().toString()))
             .collect(Collectors.toList());
@@ -177,12 +179,12 @@ public class PractitionerRoleController {
      * list of PractitionerRole (FHIR).
      */
     List<PractitionerRoleWrapper> practitionerWrapperPages = new ArrayList<>();
-    for (int i = 0; i < providerContactsResponsePages.size(); i++) {
+    for (int i = 0; i < pagedProviderResponsePages.size(); i++) {
       practitionerWrapperPages.add(
           (PractitionerRoleWrapper.builder()
               .providerResponse(
                   ProviderResponse.builder()
-                      .value(singletonList(providerResponsePages.get(i)))
+                      .value(singletonList(pagedProviderResponsePages.get(i)))
                       .build())
               .providerContactsResponse(providerContactsResponsePages.get(i))
               .providerServicesResponse(providerServicesResponsePages.get(i))

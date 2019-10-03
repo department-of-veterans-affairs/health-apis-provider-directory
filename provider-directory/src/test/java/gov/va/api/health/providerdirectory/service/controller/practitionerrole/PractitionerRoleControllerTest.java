@@ -28,7 +28,7 @@ public class PractitionerRoleControllerTest {
       new PractitionerRoleController(
           ppmsClient,
           new PractitionerRoleTransformer(),
-          new Bundler(new ConfigurableBaseUrlPageLinks("", "")));
+          new Bundler(new ConfigurableBaseUrlPageLinks("")));
 
   @Test
   public void readByIdentifier() {

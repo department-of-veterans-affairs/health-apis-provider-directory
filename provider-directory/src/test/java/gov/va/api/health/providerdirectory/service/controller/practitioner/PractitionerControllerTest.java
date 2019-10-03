@@ -27,7 +27,7 @@ public final class PractitionerControllerTest {
   PractitionerController controller =
       new PractitionerController(
           new PractitionerTransformer(),
-          new Bundler(new ConfigurableBaseUrlPageLinks("", "")),
+          new Bundler(new ConfigurableBaseUrlPageLinks("")),
           ppmsClient);
 
   @Test

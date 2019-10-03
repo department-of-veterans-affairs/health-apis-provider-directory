@@ -68,7 +68,7 @@ public class RestVlerClient implements VlerClient {
     this.privateKey = privateKey;
     this.vlerTruststorePassword = vlerTruststorePassword;
     this.vlerTruststore = vlerTruststore;
-    this.restTemplate = secureRestTemplate();
+    this.restTemplate = restTemplate();
   }
 
   @SneakyThrows
@@ -98,7 +98,7 @@ public class RestVlerClient implements VlerClient {
     try {
       endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
     } catch (Exception e) {
-      throw new BadRequest("Base URL not found within url ", e);
+      throw new BadRequest("Base URL [" + baseUrl + "] not found within url [" + url + "]", e);
     }
     String reqStr = "GET\n" + dateString + "\napplication/json\n" + endpoint;
     Mac encoding = Mac.getInstance("HmacSHA256");
@@ -108,7 +108,8 @@ public class RestVlerClient implements VlerClient {
     return "DAAS " + publicKey + ":" + encSha;
   }
 
-  /** Calls the VLER Direct API by email address search. */
+  /** Calls the VLER Direct API by email address search.
+   * This will always return an unfiltered body. */
   @Override
   public AddressResponse endpointByAddress(String address) {
     return handleVlerExceptions(
@@ -116,7 +117,6 @@ public class RestVlerClient implements VlerClient {
         () -> {
           String url =
               UriComponentsBuilder.fromHttpUrl(baseUrl + "/direct/addresses")
-                  .queryParam("cn", address)
                   .build()
                   .toUriString();
           String dateString =
@@ -127,29 +127,21 @@ public class RestVlerClient implements VlerClient {
           headers.add("Authorization", authHeader(baseUrl, url, dateString));
           headers.add("Date", dateString);
           ResponseEntity<AddressResponse> entity =
-              secureRestTemplate()
+              restTemplate()
                   .exchange(url, HttpMethod.GET, new HttpEntity<>(headers), AddressResponse.class);
           return entity.getBody();
         });
   }
 
   @SneakyThrows
-  private RestTemplate secureRestTemplate() {
-    ClassLoader cl = getClass().getClassLoader();
-    if (cl == null) {
-      throw new ClassLoaderException("Something went wrong getting the class loader");
-    }
+  private RestTemplate restTemplate() throws RuntimeException{
     try (InputStream truststoreInputStream =
-        cl.getResourceAsStream(FilenameUtils.getName(vlerTruststore))) {
+        getClass().getClassLoader().getResourceAsStream(FilenameUtils.getName(vlerTruststore))) {
       KeyStore ts = KeyStore.getInstance("JKS");
       ts.load(truststoreInputStream, vlerTruststorePassword.toCharArray());
-      SSLContext sslContext = null;
       TrustManagerFactory trustManagerFactory =
           TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
       trustManagerFactory.init(ts);
-      sslContext = SSLContext.getInstance("TLSv1.1");
-      sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
-      HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
       SSLConnectionSocketFactory socketFactory =
           new SSLConnectionSocketFactory(
               new SSLContextBuilder()

@@ -23,7 +23,7 @@ public class EndpointControllerTest {
   EndpointController controller =
       new EndpointController(
           new EndpointTransformer(),
-          new Bundler(new ConfigurableBaseUrlPageLinks("", "")),
+          new Bundler(new ConfigurableBaseUrlPageLinks("")),
           vlerClient);
 
   @Test

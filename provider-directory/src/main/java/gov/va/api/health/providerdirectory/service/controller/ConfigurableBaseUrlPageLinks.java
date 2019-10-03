@@ -23,15 +23,11 @@ public class ConfigurableBaseUrlPageLinks implements PageLinks {
    * running this application.
    */
   private final String baseUrl;
-  /** These base path for resources, e.g. api */
-  private String basePath;
 
   @Autowired
   public ConfigurableBaseUrlPageLinks(
-      @Value("${provider-directory.url}") String baseUrl,
-      @Value("${provider-directory.base-path}") String basePath) {
+      @Value("${provider-directory.url}") String baseUrl) {
     this.baseUrl = baseUrl;
-    this.basePath = basePath;
   }
 
   @Override
@@ -52,7 +48,7 @@ public class ConfigurableBaseUrlPageLinks implements PageLinks {
 
   @Override
   public String readLink(String resourcePath, String id) {
-    return baseUrl + "/" + basePath + "/" + resourcePath + "/" + id;
+    return baseUrl + "/" + resourcePath + "/" + id;
   }
 
   /** This context wraps the link state to allow link creation to be clearly described. */
@@ -100,7 +96,7 @@ public class ConfigurableBaseUrlPageLinks implements PageLinks {
       MultiValueMap<String, String> mutableParams = new LinkedMultiValueMap<>(config.queryParams());
       mutableParams.remove("page");
       mutableParams.remove("_count");
-      StringBuilder msg = new StringBuilder(baseUrl).append('/').append(basePath).append('/');
+      StringBuilder msg = new StringBuilder(baseUrl).append('/');
       msg.append(config.path()).append('?');
       String params =
           mutableParams

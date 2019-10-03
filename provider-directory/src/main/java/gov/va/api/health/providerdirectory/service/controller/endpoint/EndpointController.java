@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static gov.va.api.health.providerdirectory.service.controller.Parameters.countOf;
+import static gov.va.api.health.providerdirectory.service.controller.Parameters.pageOf;
+
 /**
  * Request Mappings for Endpoint Resource, see
  * http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html for implementation
@@ -34,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(
-  value = {"/api/Endpoint"},
+  value = {"/Endpoint"},
   produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
@@ -62,9 +65,9 @@ public class EndpointController {
   }
 
   /** Read by identifier. */
-  @GetMapping(value = {"/{publicId}"})
-  public Endpoint readByIdentifier(@PathVariable("publicId") String publicId) {
-    return transformer.apply(search(Parameters.forIdentity((publicId))).getKey().get(0));
+  @GetMapping(value = {"/{id}"})
+  public Endpoint readByIdentifier(@PathVariable("id") String id) {
+    return transformer.apply(search(Parameters.forIdentity((id))).getKey().get(0));
   }
 
   private Pair<List<EndpointWrapper>, Integer> search(MultiValueMap<String, String> parameters) {
@@ -119,7 +122,6 @@ public class EndpointController {
       MultiValueMap<String, String> parameters, String function) {
     String searchFunction = parameters.getFirst(function);
     AddressResponse addressResponse = vlerClient.endpointByAddress(searchFunction);
-    int filteredCount = 0;
     List<AddressResponse.Contacts> unfilteredAddressResponsePages =
         addressResponse.contacts().subList(0, addressResponse.contacts().size());
     List<AddressResponse.Contacts> addressResponsePages = new ArrayList<>();
@@ -128,22 +130,28 @@ public class EndpointController {
         if (StringUtils.containsIgnoreCase(
             unfilteredAddressResponsePages.get(i).displayName(), searchFunction)) {
           addressResponsePages.add(addressResponse.contacts().get(i));
-          filteredCount++;
         }
       } else if (StringUtils.equalsIgnoreCase(function, "identifier")) {
         if (StringUtils.containsIgnoreCase(
             unfilteredAddressResponsePages.get(i).uid(), searchFunction)) {
           addressResponsePages.add(addressResponse.contacts().get(i));
-          filteredCount++;
         }
       }
     }
+    /* Page the results. */
+    int page = pageOf(parameters);
+    int count = countOf(parameters);
+    int fromIndex = Math.min((page - 1) * count, addressResponse.contacts().size());
+    int toIndex = Math.min((fromIndex + count), addressResponse.contacts().size());
+    List<AddressResponse.Contacts> pagedAddressResponsePages =
+            addressResponsePages.subList(fromIndex, toIndex);
+    /* Wrap it together! */
     List<EndpointWrapper> endpointWrapperPages = new ArrayList<>();
-    for (int i = 0; i < addressResponsePages.size(); i++) {
+    for (int i = 0; i < pagedAddressResponsePages.size(); i++) {
       endpointWrapperPages.add(
-          (EndpointWrapper.builder().addressResponse(addressResponsePages.get(i))).build());
+          (EndpointWrapper.builder().addressResponse(pagedAddressResponsePages.get(i))).build());
     }
-    return Pair.of(endpointWrapperPages, filteredCount);
+    return Pair.of(endpointWrapperPages, addressResponsePages.size());
   }
 
   /** Placeholder for search by Organization. */
