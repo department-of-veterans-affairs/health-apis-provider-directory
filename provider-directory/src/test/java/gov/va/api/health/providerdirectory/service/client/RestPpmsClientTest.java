@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public final class RestPpmsClientTest {
-
   @Test
   @SuppressWarnings("unchecked")
   public void addTrailingSlashToBaseUrl() {
@@ -31,7 +30,8 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(ProviderResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = new RestPpmsClient("http://foo.bar", restTemplate);
+    RestPpmsClient client =
+        RestPpmsClient.builder().baseUrl("http://foo.bar").restTemplate(restTemplate).build();
     assertThat(client.providersForId("123")).isEqualTo(ProviderResponse.builder().build());
   }
 
