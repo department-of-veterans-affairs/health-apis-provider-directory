@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.util.Collections;
 import java.util.concurrent.Callable;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.SneakyThrows;
@@ -35,9 +34,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /** REST implementation of PPMS client. */
-@Builder
 @Component
-@AllArgsConstructor
 public class RestPpmsClient implements PpmsClient {
   private String baseUrl;
 
