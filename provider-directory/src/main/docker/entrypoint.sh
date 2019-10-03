@@ -2,6 +2,7 @@
 
 ENDPOINT_DOMAIN_NAME="$K8S_LOAD_BALANCER"
 ENVIRONMENT="$K8S_ENVIRONMENT"
+TOKEN="$TOKEN"
 BASE_PATH="$BASE_PATH"
 IDENTIFIER="$IDENTIFIER"
 NAME="$NAME"
@@ -71,18 +72,18 @@ smokeTest() {
 
   # Happy Path Practitioner
   path="/Practitioner?identifier=$IDENTIFIER"
-  doCurl 200
+  doCurl 200 $TOKEN
 
   # Happy Path PractitionerRole
   path="/PractitionerRole?identifier=$IDENTIFIER"
-  doCurl 200
+  doCurl 200 $TOKEN
 
   path="/Location?identifier=$IDENTIFIER"
-  doCurl 200
+  doCurl 200 $TOKEN
 
   # Single unknown parameter check for smoke test
   path="/practitioner?id=$IDENTIFIER"
-  doCurl 500
+  doCurl 500 $TOKEN
 
   printResults
 }
@@ -104,7 +105,7 @@ regressionTest() {
 
   # Happy Path Practitioner by family and given
   path="/Practitioner?family=$NAME&given=$GIVEN"
-  doCurl 200
+  doCurl 200 $TOKEN
 
   # Happy Path PractitionerRole by identifier
   path="/PractitionerRole?identifier=$IDENTIFIER"
@@ -112,27 +113,28 @@ regressionTest() {
 
   # Happy Path PractitionerRole by family and given
   path="/PractitionerRole?family=$NAME&given=$GIVEN"
-  doCurl 200
+  doCurl 200 $TOKEN
 
   # Happy Path Location by name
   path="/Location?name=$NAME"
-  doCurl 200
+  doCurl 200 $TOKEN
 
   # Happy Path Location by identifier
   path="/Location?identifier=$IDENTIFIER"
   doCurl 200
 
+
   # Happy Path Location by address-city
   path="/Location?address-city=Melbourne"
-  doCurl 200
+  doCurl 200 $TOKEN
 
   # Happy Path Location by address-postalcode
   path="/Location?address-postalcode=32937"
-  doCurl 200
+  doCurl 200 $TOKEN
 
   # Happy Path Location by address-state
   path="/Location?address-state=Florida"
-  doCurl 200
+  doCurl 200 $TOKEN
 
 
   printResults
@@ -150,7 +152,7 @@ printResults () {
 
 # Let's get down to business
 ARGS=$(getopt -n $(basename ${0}) \
-    -l "endpoint-domain-name:,environment:,base-path:,name:,given:,identifier:,help" \
+    -l "endpoint-domain-name:,environment:,token:,base-path:,name:,given:,identifier:,help" \
     -o "d:e:t:b:v:p:h" -- "$@")
 [ $? != 0 ] && usage
 eval set -- "$ARGS"
@@ -159,6 +161,7 @@ do
   case "$1" in
     -d|--endpoint-domain-name) ENDPOINT_DOMAIN_NAME=$2;;
     -e|--environment) ENVIRONMENT=$2;;
+    -t|--token) TOKEN=$2;;
     -b|--base-path) BASE_PATH=$2;;
     -n|--name) NAME=$2;;
     -g|--given) GIVEN=$2;;
@@ -183,6 +186,10 @@ fi
 
 if [[ -z "$GIVEN" || -e "$GIVEN" ]]; then
   usage "Missing variable GIVEN or option --given|-g."
+fi
+
+if [[ -z "$TOKEN" || -e "$TOKEN" ]]; then
+  usage "Missing variable TOKEN or option --token|-t."
 fi
 
 if [[ -z "$IDENTIFIER" || -e "$IDENTIFIER" ]]; then
