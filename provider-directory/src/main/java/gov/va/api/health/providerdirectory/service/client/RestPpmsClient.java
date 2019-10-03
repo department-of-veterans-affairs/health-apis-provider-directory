@@ -90,7 +90,6 @@ public class RestPpmsClient implements PpmsClient {
     return handlePpmsExceptions(
         city,
         () -> {
-          // PETERTODO need to bring in PPMS keystore
           String url =
               UriComponentsBuilder.fromHttpUrl(baseUrl + "GetCareSiteByCity?City=" + city)
                   .build()
