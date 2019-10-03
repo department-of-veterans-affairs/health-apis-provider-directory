@@ -8,17 +8,25 @@ import gov.va.api.health.providerdirectory.service.ProviderContactsResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
+import java.io.InputStream;
+import java.security.KeyStore;
 import java.util.Collections;
 import java.util.concurrent.Callable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -26,18 +34,25 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /** REST implementation of PPMS client. */
-@Slf4j
 @Component
 public class RestPpmsClient implements PpmsClient {
+  private String baseUrl;
 
-  private final String baseUrl;
+  private String keyStoreName;
 
-  private final RestTemplate restTemplate;
+  private String keyStorePassword;
 
+  private RestTemplate restTemplate;
+
+  /** Autowired constructor. */
   public RestPpmsClient(
-      @Value("${ppms.url}") String baseUrl, @Autowired RestTemplate restTemplate) {
+      @Value("${ppms.url}") String baseUrl,
+      @Value("${ppms.keystore.name}") String keyStoreName,
+      @Value("${ppms.keystore.password}") String keyStorePassword) {
     this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
-    this.restTemplate = restTemplate;
+    this.keyStoreName = keyStoreName;
+    this.keyStorePassword = keyStorePassword;
+    this.restTemplate = secureRestTemplate();
   }
 
   @SneakyThrows
@@ -250,5 +265,26 @@ public class RestPpmsClient implements PpmsClient {
               restTemplate.exchange(url, HttpMethod.GET, requestEntity, ProviderResponse.class);
           return entity.getBody();
         });
+  }
+
+  @SneakyThrows
+  private RestTemplate secureRestTemplate() {
+    ClassLoader cl = getClass().getClassLoader();
+    if (cl == null) {
+      throw new RuntimeException("Something went wrong getting the class loader");
+    }
+    try (InputStream truststoreInputStream = cl.getResourceAsStream(keyStoreName)) {
+      KeyStore keystore = KeyStore.getInstance("JKS");
+      keystore.load(truststoreInputStream, keyStorePassword.toCharArray());
+      SSLConnectionSocketFactory socketFactory =
+          new SSLConnectionSocketFactory(
+              new SSLContextBuilder()
+                  .loadTrustMaterial(keystore, new TrustSelfSignedStrategy())
+                  .loadKeyMaterial(keystore, keyStorePassword.toCharArray())
+                  .build(),
+              SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+      HttpClient httpsClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
+      return new RestTemplate(new HttpComponentsClientHttpRequestFactory(httpsClient));
+    }
   }
 }
