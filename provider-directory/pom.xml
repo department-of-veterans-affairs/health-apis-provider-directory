@@ -8,7 +8,7 @@
     <relativePath/>
   </parent>
   <properties>
-    <jacoco.coverage>0.81</jacoco.coverage>
+    <jacoco.coverage>0.91</jacoco.coverage>
     <stu3.version>2.0.0</stu3.version>
   </properties>
   <artifactId>provider-directory</artifactId>
