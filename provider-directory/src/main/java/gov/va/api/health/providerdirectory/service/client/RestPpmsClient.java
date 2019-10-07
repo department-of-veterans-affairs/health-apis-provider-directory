@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.util.Collections;
 import java.util.concurrent.Callable;
+import lombok.AccessLevel;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -40,6 +42,7 @@ public class RestPpmsClient implements PpmsClient {
 
   private String keyStorePassword;
 
+  @Setter(AccessLevel.PACKAGE)
   private RestTemplate restTemplate;
 
   /** Autowired constructor. */
