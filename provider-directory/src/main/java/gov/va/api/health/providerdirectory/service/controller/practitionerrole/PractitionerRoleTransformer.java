@@ -29,7 +29,6 @@ public class PractitionerRoleTransformer implements PractitionerRoleController.T
   @Override
   public PractitionerRole apply(PractitionerRoleWrapper ppmsData) {
     // TODO organization reference is required
-    // location could be populated by caresites
     ProviderResponse.Value providerResponse = ppmsData.providerResponse().value().get(0);
     ProviderContactsResponse.Value providerContacts =
         ppmsData.providerContactsResponse().value().isEmpty()

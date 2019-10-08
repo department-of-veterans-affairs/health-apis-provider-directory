@@ -13,6 +13,10 @@ import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
+import gov.va.api.health.providerdirectory.service.controller.Validator;
+import gov.va.api.health.stu3.api.bundle.AbstractBundle;
+import gov.va.api.health.stu3.api.bundle.AbstractEntry;
+import gov.va.api.health.stu3.api.bundle.BundleLink;
 import gov.va.api.health.stu3.api.datatypes.CodeableConcept;
 import gov.va.api.health.stu3.api.datatypes.Coding;
 import gov.va.api.health.stu3.api.datatypes.ContactPoint;
@@ -388,5 +392,77 @@ public class PractitionerRoleControllerTest {
                             .value("1234567890")
                             .build()))
                 .build());
+  }
+
+  @Test
+  public void validateAcceptsValidBundle() {
+    assertThat(
+            controller.validate(
+                PractitionerRole.Bundle.builder()
+                    .resourceType("Bundle")
+                    .type(AbstractBundle.BundleType.searchset)
+                    .total(1)
+                    .link(
+                        asList(
+                            BundleLink.builder()
+                                .relation(BundleLink.LinkRelation.first)
+                                .url("//Practitioner?name=Klingerman, Michael&page=1&_count=1")
+                                .build(),
+                            BundleLink.builder()
+                                .relation(BundleLink.LinkRelation.self)
+                                .url("//Practitioner?name=Klingerman, Michael&page=1&_count=1")
+                                .build(),
+                            BundleLink.builder()
+                                .relation(BundleLink.LinkRelation.last)
+                                .url("//Practitioner?name=Klingerman, Michael&page=1&_count=1")
+                                .build()))
+                    .entry(
+                        asList(
+                            PractitionerRole.Entry.builder()
+                                .fullUrl("//Practitioner/1285621557")
+                                .resource(
+                                    PractitionerRole.builder()
+                                        .organization(
+                                            Reference.builder()
+                                                .reference("/Organization/1285621557")
+                                                .build())
+                                        .resourceType("PractitionerRole")
+                                        .id("1285621557")
+                                        .active(true)
+                                        .practitioner(
+                                            Reference.builder()
+                                                .reference("/Practitioner/1285621557")
+                                                .build())
+                                        .code(
+                                            CodeableConcept.builder()
+                                                .coding(
+                                                    asList(
+                                                        Coding.builder()
+                                                            .code("363AM0700X")
+                                                            .display("Who Cares, I am a test")
+                                                            .build()))
+                                                .build())
+                                        .specialty(
+                                            CodeableConcept.builder()
+                                                .coding(
+                                                    asList(
+                                                        Coding.builder()
+                                                            .display("Need specialty")
+                                                            .build()))
+                                                .build())
+                                        .telecom(
+                                            asList(
+                                                PractitionerRole.PractitionerContactPoint.builder()
+                                                    .system(ContactPoint.ContactPointSystem.phone)
+                                                    .value("1234567890")
+                                                    .build()))
+                                        .build())
+                                .search(
+                                    AbstractEntry.Search.builder()
+                                        .mode(AbstractEntry.SearchMode.match)
+                                        .build())
+                                .build()))
+                    .build()))
+        .isEqualTo(Validator.ok());
   }
 }
