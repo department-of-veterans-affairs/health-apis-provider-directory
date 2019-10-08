@@ -18,11 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public final class RestPpmsClientTest {
-  private static RestPpmsClient restClient(String baseUrl, RestTemplate restTemplate) {
-    RestPpmsClient client = new RestPpmsClient(baseUrl, "keystore.jks", "password");
-    client.restTemplate(restTemplate);
-    return client;
-  }
 
   @Test
   @SuppressWarnings("unchecked")
@@ -36,7 +31,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(ProviderResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar", restTemplate);
     assertThat(client.providersForId("123")).isEqualTo(ProviderResponse.builder().build());
   }
 
@@ -52,7 +47,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(CareSitesResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.careSitesByCity("city")).isEqualTo(CareSitesResponse.builder().build());
   }
 
@@ -68,7 +63,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(CareSitesResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.careSitesById("123")).isEqualTo(CareSitesResponse.builder().build());
   }
 
@@ -84,7 +79,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(CareSitesResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.careSitesByName("Name")).isEqualTo(CareSitesResponse.builder().build());
   }
 
@@ -100,7 +95,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(CareSitesResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.careSitesByState("Fl")).isEqualTo(CareSitesResponse.builder().build());
   }
 
@@ -116,7 +111,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(CareSitesResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.careSitesByZip("12345")).isEqualTo(CareSitesResponse.builder().build());
   }
 
@@ -132,7 +127,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(ProviderContactsResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.providerContactsForId("123"))
         .isEqualTo(ProviderContactsResponse.builder().build());
   }
@@ -149,7 +144,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(ProviderResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.providersForName("nelson, bob"))
         .isEqualTo(ProviderResponse.builder().build());
   }
@@ -166,7 +161,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(ProviderServicesResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.providerServicesByName("CareSite"))
         .isEqualTo(ProviderServicesResponse.builder().build());
   }
@@ -183,7 +178,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(ProviderSpecialtiesResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.providerSpecialtySearch("123"))
         .isEqualTo(ProviderSpecialtiesResponse.builder().build());
   }
@@ -200,7 +195,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(ProviderResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.providersForId("123")).isEqualTo(ProviderResponse.builder().build());
   }
 
@@ -216,7 +211,7 @@ public final class RestPpmsClientTest {
             any(HttpEntity.class),
             eq(ProviderServicesResponse.class)))
         .thenReturn(response);
-    RestPpmsClient client = restClient("http://foo.bar/", restTemplate);
+    RestPpmsClient client = new RestPpmsClient("http://foo.bar/", restTemplate);
     assertThat(client.providerServicesById("123"))
         .isEqualTo(ProviderServicesResponse.builder().build());
   }
