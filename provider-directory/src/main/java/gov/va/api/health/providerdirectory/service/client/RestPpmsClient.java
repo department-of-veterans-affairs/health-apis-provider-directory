@@ -31,21 +31,11 @@ public class RestPpmsClient implements PpmsClient {
 
   private RestTemplate restTemplate;
 
-  // private String keyStoreName;
-
-  // private String keyStorePassword;
-
   /** Autowired constructor. */
   public RestPpmsClient(
       @Value("${ppms.url}") String baseUrl, @Autowired RestTemplate restTemplate) {
-    // @Value("${ppms.keystore.name}") String keyStoreName,
-    // @Value("${ppms.keystore.password}") String keyStorePassword
-
     this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
     this.restTemplate = restTemplate;
-
-    // this.keyStoreName = keyStoreName;
-    // this.keyStorePassword = keyStorePassword;
   }
 
   @SneakyThrows
