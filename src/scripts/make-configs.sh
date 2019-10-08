@@ -15,6 +15,7 @@ Options
 Secrets Configuration
  This bash file is sourced and expected to set the following variables
  - KEYSTORE_PASSWORD
+ - KEYSTORE_PATH
  - PPMS_URL
 
 $1
@@ -48,6 +49,7 @@ echo "Loading secrets: $SECRETS"
 
 MISSING_SECRETS=false
 [ -z "$KEYSTORE_PASSWORD" ] && echo "Missing configuration: KEYSTORE_PASSWORD" && MISSING_SECRETS=true
+[ -z "$KEYSTORE_PATH" ] && echo "Missing configuration: KEYSTORE_PATH" && MISSING_SECRETS=true
 [ -z "$PPMS_URL" ] && echo "Missing configuration: PPMS_URL" && MISSING_SECRETS=true
 [ $MISSING_SECRETS == true ] && usage "Missing configuration secrets, please update $SECRETS"
 
@@ -101,6 +103,11 @@ configValue provider-directory $PROFILE capability.security.token-endpoint https
 configValue provider-directory $PROFILE capability.security.authorize-endpoint https://fake.com/authorize
 configValue provider-directory $PROFILE ppms.url "$PPMS_URL"
 configValue provider-directory $PROFILE provider-directory.url http://localhost:8090
+configValue provider-directory $PROFILE ssl.client-key-password "$KEYSTORE_PASSWORD"
+configValue provider-directory $PROFILE ssl.key-store "$KEYSTORE_PATH"
+configValue provider-directory $PROFILE ssl.key-store-password "$KEYSTORE_PASSWORD"
+configValue provider-directory $PROFILE ssl.trust-store "$KEYSTORE_PATH"
+configValue provider-directory $PROFILE ssl.trust-store-password "$KEYSTORE_PASSWORD"
 configValue provider-directory $PROFILE well-known.capabilities "context-standalone-patient, launch-ehr, permission-offline, permission-patient"
 configValue provider-directory $PROFILE well-known.response-type-supported "code, refresh_token"
 configValue provider-directory $PROFILE well-known.scopes-supported "patient/DiagnosticReport.read, patient/Patient.read, offline_access"
