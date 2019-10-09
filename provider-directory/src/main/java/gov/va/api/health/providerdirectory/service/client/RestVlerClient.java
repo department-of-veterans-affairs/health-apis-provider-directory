@@ -1,7 +1,6 @@
 package gov.va.api.health.providerdirectory.service.client;
 
 import gov.va.api.health.providerdirectory.service.AddressResponse;
-import gov.va.api.health.providerdirectory.service.VlerResponse;
 import java.nio.charset.Charset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,9 +23,9 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-/** REST implementation of PPMS client. */
+/** REST implementation of VLER client. */
 @Component
-public class RestVlerClient implements VlerClient {
+public class RestVlerClient {
   private final String baseUrl;
 
   private final String publicKey;
@@ -48,22 +47,22 @@ public class RestVlerClient implements VlerClient {
   }
 
   @SneakyThrows
-  private static <T extends VlerResponse> T handleVlerExceptions(
+  private static <T extends AddressResponse> T handleVlerExceptions(
       String message, Callable<T> callable) {
     T response;
     try {
       response = callable.call();
     } catch (HttpClientErrorException.NotFound e) {
-      throw new NotFound(message, e);
+      throw new ExceptionClient.NotFound(message, e);
     } catch (HttpClientErrorException.BadRequest e) {
-      throw new BadRequest(message, e);
+      throw new ExceptionClient.BadRequest(message, e);
     } catch (HttpStatusCodeException e) {
-      throw new SearchFailed(message, e);
+      throw new ExceptionClient.SearchFailed(message, e);
     } catch (Exception e) {
-      throw new ProviderDirectoryException(message, e);
+      throw new ExceptionClient.ProviderDirectoryException(message, e);
     }
     if (response == null) {
-      throw new ProviderDirectoryException(message + ", no VLER response");
+      throw new ExceptionClient.ProviderDirectoryException(message + ", no VLER response");
     }
     return response;
   }
@@ -74,7 +73,8 @@ public class RestVlerClient implements VlerClient {
     try {
       endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
     } catch (Exception e) {
-      throw new BadRequest("Base URL [" + baseUrl + "] not found within url [" + url + "]", e);
+      throw new ExceptionClient.BadRequest(
+          "Base URL [" + baseUrl + "] not found within url [" + url + "]", e);
     }
     String reqStr = "GET\n" + dateString + "\napplication/json\n" + endpoint;
     Mac encoding = Mac.getInstance("HmacSHA256");
@@ -87,7 +87,6 @@ public class RestVlerClient implements VlerClient {
   /**
    * Calls the VLER Direct API by email address search. This will always return an unfiltered body.
    */
-  @Override
   public AddressResponse endpointByAddress(String address) {
     return handleVlerExceptions(
         address,
