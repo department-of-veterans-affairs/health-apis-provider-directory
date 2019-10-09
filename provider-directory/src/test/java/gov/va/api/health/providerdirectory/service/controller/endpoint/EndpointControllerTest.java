@@ -25,7 +25,7 @@ public class EndpointControllerTest {
           new EndpointTransformer(), new Bundler(new ConfigurableBaseUrlPageLinks("")), vlerClient);
 
   @Test
-  public void searchByAddress() {
+  public void searchByName() {
     when(vlerClient.endpointByAddress("test"))
         .thenReturn(
             AddressResponse.builder()
@@ -70,6 +70,102 @@ public class EndpointControllerTest {
                             .build()))
                 .address("test.pilot@test2.direct.va.gov")
                 .build());
+  }
+
+  @Test
+  public void searchByIdentifier() {
+    when(vlerClient.endpointByAddress("test"))
+            .thenReturn(
+                    AddressResponse.builder()
+                            .contacts(
+                                    asList(
+                                            AddressResponse.Contacts.builder()
+                                                    .displayName("Pilot, Test")
+                                                    .emailAddress("test.pilot@test2.direct.va.gov")
+                                                    .uid("test.pilot")
+                                                    .givenName("Test")
+                                                    .surname("Pilot")
+                                                    .officeCityState("Indianapolis, IN")
+                                                    .companyName("Test Company")
+                                                    .departmentNumber("Test Department")
+                                                    .mobile("123-456-7890")
+                                                    .telephoneNumber("098-765-4321")
+                                                    .title("Testing Analyzer")
+                                                    .commonName("Test Pilot")
+                                                    .facility("Test Facility")
+                                                    .build()))
+                            .build());
+
+    Endpoint.Bundle actual = controller.searchByIdentifier("test", 1, 1);
+
+    assertThat(Iterables.getOnlyElement(actual.entry()).resource())
+            .isEqualTo(
+                    Endpoint.builder()
+                            .resourceType("Endpoint")
+                            .id("test.pilot")
+                            .status(Endpoint.Status.active)
+                            .connectionType(Coding.builder().code("direct-project").build())
+                            .name("Pilot, Test")
+                            .payloadType(
+                                    asList(
+                                            CodeableConcept.builder()
+                                                    .coding(
+                                                            asList(
+                                                                    Coding.builder()
+                                                                            .code("VLER Direct")
+                                                                            .display("VLER Direct")
+                                                                            .build()))
+                                                    .build()))
+                            .address("test.pilot@test2.direct.va.gov")
+                            .build());
+  }
+
+  @Test
+  public void readIdentifier() {
+    when(vlerClient.endpointByAddress("test"))
+            .thenReturn(
+                    AddressResponse.builder()
+                            .contacts(
+                                    asList(
+                                            AddressResponse.Contacts.builder()
+                                                    .displayName("Pilot, Test")
+                                                    .emailAddress("test.pilot@test2.direct.va.gov")
+                                                    .uid("test.pilot")
+                                                    .givenName("Test")
+                                                    .surname("Pilot")
+                                                    .officeCityState("Indianapolis, IN")
+                                                    .companyName("Test Company")
+                                                    .departmentNumber("Test Department")
+                                                    .mobile("123-456-7890")
+                                                    .telephoneNumber("098-765-4321")
+                                                    .title("Testing Analyzer")
+                                                    .commonName("Test Pilot")
+                                                    .facility("Test Facility")
+                                                    .build()))
+                            .build());
+
+    Endpoint actual = controller.readByIdentifier("test");
+
+    assertThat(actual)
+            .isEqualTo(
+                    Endpoint.builder()
+                            .resourceType("Endpoint")
+                            .id("test.pilot")
+                            .status(Endpoint.Status.active)
+                            .connectionType(Coding.builder().code("direct-project").build())
+                            .name("Pilot, Test")
+                            .payloadType(
+                                    asList(
+                                            CodeableConcept.builder()
+                                                    .coding(
+                                                            asList(
+                                                                    Coding.builder()
+                                                                            .code("VLER Direct")
+                                                                            .display("VLER Direct")
+                                                                            .build()))
+                                                    .build()))
+                            .address("test.pilot@test2.direct.va.gov")
+                            .build());
   }
 
   @Test(expected = ConstraintViolationException.class)
