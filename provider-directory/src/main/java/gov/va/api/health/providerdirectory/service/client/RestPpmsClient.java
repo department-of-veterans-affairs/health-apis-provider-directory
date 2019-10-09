@@ -11,7 +11,6 @@ import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -26,14 +25,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /** REST implementation of PPMS client. */
-@Slf4j
 @Component
 public class RestPpmsClient implements PpmsClient {
+  private String baseUrl;
 
-  private final String baseUrl;
+  private RestTemplate restTemplate;
 
-  private final RestTemplate restTemplate;
-
+  /** Autowired constructor. */
   public RestPpmsClient(
       @Value("${ppms.url}") String baseUrl, @Autowired RestTemplate restTemplate) {
     this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
