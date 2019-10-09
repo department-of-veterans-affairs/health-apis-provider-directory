@@ -16,12 +16,9 @@ Secrets Configuration
  This bash file is sourced and expected to set the following variables
  - KEYSTORE_PASSWORD
  - KEYSTORE_PATH
- - PPMS_URL
- - VLER_KEY_PUBLIC
  - VLER_KEY_PRIVATE
+ - VLER_KEY_PUBLIC
  - VLER_URL
- - VLER_TRUSTSTORE_PASSWORD
- - VLER_TRUSTSTORE_LOCATION
 
 $1
 EOF
@@ -116,6 +113,12 @@ configValue provider-directory $PROFILE ssl.key-store "$KEYSTORE_PATH"
 configValue provider-directory $PROFILE ssl.key-store-password "$KEYSTORE_PASSWORD"
 configValue provider-directory $PROFILE ssl.trust-store "$KEYSTORE_PATH"
 configValue provider-directory $PROFILE ssl.trust-store-password "$KEYSTORE_PASSWORD"
+<<<<<<< HEAD
+=======
+configValue provider-directory $PROFILE vler.key.private "$VLER_KEY_PRIVATE"
+configValue provider-directory $PROFILE vler.key.public "$VLER_KEY_PUBLIC"
+configValue provider-directory $PROFILE vler.url "$VLER_URL"
+>>>>>>> 8d78656fa68a55cd41027347350d39382c79aa27
 configValue provider-directory $PROFILE well-known.capabilities "context-standalone-patient, launch-ehr, permission-offline, permission-patient"
 configValue provider-directory $PROFILE well-known.response-type-supported "code, refresh_token"
 configValue provider-directory $PROFILE well-known.scopes-supported "patient/DiagnosticReport.read, patient/Patient.read, offline_access"
