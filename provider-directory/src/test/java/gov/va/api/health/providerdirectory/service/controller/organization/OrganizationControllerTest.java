@@ -4,11 +4,10 @@ import org.junit.Test;
 
 @SuppressWarnings("WeakerAccess")
 public class OrganizationControllerTest {
-
   @SuppressWarnings("unchecked")
   @Test
   public void dummyTest() {
-    OrganizationController organizationController = new OrganizationController();
+    new OrganizationController();
     assert true;
   }
 }

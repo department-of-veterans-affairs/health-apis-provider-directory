@@ -47,33 +47,33 @@ public class RestVlerClient implements VlerClient {
   }
 
   @SneakyThrows
-  private static <T extends AddressResponse> T handleVlerExceptions(
-      String message, Callable<T> callable) {
-    T response;
+  private static AddressResponse handleVlerExceptions(
+      String message, Callable<AddressResponse> callable) {
+    AddressResponse response;
     try {
       response = callable.call();
     } catch (HttpClientErrorException.NotFound e) {
-      throw new ExceptionClient.NotFound(message, e);
+      throw new Exceptions.NotFound(message, e);
     } catch (HttpClientErrorException.BadRequest e) {
-      throw new ExceptionClient.BadRequest(message, e);
+      throw new Exceptions.BadRequest(message, e);
     } catch (HttpStatusCodeException e) {
-      throw new ExceptionClient.SearchFailed(message, e);
+      throw new Exceptions.SearchFailed(message, e);
     } catch (Exception e) {
-      throw new ExceptionClient.ProviderDirectoryException(message, e);
+      throw new Exceptions.VlerException(message, e);
     }
     if (response == null) {
-      throw new ExceptionClient.ProviderDirectoryException(message + ", no VLER response");
+      throw new Exceptions.VlerException(message + ", no VLER response");
     }
     return response;
   }
 
   @SneakyThrows
-  private String authHeader(String baseUrl, String url, String dateString) {
+  private String authHeader(String url, String dateString) {
     String endpoint;
     try {
       endpoint = "/" + url.substring(url.indexOf(baseUrl) + baseUrl.length());
     } catch (Exception e) {
-      throw new ExceptionClient.BadRequest(
+      throw new Exceptions.BadRequest(
           "Base URL [" + baseUrl + "] not found within url [" + url + "]", e);
     }
     String reqStr = "GET\n" + dateString + "\napplication/json\n" + endpoint;
@@ -87,6 +87,7 @@ public class RestVlerClient implements VlerClient {
   /**
    * Calls the VLER Direct API by email address search. This will always return an unfiltered body.
    */
+  @Override
   public AddressResponse endpointByAddress(String address) {
     return handleVlerExceptions(
         address,
@@ -98,7 +99,7 @@ public class RestVlerClient implements VlerClient {
           HttpHeaders headers = new HttpHeaders();
           headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
           headers.setContentType(MediaType.APPLICATION_JSON);
-          headers.add("Authorization", authHeader(baseUrl, url, dateString));
+          headers.add("Authorization", authHeader(url, dateString));
           headers.add("Date", dateString);
           ResponseEntity<AddressResponse> entity =
               restTemplate.exchange(

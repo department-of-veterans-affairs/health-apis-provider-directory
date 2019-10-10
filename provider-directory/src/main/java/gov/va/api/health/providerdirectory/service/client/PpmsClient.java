@@ -7,7 +7,7 @@ import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderSpecialtiesResponse;
 
 /** This is the abstraction for communicating with PPMS through their Restful API. */
-public interface PpmsClient extends ExceptionClient {
+public interface PpmsClient {
 
   CareSitesResponse careSitesByCity(String city);
 

@@ -9,6 +9,7 @@ import com.google.common.collect.Iterables;
 import gov.va.api.health.providerdirectory.service.CareSitesResponse;
 import gov.va.api.health.providerdirectory.service.ProviderResponse;
 import gov.va.api.health.providerdirectory.service.ProviderServicesResponse;
+import gov.va.api.health.providerdirectory.service.client.Exceptions;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
@@ -231,9 +232,9 @@ public final class LocationControllerTest {
                 .value(asList(ProviderResponse.Value.builder().providerIdentifier(123).build()))
                 .build());
     when(ppmsClient.providersForName("Sharon Hospital Medical Practice"))
-        .thenThrow(new PpmsClient.NotFound("not found", new Throwable("PPMS Exception")));
+        .thenThrow(new Exceptions.NotFound("not found", new Throwable("PPMS Exception")));
     when(ppmsClient.providersForName("PPMS has nothing for me :("))
-        .thenThrow(new PpmsClient.NotFound("not found", new Throwable("PPMS Exception")));
+        .thenThrow(new Exceptions.NotFound("not found", new Throwable("PPMS Exception")));
     when(ppmsClient.providersForName("Beacon Orthopaedics & Sports Medicine Ltd"))
         .thenReturn(
             ProviderResponse.builder()

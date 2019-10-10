@@ -3,7 +3,7 @@ package gov.va.api.health.providerdirectory.service.controller;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
-import gov.va.api.health.providerdirectory.service.client.PpmsClient;
+import gov.va.api.health.providerdirectory.service.client.Exceptions;
 import gov.va.api.health.stu3.api.elements.Narrative;
 import gov.va.api.health.stu3.api.resources.OperationOutcome;
 import java.time.Instant;
@@ -33,7 +33,7 @@ public class WebExceptionHandler {
   @ExceptionHandler({
     BindException.class,
     HttpClientErrorException.BadRequest.class,
-    PpmsClient.BadRequest.class,
+    Exceptions.BadRequest.class,
     UnsatisfiedServletRequestParameterException.class
   })
   @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -41,13 +41,17 @@ public class WebExceptionHandler {
     return responseFor("structure", e, request);
   }
 
-  @ExceptionHandler({HttpClientErrorException.NotFound.class, PpmsClient.NotFound.class})
+  @ExceptionHandler({HttpClientErrorException.NotFound.class, Exceptions.NotFound.class})
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public OperationOutcome handleNotFound(Exception e, HttpServletRequest request) {
     return responseFor("not-found", e, request);
   }
 
-  @ExceptionHandler({PpmsClient.ProviderDirectoryException.class, PpmsClient.SearchFailed.class})
+  @ExceptionHandler({
+    Exceptions.PpmsException.class,
+    Exceptions.SearchFailed.class,
+    Exceptions.VlerException.class,
+  })
   @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
   public OperationOutcome handleServiceUnavailable(Exception e, HttpServletRequest request) {
     return responseFor("service-unavailable", e, request);

@@ -45,19 +45,19 @@ public class RestPpmsClient implements PpmsClient {
     try {
       response = callable.call();
     } catch (HttpClientErrorException.NotFound e) {
-      throw new NotFound(message, e);
+      throw new Exceptions.NotFound(message, e);
     } catch (HttpClientErrorException.BadRequest e) {
-      throw new BadRequest(message, e);
+      throw new Exceptions.BadRequest(message, e);
     } catch (HttpStatusCodeException e) {
-      throw new SearchFailed(message, e);
+      throw new Exceptions.SearchFailed(message, e);
     } catch (Exception e) {
-      throw new ProviderDirectoryException(message, e);
+      throw new Exceptions.PpmsException(message, e);
     }
     if (response == null) {
-      throw new ProviderDirectoryException(message + ", no PPMS response");
+      throw new Exceptions.PpmsException(message + ", no PPMS response");
     }
     if (response.error() != null && isNotBlank(response.error().message())) {
-      throw new ProviderDirectoryException(message + ", " + response.error().message());
+      throw new Exceptions.PpmsException(message + ", " + response.error().message());
     }
     return response;
   }
