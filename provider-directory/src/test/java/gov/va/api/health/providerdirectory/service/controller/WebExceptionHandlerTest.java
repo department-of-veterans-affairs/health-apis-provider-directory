@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
+import gov.va.api.health.providerdirectory.service.client.Exceptions;
 import gov.va.api.health.providerdirectory.service.client.PpmsClient;
 import gov.va.api.health.providerdirectory.service.controller.practitioner.PractitionerController;
 import gov.va.api.health.providerdirectory.service.controller.practitioner.PractitionerTransformer;
@@ -122,7 +123,7 @@ public class WebExceptionHandlerTest {
   @SneakyThrows
   public void searchFailed() {
     PpmsClient ppmsClient = mock(PpmsClient.class);
-    when(ppmsClient.providersForId("123")).thenThrow(new PpmsClient.PpmsException(null));
+    when(ppmsClient.providersForId("123")).thenThrow(new Exceptions.PpmsException(null));
     PractitionerController controller =
         new PractitionerController(new PractitionerTransformer(), null, ppmsClient);
     MockMvcBuilders.standaloneSetup(controller)

@@ -31,7 +31,7 @@ public class ProviderDirectoryHomeController {
    * redirect.
    */
   @GetMapping(
-    value = {"/", "/openapi.json", "/api/openapi.json"},
+    value = {"/", "/openapi.json"},
     produces = "application/json"
   )
   @ResponseBody
@@ -41,7 +41,7 @@ public class ProviderDirectoryHomeController {
 
   /** Provide access to the OpenAPI yaml via RESTful interface. */
   @GetMapping(
-    value = {"/openapi.yaml", "/api/openapi.yaml"},
+    value = {"/openapi.yaml"},
     produces = "application/vnd.oai.openapi"
   )
   @ResponseBody

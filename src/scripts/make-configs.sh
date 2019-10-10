@@ -16,7 +16,9 @@ Secrets Configuration
  This bash file is sourced and expected to set the following variables
  - KEYSTORE_PASSWORD
  - KEYSTORE_PATH
- - PPMS_URL
+ - VLER_KEY_PRIVATE
+ - VLER_KEY_PUBLIC
+ - VLER_URL
 
 $1
 EOF
@@ -51,6 +53,9 @@ MISSING_SECRETS=false
 [ -z "$KEYSTORE_PASSWORD" ] && echo "Missing configuration: KEYSTORE_PASSWORD" && MISSING_SECRETS=true
 [ -z "$KEYSTORE_PATH" ] && echo "Missing configuration: KEYSTORE_PATH" && MISSING_SECRETS=true
 [ -z "$PPMS_URL" ] && echo "Missing configuration: PPMS_URL" && MISSING_SECRETS=true
+[ -z "$VLER_URL" ] && echo "Missing configuration: VLER_URL" && MISSING_SECRETS=true
+[ -z "$VLER_KEY_PUBLIC" ] && echo "Missing configuration: VLER_KEY_PUBLIC" && MISSING_SECRETS=true
+[ -z "$VLER_KEY_PRIVATE" ] && echo "Missing configuration: VLER_KEY_PRIVATE" && MISSING_SECRETS=true
 [ $MISSING_SECRETS == true ] && usage "Missing configuration secrets, please update $SECRETS"
 
 makeConfig() {
@@ -108,6 +113,9 @@ configValue provider-directory $PROFILE ssl.key-store "$KEYSTORE_PATH"
 configValue provider-directory $PROFILE ssl.key-store-password "$KEYSTORE_PASSWORD"
 configValue provider-directory $PROFILE ssl.trust-store "$KEYSTORE_PATH"
 configValue provider-directory $PROFILE ssl.trust-store-password "$KEYSTORE_PASSWORD"
+configValue provider-directory $PROFILE vler.key.private "$VLER_KEY_PRIVATE"
+configValue provider-directory $PROFILE vler.key.public "$VLER_KEY_PUBLIC"
+configValue provider-directory $PROFILE vler.url "$VLER_URL"
 configValue provider-directory $PROFILE well-known.capabilities "context-standalone-patient, launch-ehr, permission-offline, permission-patient"
 configValue provider-directory $PROFILE well-known.response-type-supported "code, refresh_token"
 configValue provider-directory $PROFILE well-known.scopes-supported "patient/DiagnosticReport.read, patient/Patient.read, offline_access"
