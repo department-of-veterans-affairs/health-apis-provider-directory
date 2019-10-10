@@ -25,7 +25,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /** REST implementation of VLER client. */
 @Component
-public class RestVlerClient implements VlerClient{
+public class RestVlerClient implements VlerClient {
   private final String baseUrl;
 
   private final String publicKey;
