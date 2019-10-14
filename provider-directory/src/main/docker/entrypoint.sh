@@ -7,7 +7,8 @@ BASE_PATH="$BASE_PATH"
 IDENTIFIER="$IDENTIFIER"
 NAME="$NAME"
 GIVEN="$GIVEN"
-
+ENDPOINT_ID="$ENDPOINT_ID"
+ENDPOINT_NAME="$ENDPOINT_NAME"
 
 #Put Health endpoints here if you got them
 PATHS=(/actuator/health \
@@ -33,6 +34,9 @@ Example
     --IDENTIFIER=1285621557
     --GIVEN=Michael
     --NAME=Klingerman
+    --ENDPOINT_ID=testva.providerone
+    --ENDPOINT_NAME=TestVA
+
 
 $1
 EOF
@@ -81,6 +85,10 @@ smokeTest() {
   path="/Location?identifier=$IDENTIFIER"
   doCurl 200 $TOKEN
 
+  # Happy Path Endpoint
+  path="/Endpoint?identifier=$ENDPOINT_ID"
+  doCurl 200 $TOKEN
+
   # Single unknown parameter check for smoke test
   path="/practitioner?id=$IDENTIFIER"
   doCurl 404 $TOKEN
@@ -123,10 +131,10 @@ regressionTest() {
   path="/Location?identifier=$IDENTIFIER"
   doCurl 200 $TOKEN
 
-
+  # Temporarily disabled due to timeout of PPMS calls
   # Happy Path Location by address-city
-  path="/Location?address-city=Melbourne"
-  doCurl 200 $TOKEN
+  # path="/Location?address-city=Melbourne"
+  # doCurl 200 $TOKEN
 
   # Temporarily disabled due to timeout of PPMS calls
   # Happy Path Location by address-postalcode
@@ -138,6 +146,13 @@ regressionTest() {
   # path="/Location?address-state=Florida"
   # doCurl 200 $TOKEN
 
+  # Happy Path Endpoint by id
+  path="/Endpoint?identifier=$ENDPOINT_ID"
+  doCurl 200 $TOKEN
+
+  # Happy Path Endpoint by name
+  path="/Endpoint?name=$ENDPOINT_NAME"
+  doCurl 200 $TOKEN
 
   printResults
 }
@@ -154,8 +169,8 @@ printResults () {
 
 # Let's get down to business
 ARGS=$(getopt -n $(basename ${0}) \
-    -l "endpoint-domain-name:,environment:,token:,base-path:,name:,given:,identifier:,help" \
-    -o "d:e:t:b:v:p:h" -- "$@")
+    -l "endpoint-domain-name:,environment:,token:,base-path:,name:,given:,identifier:,endpointid:,endpointname:,help" \
+    -o "d:e:t:b:v:p:ei:en:h" -- "$@")
 [ $? != 0 ] && usage
 eval set -- "$ARGS"
 while true
@@ -168,6 +183,8 @@ do
     -n|--name) NAME=$2;;
     -g|--given) GIVEN=$2;;
     -i|--identifier) IDENTIFIER=$2;;
+    -ei|--endpointid) ENDPOINT_ID=$2;;
+    -en|--endpointname) ENDPOINT_NAME=$2;;
     -h|--help) usage "I need a hero! I'm holding out for a hero...";;
     --) shift;break;;
   esac
@@ -196,6 +213,14 @@ fi
 
 if [[ -z "$IDENTIFIER" || -e "$IDENTIFIER" ]]; then
   usage "Missing variable IDENTIFIER or option --identifier|-i."
+fi
+
+if [[ -z "$ENDPOINT_ID" || -e "$ENDPOINT_ID" ]]; then
+  usage "Missing variable ENDPOINT_ID or option --endpointid|-ei."
+fi
+
+if [[ -z "$ENDPOINT_NAME" || -e "$ENDPOINT_NAME" ]]; then
+  usage "Missing variable ENDPOINT_NAME or option --endpointname|-en."
 fi
 
 [ $# == 0 ] && usage "No command specified"
