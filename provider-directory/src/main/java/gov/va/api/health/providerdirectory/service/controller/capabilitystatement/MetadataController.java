@@ -21,7 +21,6 @@ import gov.va.api.health.stu3.api.resources.CapabilityStatement.RestResource;
 import gov.va.api.health.stu3.api.resources.CapabilityStatement.RestSecurity;
 import gov.va.api.health.stu3.api.resources.CapabilityStatement.SearchParamType;
 import gov.va.api.health.stu3.api.resources.CapabilityStatement.Software;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,26 +37,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(
-  value = {"/api/metadata"},
+  value = "/stu3/metadata",
   produces = {"application/json", "application/json+fhir", "application/fhir+json"}
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 class MetadataController {
-
-  private static final String LOCATION_HTML =
-      "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html";
-
-  private static final String ORGANIZATION_HTML =
-      "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-organization.html";
-
   private static final String ENDPOINT_HTML =
       "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html";
-
-  private static final String PRACTITIONER_HTML =
-      "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html";
-
-  private static final String PRACTITIONERROLE_HTML =
-      "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html";
 
   private final CapabilityStatementProperties properties;
 
@@ -74,32 +60,6 @@ class MetadataController {
             .build());
   }
 
-  private Collection<SearchParam> endpointSearchParams() {
-    return asList(SearchParam.IDENTIFIER, SearchParam.ORGANIZATION, SearchParam.NAME);
-  }
-
-  private Collection<SearchParam> locationSearchParams() {
-    return asList(
-        SearchParam.CITY,
-        SearchParam.STATE,
-        SearchParam.ZIP,
-        SearchParam.IDENTIFIER,
-        SearchParam.NAME);
-  }
-
-  private Collection<SearchParam> organizationSearchParams() {
-    return asList(SearchParam.IDENTIFIER, SearchParam.ADDRESS, SearchParam.NAME);
-  }
-
-  private Collection<SearchParam> practitionerRoleSearchParams() {
-    return asList(
-        SearchParam.IDENTIFIER, SearchParam.FAMILY, SearchParam.GIVEN, SearchParam.SPECIALTY);
-  }
-
-  private Collection<SearchParam> practitionerSearchParams() {
-    return asList(SearchParam.FAMILY, SearchParam.GIVEN, SearchParam.IDENTIFIER);
-  }
-
   @GetMapping
   CapabilityStatement read() {
     return CapabilityStatement.builder()
@@ -112,42 +72,31 @@ class MetadataController {
         .date(properties.getPublicationDate())
         .description(properties.getDescription())
         .kind(Kind.capability)
-        .software(software())
+        .software(Software.builder().name(properties.getSoftwareName()).build())
         .fhirVersion(properties.getFhirVersion())
         .status(properties.getStatus())
         .acceptUnknown(AcceptUnknown.no)
         .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
-        .rest(rest())
+        .rest(
+            singletonList(
+                Rest.builder()
+                    .mode(RestMode.server)
+                    .security(restSecurity())
+                    .resource(resources())
+                    .build()))
         .build();
   }
 
   private List<RestResource> resources() {
     return Stream.of(
-            support("Location").documentation(LOCATION_HTML).search(locationSearchParams()).build(),
-            support("Endpoint").documentation(ENDPOINT_HTML).search(endpointSearchParams()).build(),
-            support("Organization")
-                .documentation(ORGANIZATION_HTML)
-                .search(organizationSearchParams())
-                .build(),
-            support("Practitioner")
-                .documentation(PRACTITIONER_HTML)
-                .search(practitionerSearchParams())
-                .build(),
-            support("PractitionerRole")
-                .documentation(PRACTITIONERROLE_HTML)
-                .search(practitionerRoleSearchParams())
+            SupportedResource.builder()
+                .properties(properties)
+                .type("Endpoint")
+                .documentation(ENDPOINT_HTML)
+                .search(asList(SearchParam.IDENTIFIER, SearchParam.ORGANIZATION, SearchParam.NAME))
                 .build())
         .map(SupportedResource::asResource)
         .collect(Collectors.toList());
-  }
-
-  private List<Rest> rest() {
-    return singletonList(
-        Rest.builder()
-            .mode(RestMode.server)
-            .security(restSecurity())
-            .resource(resources())
-            .build());
   }
 
   private RestSecurity restSecurity() {
@@ -185,27 +134,12 @@ class MetadataController {
         .build();
   }
 
-  private Software software() {
-    return Software.builder().name(properties.getSoftwareName()).build();
-  }
-
-  private SupportedResource.SupportedResourceBuilder support(String type) {
-    return SupportedResource.builder().properties(properties).type(type);
-  }
-
   @Getter
   @AllArgsConstructor
   enum SearchParam {
     IDENTIFIER("identifier", SearchParamType.string),
-    SPECIALTY("specialty", SearchParamType.string),
     ORGANIZATION("organization", SearchParamType.string),
-    NAME("name", SearchParamType.string),
-    GIVEN("given", SearchParamType.string),
-    FAMILY("family", SearchParamType.string),
-    CITY("address-city", SearchParamType.string),
-    STATE("address-state", SearchParamType.string),
-    ZIP("address-postalcode", SearchParamType.string),
-    ADDRESS("address", SearchParamType.string);
+    NAME("name", SearchParamType.string);
 
     private final String param;
 
@@ -215,7 +149,6 @@ class MetadataController {
   @Value
   @Builder
   private static class SupportedResource {
-
     String type;
 
     String documentation;

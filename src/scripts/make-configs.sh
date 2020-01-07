@@ -52,7 +52,6 @@ echo "Loading secrets: $SECRETS"
 MISSING_SECRETS=false
 [ -z "$KEYSTORE_PASSWORD" ] && echo "Missing configuration: KEYSTORE_PASSWORD" && MISSING_SECRETS=true
 [ -z "$KEYSTORE_PATH" ] && echo "Missing configuration: KEYSTORE_PATH" && MISSING_SECRETS=true
-[ -z "$PPMS_URL" ] && echo "Missing configuration: PPMS_URL" && MISSING_SECRETS=true
 [ -z "$VLER_URL" ] && echo "Missing configuration: VLER_URL" && MISSING_SECRETS=true
 [ -z "$VLER_KEY_PUBLIC" ] && echo "Missing configuration: VLER_KEY_PUBLIC" && MISSING_SECRETS=true
 [ -z "$VLER_KEY_PRIVATE" ] && echo "Missing configuration: VLER_KEY_PRIVATE" && MISSING_SECRETS=true
@@ -106,7 +105,6 @@ configValue provider-directory $PROFILE capability.contact.name "$(whoDis)"
 configValue provider-directory $PROFILE capability.contact.email "$(sendMoarSpams)"
 configValue provider-directory $PROFILE capability.security.token-endpoint https://fake.com/token
 configValue provider-directory $PROFILE capability.security.authorize-endpoint https://fake.com/authorize
-configValue provider-directory $PROFILE ppms.url "$PPMS_URL"
 configValue provider-directory $PROFILE provider-directory.url http://localhost:8090
 configValue provider-directory $PROFILE ssl.client-key-password "$KEYSTORE_PASSWORD"
 configValue provider-directory $PROFILE ssl.key-store "$KEYSTORE_PATH"

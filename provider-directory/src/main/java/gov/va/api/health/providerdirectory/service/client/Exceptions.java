@@ -19,17 +19,6 @@ public final class Exceptions {
     }
   }
 
-  /** Generic PPMS exception. */
-  public static class PpmsException extends RuntimeException {
-    public PpmsException(String message, Throwable cause) {
-      super(message + ", " + cause.getMessage(), cause);
-    }
-
-    public PpmsException(String message) {
-      super(message);
-    }
-  }
-
   /** An unspecified error occurred while performing a search. */
   public static final class SearchFailed extends RuntimeException {
     public SearchFailed(String message, Throwable cause) {

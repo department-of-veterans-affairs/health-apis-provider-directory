@@ -11,10 +11,9 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@SuppressWarnings("WeakerAccess")
 @Controller
+@SuppressWarnings("WeakerAccess")
 public class ProviderDirectoryHomeController {
-
   private static final YAMLMapper MAPPER = new YAMLMapper();
 
   /** The OpenAPI specific content in yaml form. */
