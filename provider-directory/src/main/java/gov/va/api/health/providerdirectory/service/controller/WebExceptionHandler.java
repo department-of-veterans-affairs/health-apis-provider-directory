@@ -48,7 +48,6 @@ public class WebExceptionHandler {
   }
 
   @ExceptionHandler({
-    Exceptions.PpmsException.class,
     Exceptions.SearchFailed.class,
     Exceptions.VlerException.class,
   })

@@ -11,9 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.providerdirectory.service.client.Exceptions;
-import gov.va.api.health.providerdirectory.service.client.PpmsClient;
-import gov.va.api.health.providerdirectory.service.controller.practitioner.PractitionerController;
-import gov.va.api.health.providerdirectory.service.controller.practitioner.PractitionerTransformer;
+import gov.va.api.health.providerdirectory.service.client.VlerClient;
+import gov.va.api.health.providerdirectory.service.controller.endpoint.EndpointController;
+import gov.va.api.health.providerdirectory.service.controller.endpoint.EndpointTransformer;
 import java.lang.reflect.Method;
 import javax.validation.ConstraintViolationException;
 import lombok.SneakyThrows;
@@ -28,39 +28,39 @@ import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExc
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 
 public class WebExceptionHandlerTest {
-
   @Test
   @SneakyThrows
   public void badRequest() {
-    PpmsClient ppmsClient = mock(PpmsClient.class);
-    when(ppmsClient.providersForId("123"))
+    VlerClient vlerClient = mock(VlerClient.class);
+    when(vlerClient.endpointByAddress("123"))
         .thenThrow(mock(HttpClientErrorException.BadRequest.class));
-    PractitionerController controller =
-        new PractitionerController(new PractitionerTransformer(), null, ppmsClient);
+    EndpointController controller =
+        new EndpointController(new EndpointTransformer(), null, vlerClient);
     MockMvcBuilders.standaloneSetup(controller)
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/Practitioner/123"))
+        .perform(get("/stu3/Endpoint/123"))
         .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
-        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
+        .andExpect(jsonPath("text.div", containsString("/Endpoint/123")))
         .andExpect(jsonPath("issue[0].diagnostics", containsString("BadRequest")));
   }
 
   @Test
   @SneakyThrows
   public void constraintViolation() {
-    PpmsClient ppmsClient = mock(PpmsClient.class);
-    when(ppmsClient.providersForId("123")).thenThrow(new ConstraintViolationException(emptySet()));
-    PractitionerController controller =
-        new PractitionerController(new PractitionerTransformer(), null, ppmsClient);
+    VlerClient vlerClient = mock(VlerClient.class);
+    when(vlerClient.endpointByAddress("123"))
+        .thenThrow(new ConstraintViolationException(emptySet()));
+    EndpointController controller =
+        new EndpointController(new EndpointTransformer(), null, vlerClient);
     MockMvcBuilders.standaloneSetup(controller)
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/Practitioner/123"))
+        .perform(get("/stu3/Endpoint/123"))
         .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
-        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
+        .andExpect(jsonPath("text.div", containsString("/Endpoint/123")))
         .andExpect(
             jsonPath("issue[0].diagnostics", containsString("ConstraintViolationException")));
   }
@@ -68,7 +68,6 @@ public class WebExceptionHandlerTest {
   private ExceptionHandlerExceptionResolver exceptionResolver() {
     ExceptionHandlerExceptionResolver exceptionResolver =
         new ExceptionHandlerExceptionResolver() {
-
           @Override
           protected ServletInvocableHandlerMethod getExceptionHandlerMethod(
               HandlerMethod handlerMethod, Exception ex) {
@@ -88,51 +87,52 @@ public class WebExceptionHandlerTest {
   @Test
   @SneakyThrows
   public void internalServerError() {
-    PpmsClient ppmsClient = mock(PpmsClient.class);
-    when(ppmsClient.providersForId("123")).thenThrow(new RuntimeException());
-    PractitionerController controller =
-        new PractitionerController(new PractitionerTransformer(), null, ppmsClient);
+    VlerClient vlerClient = mock(VlerClient.class);
+    when(vlerClient.endpointByAddress("123")).thenThrow(new RuntimeException());
+    EndpointController controller =
+        new EndpointController(new EndpointTransformer(), null, vlerClient);
     MockMvcBuilders.standaloneSetup(controller)
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/Practitioner/123"))
+        .perform(get("/stu3/Endpoint/123"))
         .andExpect(status().is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
-        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
+        .andExpect(jsonPath("text.div", containsString("/Endpoint/123")))
         .andExpect(jsonPath("issue[0].diagnostics", containsString("Exception")));
   }
 
   @Test
   @SneakyThrows
   public void notFound() {
-    PpmsClient ppmsClient = mock(PpmsClient.class);
-    when(ppmsClient.providersForId("123")).thenThrow(mock(HttpClientErrorException.NotFound.class));
-    PractitionerController controller =
-        new PractitionerController(new PractitionerTransformer(), null, ppmsClient);
+    VlerClient vlerClient = mock(VlerClient.class);
+    when(vlerClient.endpointByAddress("123"))
+        .thenThrow(mock(HttpClientErrorException.NotFound.class));
+    EndpointController controller =
+        new EndpointController(new EndpointTransformer(), null, vlerClient);
     MockMvcBuilders.standaloneSetup(controller)
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/Practitioner/123"))
+        .perform(get("/stu3/Endpoint/123"))
         .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
-        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
+        .andExpect(jsonPath("text.div", containsString("/Endpoint/123")))
         .andExpect(jsonPath("issue[0].diagnostics", containsString("NotFound")));
   }
 
   @Test
   @SneakyThrows
   public void searchFailed() {
-    PpmsClient ppmsClient = mock(PpmsClient.class);
-    when(ppmsClient.providersForId("123")).thenThrow(new Exceptions.PpmsException(null));
-    PractitionerController controller =
-        new PractitionerController(new PractitionerTransformer(), null, ppmsClient);
+    VlerClient vlerClient = mock(VlerClient.class);
+    when(vlerClient.endpointByAddress("123")).thenThrow(new Exceptions.VlerException(null));
+    EndpointController controller =
+        new EndpointController(new EndpointTransformer(), null, vlerClient);
     MockMvcBuilders.standaloneSetup(controller)
         .setHandlerExceptionResolvers(exceptionResolver())
         .setMessageConverters()
         .build()
-        .perform(get("/Practitioner/123"))
+        .perform(get("/stu3/Endpoint/123"))
         .andExpect(status().is(HttpStatus.SERVICE_UNAVAILABLE.value()))
-        .andExpect(jsonPath("text.div", containsString("/Practitioner/123")))
-        .andExpect(jsonPath("issue[0].diagnostics", containsString("PpmsException")));
+        .andExpect(jsonPath("text.div", containsString("/Endpoint/123")))
+        .andExpect(jsonPath("issue[0].diagnostics", containsString("VlerException")));
   }
 }

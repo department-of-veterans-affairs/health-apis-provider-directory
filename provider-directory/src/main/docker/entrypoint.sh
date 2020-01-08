@@ -4,13 +4,10 @@ ENDPOINT_DOMAIN_NAME="$K8S_LOAD_BALANCER"
 ENVIRONMENT="$K8S_ENVIRONMENT"
 TOKEN="$TOKEN"
 BASE_PATH="$BASE_PATH"
-IDENTIFIER="$IDENTIFIER"
-NAME="$NAME"
-GIVEN="$GIVEN"
 ENDPOINT_ID="$ENDPOINT_ID"
 ENDPOINT_NAME="$ENDPOINT_NAME"
 
-#Put Health endpoints here if you got them
+#Put health endpoints here if you got them
 PATHS=(/actuator/health \
 /openapi.json \
 /openapi.yaml)
@@ -19,7 +16,6 @@ SUCCESS=0
 
 FAILURE=0
 
-# New phone who this?
 usage() {
 cat <<EOF
 Commands
@@ -31,12 +27,8 @@ Example
     --endpoint-domain-name=localhost
     --environment=qa
     --base-path=/provider-directory
-    --IDENTIFIER=1285621557
-    --GIVEN=Michael
-    --NAME=Klingerman
     --ENDPOINT_ID=testva.providerone
     --ENDPOINT_NAME=TestVA
-
 
 $1
 EOF
@@ -64,7 +56,6 @@ doCurl () {
 }
 
 smokeTest() {
-
   if [[ ! "$ENDPOINT_DOMAIN_NAME" == http* ]]; then
     ENDPOINT_DOMAIN_NAME="https://$ENDPOINT_DOMAIN_NAME"
   fi
@@ -74,30 +65,13 @@ smokeTest() {
       doCurl 200
     done
 
-  # Happy Path Practitioner
-  path="/Practitioner?identifier=$IDENTIFIER"
-  doCurl 200 $TOKEN
-
-  # Happy Path PractitionerRole
-  path="/PractitionerRole?identifier=$IDENTIFIER"
-  doCurl 200 $TOKEN
-
-  path="/Location?identifier=$IDENTIFIER"
-  doCurl 200 $TOKEN
-
-  # Happy Path Endpoint
   path="/Endpoint?identifier=$ENDPOINT_ID"
   doCurl 200 $TOKEN
-
-  # Single unknown parameter check for smoke test
-  path="/practitioner?id=$IDENTIFIER"
-  doCurl 404 $TOKEN
 
   printResults
 }
 
 regressionTest() {
-
   if [[ ! "$ENDPOINT_DOMAIN_NAME" == http* ]]; then
     ENDPOINT_DOMAIN_NAME="https://$ENDPOINT_DOMAIN_NAME"
   fi
@@ -107,50 +81,9 @@ regressionTest() {
       doCurl 200
     done
 
-  # Happy Path Practitioner by identifier
-  path="/Practitioner?identifier=$IDENTIFIER"
-  doCurl 200 $TOKEN
-
-  # Happy Path Practitioner by family and given
-  path="/Practitioner?family=$NAME&given=$GIVEN"
-  doCurl 200 $TOKEN
-
-  # Happy Path PractitionerRole by identifier
-  path="/PractitionerRole?identifier=$IDENTIFIER"
-  doCurl 200 $TOKEN
-
-  # Happy Path PractitionerRole by family and given
-  path="/PractitionerRole?family=$NAME&given=$GIVEN"
-  doCurl 200 $TOKEN
-
-  # Happy Path Location by name
-  path="/Location?name=$NAME"
-  doCurl 200 $TOKEN
-
-  # Happy Path Location by identifier
-  path="/Location?identifier=$IDENTIFIER"
-  doCurl 200 $TOKEN
-
-  # Temporarily disabled due to timeout of PPMS calls
-  # Happy Path Location by address-city
-  # path="/Location?address-city=Melbourne"
-  # doCurl 200 $TOKEN
-
-  # Temporarily disabled due to timeout of PPMS calls
-  # Happy Path Location by address-postalcode
-  # path="/Location?address-postalcode=32937"
-  # doCurl 200 $TOKEN
-
-  # Temporarily disabled due to timeout of PPMS calls
-  # Happy Path Location by address-state
-  # path="/Location?address-state=Florida"
-  # doCurl 200 $TOKEN
-
-  # Happy Path Endpoint by id
   path="/Endpoint?identifier=$ENDPOINT_ID"
   doCurl 200 $TOKEN
 
-  # Happy Path Endpoint by name
   path="/Endpoint?name=$ENDPOINT_NAME"
   doCurl 200 $TOKEN
 
@@ -159,9 +92,7 @@ regressionTest() {
 
 printResults () {
   TOTAL=$((SUCCESS + FAILURE))
-
   echo "=== TOTAL: $TOTAL | SUCCESS: $SUCCESS | FAILURE: $FAILURE ==="
-
   if [[ "$FAILURE" -gt 0 ]]; then
   exit 1
   fi
@@ -169,8 +100,8 @@ printResults () {
 
 # Let's get down to business
 ARGS=$(getopt -n $(basename ${0}) \
-    -l "endpoint-domain-name:,environment:,token:,base-path:,name:,given:,identifier:,endpointid:,endpointname:,help" \
-    -o "d:e:t:b:v:p:ei:en:h" -- "$@")
+    -l "endpoint-domain-name:,environment:,token:,base-path:,endpointid:,endpointname:,help" \
+    -o "d:e:t:b:ei:en:h" -- "$@")
 [ $? != 0 ] && usage
 eval set -- "$ARGS"
 while true
@@ -180,9 +111,6 @@ do
     -e|--environment) ENVIRONMENT=$2;;
     -t|--token) TOKEN=$2;;
     -b|--base-path) BASE_PATH=$2;;
-    -n|--name) NAME=$2;;
-    -g|--given) GIVEN=$2;;
-    -i|--identifier) IDENTIFIER=$2;;
     -ei|--endpointid) ENDPOINT_ID=$2;;
     -en|--endpointname) ENDPOINT_NAME=$2;;
     -h|--help) usage "I need a hero! I'm holding out for a hero...";;
@@ -199,20 +127,8 @@ if [[ -z "$ENVIRONMENT" || -e "$ENVIRONMENT" ]]; then
   usage "Missing variable K8S_ENVIRONMENT or option --environment|-e."
 fi
 
-if [[ -z "$NAME" || -e "$NAME" ]]; then
-  usage "Missing variable NAME or option --name|-n."
-fi
-
-if [[ -z "$GIVEN" || -e "$GIVEN" ]]; then
-  usage "Missing variable GIVEN or option --given|-g."
-fi
-
 if [[ -z "$TOKEN" || -e "$TOKEN" ]]; then
   usage "Missing variable TOKEN or option --token|-t."
-fi
-
-if [[ -z "$IDENTIFIER" || -e "$IDENTIFIER" ]]; then
-  usage "Missing variable IDENTIFIER or option --identifier|-i."
 fi
 
 if [[ -z "$ENDPOINT_ID" || -e "$ENDPOINT_ID" ]]; then

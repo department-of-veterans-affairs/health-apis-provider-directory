@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 
-/** Utility methods for transforming PPMS results to Provider Directory. */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Transformers {
   /**

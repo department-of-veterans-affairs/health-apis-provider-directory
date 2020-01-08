@@ -37,12 +37,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(
-  value = {"/Endpoint"},
+  value = {"/stu3/Endpoint"},
   produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class EndpointController {
-
   private Transformer transformer;
 
   private Bundler bundler;
@@ -109,6 +108,7 @@ public class EndpointController {
   }
 
   /** Placeholder for Organization search. */
+  @SuppressWarnings("unused")
   @GetMapping(params = {"organization"})
   public Endpoint.Bundle searchByOrganization(
       @RequestParam("organization") String organization,
@@ -155,6 +155,7 @@ public class EndpointController {
   }
 
   /** Placeholder for search by Organization. */
+  @SuppressWarnings("unused")
   private Pair<List<EndpointWrapper>, Integer> searchOrganization(
       MultiValueMap<String, String> parameters) {
     throw new UnsupportedOperationException();

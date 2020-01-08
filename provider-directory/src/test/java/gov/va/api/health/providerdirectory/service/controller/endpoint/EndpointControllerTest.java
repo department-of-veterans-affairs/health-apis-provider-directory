@@ -10,8 +10,12 @@ import gov.va.api.health.providerdirectory.service.AddressResponse;
 import gov.va.api.health.providerdirectory.service.client.VlerClient;
 import gov.va.api.health.providerdirectory.service.controller.Bundler;
 import gov.va.api.health.providerdirectory.service.controller.ConfigurableBaseUrlPageLinks;
+import gov.va.api.health.providerdirectory.service.controller.Validator;
+import gov.va.api.health.stu3.api.bundle.AbstractBundle;
+import gov.va.api.health.stu3.api.bundle.AbstractEntry;
 import gov.va.api.health.stu3.api.datatypes.CodeableConcept;
 import gov.va.api.health.stu3.api.datatypes.Coding;
+import gov.va.api.health.stu3.api.elements.Reference;
 import gov.va.api.health.stu3.api.resources.Endpoint;
 import javax.validation.ConstraintViolationException;
 import org.junit.Test;
@@ -161,6 +165,47 @@ public class EndpointControllerTest {
                             .build()))
                 .address("test.pilot@test2.direct.va.gov")
                 .build());
+  }
+
+  @Test
+  public void validate() {
+    assertThat(
+            controller.validate(
+                Endpoint.Bundle.builder()
+                    .resourceType("Bundle")
+                    .type(AbstractBundle.BundleType.searchset)
+                    .entry(
+                        asList(
+                            Endpoint.Entry.builder()
+                                .fullUrl("http://fonzy.com/cool/Endpoint/bobnelson")
+                                .resource(
+                                    Endpoint.builder()
+                                        .resourceType("Endpoint")
+                                        .id("test.pilot")
+                                        .status(Endpoint.Status.active)
+                                        .connectionType(
+                                            Coding.builder().code("direct-project").build())
+                                        .name("Pilot, Test")
+                                        .payloadType(
+                                            asList(
+                                                CodeableConcept.builder()
+                                                    .coding(
+                                                        asList(
+                                                            Coding.builder()
+                                                                .code("VLER Direct")
+                                                                .display("VLER Direct")
+                                                                .build()))
+                                                    .build()))
+                                        .address("test.pilot@test2.direct.va.gov")
+                                        .managingOrganization(Reference.builder().build())
+                                        .build())
+                                .search(
+                                    AbstractEntry.Search.builder()
+                                        .mode(AbstractEntry.SearchMode.match)
+                                        .build())
+                                .build()))
+                    .build()))
+        .isEqualTo(Validator.ok());
   }
 
   @Test(expected = ConstraintViolationException.class)

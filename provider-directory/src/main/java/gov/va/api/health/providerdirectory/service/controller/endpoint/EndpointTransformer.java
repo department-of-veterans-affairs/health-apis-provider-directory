@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EndpointTransformer implements EndpointController.Transformer {
-
-  /* managingOrganization will map to 'facility' field from VLER.
-   * connectionType and payloadType are defaults for VLER. */
   @Override
   public Endpoint apply(EndpointWrapper vlerData) {
+    // managingOrganization will map to 'facility' field from VLER
+    // connectionType and payloadType are defaults for VLER
     AddressResponse.Contacts response = vlerData.addressResponse();
     return Endpoint.builder()
         .resourceType("Endpoint")
