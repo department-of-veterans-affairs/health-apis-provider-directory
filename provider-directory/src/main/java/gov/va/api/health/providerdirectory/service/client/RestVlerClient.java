@@ -1,5 +1,7 @@
 package gov.va.api.health.providerdirectory.service.client;
 
+import static java.util.Arrays.asList;
+
 import gov.va.api.health.providerdirectory.service.AddressResponse;
 import java.nio.charset.Charset;
 import java.time.ZonedDateTime;
@@ -12,11 +14,8 @@ import javax.crypto.spec.SecretKeySpec;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -101,10 +100,33 @@ public class RestVlerClient implements VlerClient {
           headers.setContentType(MediaType.APPLICATION_JSON);
           headers.add("Authorization", authHeader(url, dateString));
           headers.add("Date", dateString);
-          ResponseEntity<AddressResponse> entity =
-              restTemplate.exchange(
-                  url, HttpMethod.GET, new HttpEntity<>(headers), AddressResponse.class);
-          return entity.getBody();
+
+          //          ResponseEntity<AddressResponse> entity =
+          //              restTemplate.exchange(
+          //                  url, HttpMethod.GET, new HttpEntity<>(headers),
+          // AddressResponse.class);
+          //          return entity.getBody();
+
+          // Return fake data
+          return AddressResponse.builder()
+              .contacts(
+                  asList(
+                      AddressResponse.Contacts.builder()
+                          .displayName("Pilot, Test")
+                          .emailAddress("test.pilot@test2.direct.va.gov")
+                          .uid("test.pilot")
+                          .givenName("Test")
+                          .surname("Pilot")
+                          .officeCityState("Indianapolis, IN")
+                          .companyName("Test Company")
+                          .departmentNumber("Test Department")
+                          .mobile("123-456-7890")
+                          .telephoneNumber("987-654-3210")
+                          .title("Testing Analyzer")
+                          .commonName("Test Pilot")
+                          .facility("Test Facility")
+                          .build()))
+              .build();
         });
   }
 }
