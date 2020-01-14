@@ -17,9 +17,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
-
 import lombok.SneakyThrows;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -64,22 +62,6 @@ public class RestVlerClient implements VlerClient {
   }
 
   @SneakyThrows
-  @EventListener(ApplicationStartedEvent.class)
-  public void initSsl() {
-    try (InputStream keystoreInputStream =
-        ResourceUtils.getURL(fileOrClasspath(keyStorePath)).openStream()) {
-      KeyStore ts = KeyStore.getInstance("JKS");
-      ts.load(keystoreInputStream, keyStorePassword.toCharArray());
-      TrustManagerFactory trustManagerFactory =
-          TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-      trustManagerFactory.init(ts);
-      SSLContext sslContext = SSLContext.getInstance("TLS");
-      sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
-      HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
-    }
-  }
-
-  @SneakyThrows
   private String authHeader(String url, String dateString) {
     String endpoint;
     try {
@@ -100,15 +82,20 @@ public class RestVlerClient implements VlerClient {
    * Calls the VLER Direct API by email address search. This will always return an unfiltered body.
    */
   @Override
+  @SneakyThrows
   public AddressResponse endpointByAddress(String address) {
-    String url =
+    String urlPath =
         UriComponentsBuilder.fromHttpUrl(baseUrl + "/direct/addresses").build().toUriString();
+    return endpointByAddress(address, urlPath, new URL(urlPath));
+  }
+
+  AddressResponse endpointByAddress(String address, String urlPath, URL url) {
     String dateString =
         DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss z").format(ZonedDateTime.now());
     HttpURLConnection conn = null;
     try {
-      conn = (HttpURLConnection) new URL(url).openConnection();
-      conn.setRequestProperty("Authorization", authHeader(url, dateString));
+      conn = (HttpURLConnection) url.openConnection();
+      conn.setRequestProperty("Authorization", authHeader(urlPath, dateString));
       conn.setRequestProperty("Date", dateString);
       conn.setRequestProperty("Accept", "application/json");
       conn.setRequestProperty("content-type", "application/json");
@@ -121,6 +108,23 @@ public class RestVlerClient implements VlerClient {
       if (conn != null) {
         conn.disconnect();
       }
+    }
+  }
+
+  /** Initialize SSL. */
+  @SneakyThrows
+  @EventListener(ApplicationStartedEvent.class)
+  public void initSsl() {
+    try (InputStream keystoreInputStream =
+        ResourceUtils.getURL(fileOrClasspath(keyStorePath)).openStream()) {
+      KeyStore ts = KeyStore.getInstance("JKS");
+      ts.load(keystoreInputStream, keyStorePassword.toCharArray());
+      TrustManagerFactory trustManagerFactory =
+          TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+      trustManagerFactory.init(ts);
+      SSLContext sslContext = SSLContext.getInstance("TLS");
+      sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
+      HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
     }
   }
 }
