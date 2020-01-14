@@ -52,6 +52,7 @@ public final class RestVlerClientTest {
                     .writeValueAsString(addressResponse)
                     .getBytes("UTF-8")));
 
+    // URL cannot be mocked, so its internal URL stream handler must be overridden
     URL url = new URL(baseUrl);
     Field handlerField = URL.class.getDeclaredField("handler");
     ReflectionUtils.makeAccessible(handlerField);
