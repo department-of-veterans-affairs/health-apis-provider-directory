@@ -30,7 +30,7 @@ public class ConfigurableBaseUrlPageLinks implements PageLinks {
   @Autowired
   public ConfigurableBaseUrlPageLinks(
       @Value("${provider-directory.url}") String baseUrl,
-      @Value("${data-query.public-stu3-base-path}") String stu3BasePath) {
+      @Value("${provider-directory-stu3-base-path}") String stu3BasePath) {
     this.baseUrl = baseUrl;
     this.stu3BasePath = stu3BasePath;
   }
