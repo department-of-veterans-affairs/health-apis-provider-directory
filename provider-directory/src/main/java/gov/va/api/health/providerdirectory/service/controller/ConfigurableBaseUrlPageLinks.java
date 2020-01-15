@@ -24,9 +24,15 @@ public class ConfigurableBaseUrlPageLinks implements PageLinks {
    */
   private final String baseUrl;
 
+  /** Base path for STU3 resources, e.g. api/stu3 */
+  private final String stu3BasePath;
+
   @Autowired
-  public ConfigurableBaseUrlPageLinks(@Value("${provider-directory.url}") String baseUrl) {
+  public ConfigurableBaseUrlPageLinks(
+      @Value("${provider-directory.url}") String baseUrl,
+      @Value("${provider-directory.public-stu3-base-path}") String stu3BasePath) {
     this.baseUrl = baseUrl;
+    this.stu3BasePath = stu3BasePath;
   }
 
   @Override
@@ -47,7 +53,7 @@ public class ConfigurableBaseUrlPageLinks implements PageLinks {
 
   @Override
   public String readLink(String resourcePath, String id) {
-    return baseUrl + "/" + resourcePath + "/" + id;
+    return baseUrl + "/" + stu3BasePath + "/" + resourcePath + "/" + id;
   }
 
   /** This context wraps the link state to allow link creation to be clearly described. */

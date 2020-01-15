@@ -15,7 +15,7 @@ public class ConfigurableBaseUrlPageLinksTest {
 
   @Before
   public void _init() {
-    links = new ConfigurableBaseUrlPageLinks("https://awesome.com");
+    links = new ConfigurableBaseUrlPageLinks("https://awesome.com", "stu3");
   }
 
   @Test
@@ -97,6 +97,7 @@ public class ConfigurableBaseUrlPageLinksTest {
 
   @Test
   public void readLinkCombinesConfiguredUrl() {
-    assertThat(links.readLink("Whatever", "123")).isEqualTo("https://awesome.com/Whatever/123");
+    assertThat(links.readLink("Whatever", "123"))
+        .isEqualTo("https://awesome.com/stu3/Whatever/123");
   }
 }
