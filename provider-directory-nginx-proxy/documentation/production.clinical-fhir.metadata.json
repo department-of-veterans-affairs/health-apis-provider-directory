@@ -1,0 +1,216 @@
+{
+  "id": "health-api-provider-directory-r4-capability",
+  "resourceType": "CapabilityStatement",
+  "version": "0",
+  "name": "API Management Platform | Provider Directory | FHIR R4",
+  "status": "draft",
+  "date": "2021-03-29T10:05:52Z",
+  "publisher": "Department of Veterans Affairs",
+  "contact": [
+    {
+      "name": "API Support",
+      "telecom": [
+        {
+          "system": "email",
+          "value": "api@va.gov"
+        }
+      ]
+    }
+  ],
+  "description": "FHIR R4 Provider Directory APIs.",
+  "kind": "instance",
+  "software": {
+    "name": "health-api-provider-directory-r4"
+  },
+  "fhirVersion": "4.0.0",
+  "format": [
+    "application/json",
+    "application/fhir+json"
+  ],
+  "rest": [
+    {
+      "mode": "server",
+      "security": {
+        "extension": [
+          {
+            "url": "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris",
+            "extension": [
+              {
+                "url": "token",
+                "valueUri": "https://api.va.gov/services/provider-directory/v0/r4/token"
+              },
+              {
+                "url": "authorize",
+                "valueUri": "https://api.va.gov/oauth2/provider-directory/v1/authorization"
+              },
+              {
+                "url": "manage",
+                "valueUri": "https://api.va.gov/oauth2/provider-directory/v1/manage"
+              },
+              {
+                "url": "revoke",
+                "valueUri": "https://api.va.gov/oauth2/provider-directory/v1/revoke"
+              }
+            ]
+          }
+        ],
+        "cors": true,
+        "service": [
+          {
+            "coding": [
+              {
+                "system": "https://www.hl7.org/fhir/valueset-restful-security-service.html",
+                "code": "SMART-on-FHIR",
+                "display": "SMART-on-FHIR"
+              }
+            ],
+            "text": "SMART-on-FHIR"
+          }
+        ],
+        "description": "http://docs.smarthealthit.org/"
+      },
+      "resource": [
+        {
+          "type": "Condition",
+          "profile": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-condition",
+          "interaction": [
+            {
+              "code": "search-type",
+              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+            },
+            {
+              "code": "read",
+              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+            }
+          ],
+          "versioning": "no-version",
+          "referencePolicy": [
+            "literal",
+            "local"
+          ],
+          "searchParam": [
+            {
+              "name": "_id",
+              "type": "token"
+            },
+            {
+              "name": "category",
+              "type": "token"
+            },
+            {
+              "name": "clinical-status",
+              "type": "token"
+            },
+            {
+              "name": "identifier",
+              "type": "token"
+            },
+            {
+              "name": "patient",
+              "type": "reference"
+            }
+          ]
+        },
+        {
+          "type": "Observation",
+          "profile": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-lab",
+          "interaction": [
+            {
+              "code": "search-type",
+              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+            },
+            {
+              "code": "read",
+              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+            }
+          ],
+          "versioning": "no-version",
+          "referencePolicy": [
+            "literal",
+            "local"
+          ],
+          "searchParam": [
+            {
+              "name": "_id",
+              "type": "token"
+            },
+            {
+              "name": "category",
+              "type": "token"
+            },
+            {
+              "name": "code",
+              "type": "token"
+            },
+            {
+              "name": "date",
+              "type": "date"
+            },
+            {
+              "name": "identifier",
+              "type": "token"
+            },
+            {
+              "name": "patient",
+              "type": "reference"
+            }
+          ]
+        },
+        {
+          "type": "Patient",
+          "profile": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient",
+          "interaction": [
+            {
+              "code": "search-type",
+              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+            },
+            {
+              "code": "read",
+              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+            }
+          ],
+          "versioning": "no-version",
+          "referencePolicy": [
+            "literal",
+            "local"
+          ],
+          "searchParam": [
+            {
+              "name": "_id",
+              "type": "token"
+            },
+            {
+              "name": "identifier",
+              "type": "token"
+            }
+          ]
+        },
+        {
+          "type": "Practitioner",
+          "profile": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner",
+          "interaction": [
+            {
+              "code": "search-type",
+              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+            },
+            {
+              "code": "read",
+              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+            }
+          ],
+          "versioning": "no-version",
+          "referencePolicy": [
+            "literal",
+            "local"
+          ],
+          "searchParam": [
+            {
+              "name": "_id",
+              "type": "token"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
