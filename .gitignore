@@ -1,0 +1,9 @@
+target/
+.idea/
+*.iml
+
+.private/
+secrets.conf
+dev-nginx.conf
+
+.DS_Store
