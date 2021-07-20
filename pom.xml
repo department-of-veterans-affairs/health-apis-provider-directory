@@ -11,6 +11,5 @@
   <packaging>pom</packaging>
   <modules>
     <module>provider-directory</module>
-      <module>provider-directory</module>
   </modules>
 </project>
