@@ -10,7 +10,6 @@
   <version>3.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>provider-directory</module>
     <module>provider-directory-nginx-proxy</module>
     <module>provider-directory-tests</module>
   </modules>
