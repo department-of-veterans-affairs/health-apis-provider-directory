@@ -18,7 +18,9 @@ public final class SystemDefinitions {
         .internal(
             serviceDefinition(
                 "internal", url, 443, magicAccessToken(), "/services/provider-directory/v0/"))
-        .r4(serviceDefinition("r4", url, 443, magicAccessToken(), "/services/provider-directory/v0/r4"))
+        .r4(
+            serviceDefinition(
+                "r4", url, 443, magicAccessToken(), "/services/provider-directory/v0/r4"))
         .publicIds(labIds())
         .isDqAvailable(isDqAvailable())
         .isVfqAvailable(isVfqAvailable())
@@ -56,7 +58,9 @@ public final class SystemDefinitions {
         .internal(
             serviceDefinition(
                 "internal", url, 443, magicAccessToken(), "/services/provider-directory/v0/"))
-        .r4(serviceDefinition("r4", url, 443, magicAccessToken(), "/services/provider-directory/v0/r4"))
+        .r4(
+            serviceDefinition(
+                "r4", url, 443, magicAccessToken(), "/services/provider-directory/v0/r4"))
         .publicIds(productionIds())
         .isDqAvailable(isDqAvailable())
         .isVfqAvailable(isVfqAvailable())
@@ -73,7 +77,8 @@ public final class SystemDefinitions {
   private static SystemDefinition qa() {
     String url = "https://blue.qa.lighthouse.va.gov";
     return SystemDefinition.builder()
-        .internal(serviceDefinition("internal", url, 443, magicAccessToken(), "/provider-directory/v0/"))
+        .internal(
+            serviceDefinition("internal", url, 443, magicAccessToken(), "/provider-directory/v0/"))
         .r4(serviceDefinition("r4", url, 443, magicAccessToken(), "/provider-directory/v0/r4"))
         .publicIds(qaIds())
         .isDqAvailable(isDqAvailable())
@@ -103,7 +108,8 @@ public final class SystemDefinitions {
   private static SystemDefinition staging() {
     String url = "https://blue.staging.lighthouse.va.gov";
     return SystemDefinition.builder()
-        .internal(serviceDefinition("internal", url, 443, magicAccessToken(), "/provider-directory/v0/"))
+        .internal(
+            serviceDefinition("internal", url, 443, magicAccessToken(), "/provider-directory/v0/"))
         .r4(serviceDefinition("r4", url, 443, magicAccessToken(), "/provider-directory/v0/r4"))
         .publicIds(productionIds())
         .isDqAvailable(isDqAvailable())
@@ -114,7 +120,8 @@ public final class SystemDefinitions {
   private static SystemDefinition stagingLab() {
     String url = "https://blue.staging-lab.lighthouse.va.gov";
     return SystemDefinition.builder()
-        .internal(serviceDefinition("internal", url, 443, magicAccessToken(), "/provider-directory/v0/"))
+        .internal(
+            serviceDefinition("internal", url, 443, magicAccessToken(), "/provider-directory/v0/"))
         .r4(serviceDefinition("r4", url, 443, magicAccessToken(), "/provider-directory/v0/r4"))
         .publicIds(labIds())
         .isDqAvailable(isDqAvailable())
