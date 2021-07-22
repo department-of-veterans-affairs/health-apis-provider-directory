@@ -11,17 +11,13 @@ init() {
   SYSTEM_PROPERTIES=()
 
   if [ -z "${SENTINEL_ENV:-}" ]; then SENTINEL_ENV=$K8S_ENVIRONMENT; fi
-  if [ -z "${CHAPI_URL:-}" ]; then CHAPI_URL=https://$K8S_LOAD_BALANCER; fi
-  if [ -z "${DQ_AVAILABLE:-}" ]; then DQ_AVAILABLE="true"; fi
-  if [ -z "${VFQ_AVAILABLE:-}" ]; then VFQ_AVAILABLE="true"; fi
+  if [ -z "${PDAPI_URL:-}" ]; then PDAPI_URL=https://$K8S_LOAD_BALANCER; fi
 }
 
 main() {
   addToSystemProperties "sentinel" "${SENTINEL_ENV}"
-  addToSystemProperties "sentinel.internal.url" "${CHAPI_URL}"
-  addToSystemProperties "sentinel.r4.url" "${CHAPI_URL}"
-  addToSystemProperties "data-query.is-available" "${DQ_AVAILABLE}"
-  addToSystemProperties "vista-fhir-query.is-available" "${VFQ_AVAILABLE}"
+  addToSystemProperties "sentinel.internal.url" "${PDAPI_URL}"
+  addToSystemProperties "sentinel.r4.url" "${PDAPI_URL}"
   addToSystemProperties "access-token" "${MAGIC_ACCESS_TOKEN}"
 
   if [ -n "${INTERNAL_API_PATH:-}" ]; then addToSystemProperties "sentinel.internal.api-path" "$INTERNAL_API_PATH"; fi

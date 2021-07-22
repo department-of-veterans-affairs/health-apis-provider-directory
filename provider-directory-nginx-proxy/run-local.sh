@@ -25,8 +25,7 @@ init() {
   WORK="$(readlink -f $(dirname $0))"
   cd ${WORK}
 
-  # provider-directory was renamed. In the unlikely scenario that someone is using the old name, allow override of the var.
-  DEPLOYMENT_UNIT="${DEPLOYMENT_UNIT:-health-apis-provider-directory-api-deployment}"
+  DEPLOYMENT_UNIT="health-apis-provider-directory-deployment"
 
   SECRETS_CONF="${WORK}/secrets.conf"
   DEV_CONF="${WORK}/dev-nginx.conf"
