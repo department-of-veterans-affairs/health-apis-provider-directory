@@ -34,7 +34,7 @@ public final class SystemDefinitions {
   private static SystemDefinition local() {
     String url = "http://localhost";
     return SystemDefinition.builder()
-        .internal(serviceDefinition("internal", url, 8120, "/provider-directory/v0"))
+        .internal(serviceDefinition("internal", url, 8121, "/provider-directory/v0"))
         .publicIds(localIds())
         .build();
   }
