@@ -10,26 +10,16 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class SystemDefinitions {
   private static SystemDefinition lab() {
-    //      String url = "https://sandbox-api.va.gov";
-    //      return SystemDefinition.builder()
-    //          .internal(
-    //              serviceDefinition(
-    //                  "internal", url, 443, magicAccessToken(),
-    // "/services/provider-directory/v0/"))
-    //          .r4(
-    //              serviceDefinition(
-    //                  "r4", url, 443, magicAccessToken(), "/services/provider-directory/v0/r4"))
-    //          .publicIds(labIds())
-    //          .build();
-    return null;
+    String url = "https://sandbox-api.va.gov";
+    return SystemDefinition.builder()
+        .internal(serviceDefinition("internal", url, 443, "/services/provider-directory/v0/"))
+        .publicIds(labIds())
+        .build();
   }
 
-  //  private static TestIds labIds() {
-  //    return TestIds.builder()
-  //        .patient("1011537977V693883")
-  //        .practitioner("I2-HRJI2MVST2IQSPR7U5SACWIWZA000000")
-  //        .build();
-  //  }
+  private static Ids labIds() {
+    return Ids.builder().practitioner("I2-HRJI2MVST2IQSPR7U5SACWIWZA000000").build();
+  }
 
   private static SystemDefinition local() {
     String url = "http://localhost";
@@ -44,49 +34,24 @@ public final class SystemDefinitions {
   }
 
   private static SystemDefinition production() {
-    //    String url = "https://api.va.gov";
-    //    return SystemDefinition.builder()
-    //        .internal(
-    //            serviceDefinition(
-    //                "internal", url, 443, magicAccessToken(), "/services/provider-directory/v0/"))
-    //        .r4(
-    //            serviceDefinition(
-    //                "r4", url, 443, magicAccessToken(), "/services/provider-directory/v0/r4"))
-    //        .publicIds(productionIds())
-    //        .build();
-    return null;
+    String url = "https://api.va.gov";
+    return SystemDefinition.builder()
+        .internal(serviceDefinition("internal", url, 443, "/services/provider-directory/v0/"))
+        .publicIds(productionIds())
+        .build();
   }
-
-  //  private static TestIds productionIds() {
-  //    return TestIds.builder()
-  //        .patient("1011537977V693883")
-  //        .practitioner("I2-6NVSMKEGQKNB3KRDXBGE7NRIEY000000")
-  //        .build();
-  //  }
 
   private static SystemDefinition qa() {
     String url = "https://blue.qa.lighthouse.va.gov";
     return SystemDefinition.builder()
         .internal(serviceDefinition("internal", url, 443, "/provider-directory/v0/"))
-        .publicIds(qaIds())
+        .publicIds(productionIds())
         .build();
   }
 
-  private static Ids qaIds() {
+  private static Ids productionIds() {
     return Ids.builder().practitioner("I2-6NVSMKEGQKNB3KRDXBGE7NRIEY000000").build();
   }
-
-  //  private static ServiceDefinition serviceDefinition(
-  //      String name, String url, int port, String accessToken, String apiPath) {
-  //    return SentinelProperties.forName(name)
-  //        .accessToken(() -> Optional.ofNullable(accessToken))
-  //        .defaultUrl(url)
-  //        .defaultPort(port)
-  //        .defaultApiPath(apiPath)
-  //        .defaultUrl(url)
-  //        .build()
-  //        .serviceDefinition();
-  //  }
 
   private static Service serviceDefinition(String name, String url, int port, String apiPath) {
     return Service.builder()
@@ -97,29 +62,19 @@ public final class SystemDefinitions {
   }
 
   private static SystemDefinition staging() {
-    //    String url = "https://blue.staging.lighthouse.va.gov";
-    //    return SystemDefinition.builder()
-    //        .internal(
-    //            serviceDefinition("internal", url, 443, magicAccessToken(),
-    // "/provider-directory/v0/"))
-    //        .r4(serviceDefinition("r4", url, 443, magicAccessToken(),
-    // "/provider-directory/v0/r4"))
-    //        .publicIds(productionIds())
-    //        .build();
-    return null;
+    String url = "https://blue.staging.lighthouse.va.gov";
+    return SystemDefinition.builder()
+        .internal(serviceDefinition("internal", url, 443, "/provider-directory/v0/"))
+        .publicIds(productionIds())
+        .build();
   }
 
   private static SystemDefinition stagingLab() {
-    //    String url = "https://blue.staging-lab.lighthouse.va.gov";
-    //    return SystemDefinition.builder()
-    //        .internal(
-    //            serviceDefinition("internal", url, 443, magicAccessToken(),
-    // "/provider-directory/v0/"))
-    //        .r4(serviceDefinition("r4", url, 443, magicAccessToken(),
-    // "/provider-directory/v0/r4"))
-    //        .publicIds(labIds())
-    //        .build();
-    return null;
+    String url = "https://blue.staging-lab.lighthouse.va.gov";
+    return SystemDefinition.builder()
+        .internal(serviceDefinition("internal", url, 443, "/provider-directory/v0/"))
+        .publicIds(labIds())
+        .build();
   }
 
   /** Return the applicable system definition for the current environment. */
