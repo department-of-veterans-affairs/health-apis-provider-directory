@@ -41,16 +41,16 @@ public final class SystemDefinitions {
         .build();
   }
 
+  private static Ids productionIds() {
+    return Ids.builder().practitioner("I2-6NVSMKEGQKNB3KRDXBGE7NRIEY000000").build();
+  }
+
   private static SystemDefinition qa() {
     String url = "https://blue.qa.lighthouse.va.gov";
     return SystemDefinition.builder()
         .internal(serviceDefinition("internal", url, 443, "/provider-directory/v0/"))
         .publicIds(productionIds())
         .build();
-  }
-
-  private static Ids productionIds() {
-    return Ids.builder().practitioner("I2-6NVSMKEGQKNB3KRDXBGE7NRIEY000000").build();
   }
 
   private static Service serviceDefinition(String name, String url, int port, String apiPath) {
