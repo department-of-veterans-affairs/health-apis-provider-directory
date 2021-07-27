@@ -6,4 +6,9 @@ target/
 secrets.conf
 dev-nginx.conf
 
+.checkstyle
+.classpath
+.project
+.settings
+
 .DS_Store
