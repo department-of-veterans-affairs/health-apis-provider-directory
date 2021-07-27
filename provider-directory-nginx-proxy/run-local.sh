@@ -68,7 +68,7 @@ main() {
   local appVersion="$(determineProjectVersion)"
   findDockerImageForVersion "${appVersion}"
 
-  runClinicalFhirNginxProxy "${appVersion}"
+  runProviderDirectoryNginxProxy "${appVersion}"
 }
 
 #=============================================
@@ -97,7 +97,7 @@ replacePorts() {
     -e "/set.*vfq.*/s/\${BLUE_LOAD_BALANCER_PORT}/${VFQ_PROXY_PORT:-${BLUE_LOAD_BALANCER_PORT}}/"
 }
 
-runClinicalFhirNginxProxy() {
+runProviderDirectoryNginxProxy() {
   local version="${1:-}"
 
   docker run --rm \
@@ -120,4 +120,3 @@ useDefaultNginxConf() {
 
 init
 main $@
-
