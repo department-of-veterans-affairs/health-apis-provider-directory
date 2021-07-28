@@ -12,7 +12,7 @@ RUN mkdir -p /tmp/aws \
 RUN retry yum install -y -q nginx \
   && yum clean all
 
-EXPOSE 8120
+EXPOSE 8121
 
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT /entrypoint.sh
