@@ -98,7 +98,6 @@ replacePorts() {
 }
 
 runProviderDirectoryNginxProxy() {
-
   local version="${1:-}"
 
   docker run --rm \
