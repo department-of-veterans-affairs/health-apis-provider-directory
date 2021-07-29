@@ -1,5 +1,6 @@
 package gov.va.api.health.providerdirectory.tests;
 
+import static gov.va.api.health.providerdirectory.tests.SystemDefinitions.systemDefinition;
 import static gov.va.api.health.providerdirectory.tests.Requests.doGet;
 import static gov.va.api.health.providerdirectory.tests.Requests.doGet;
 import static gov.va.api.health.sentinel.EnvironmentAssumptions.assumeEnvironmentNotIn;
@@ -25,19 +26,17 @@ public class DataQueryIT {
     assumeEnvironmentNotIn(Environment.LOCAL);
   }
 
-  static Stream<Arguments> resourceQueries() {
-    var testIds = SystemDefinitions.systemDefinition().publicIds();
+  static Stream<Arguments> queries() {
+    var testIds = systemDefinition().publicIds();
     return Stream.of(arguments("Location/" + testIds.location(), 200));
-
     //        arguments("Condition?patient=" + testIds.patient(), 200),
     //        arguments("Patient/" + testIds.patient(), 200),
     //        arguments("Practitioner/" + testIds.practitioner(), 200)
-
     // Location, Organization, Practitioner, PractitionerRole
   }
 
   @ParameterizedTest
-  @MethodSource("resourceQueries")
+  @MethodSource("queries")
   void routeAppropriateResourceToDataQuery(String request, int expectedStatus) {
     doGet(null, request, expectedStatus);
   }

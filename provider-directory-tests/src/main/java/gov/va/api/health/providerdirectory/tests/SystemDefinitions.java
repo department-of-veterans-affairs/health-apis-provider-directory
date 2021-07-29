@@ -19,13 +19,10 @@ public final class SystemDefinitions {
 
   private static Ids labIds() {
     return Ids.builder()
-    		.location("XXX")
-    		.practitioner("I2-HRJI2MVST2IQSPR7U5SACWIWZA000000").build();
+        .location("I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000")
+        .practitioner("I2-HRJI2MVST2IQSPR7U5SACWIWZA000000")
+        .build();
   }
-
-  //  labIds() {      .location("I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000")
-  //		  localIds() {      .location("I2-K7WNFKZA3JCXL3CLT6D2HP7RRU000000")
-  // productionIds() {      .location("I2-WEIZUDRRQFULJACUVBXZO7EFOU000000")
 
   private static SystemDefinition local() {
     String url = "http://localhost";
@@ -37,8 +34,9 @@ public final class SystemDefinitions {
 
   private static Ids localIds() {
     return Ids.builder()
-    		.location("XXX")
-    		.practitioner("I2-TVUBUQIWCJ6NIPURPDPGIYLLLU000000").build();
+        .location("I2-K7WNFKZA3JCXL3CLT6D2HP7RRU000000")
+        .practitioner("I2-TVUBUQIWCJ6NIPURPDPGIYLLLU000000")
+        .build();
   }
 
   private static SystemDefinition production() {
@@ -51,7 +49,7 @@ public final class SystemDefinitions {
 
   private static Ids productionIds() {
     return Ids.builder()
-        .location("XXX")
+        .location("I2-WEIZUDRRQFULJACUVBXZO7EFOU000000")
         .practitioner("I2-6NVSMKEGQKNB3KRDXBGE7NRIEY000000")
         .build();
   }
@@ -112,6 +110,7 @@ public final class SystemDefinitions {
   @Builder
   static final class Ids {
     @NonNull String location;
+
     @NonNull String practitioner;
   }
 
