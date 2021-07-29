@@ -14,7 +14,7 @@ public class SmokeIT {
   }
 
   @Test
-  void healthCheckIsUnprotected() {
+  void healthCheck() {
     doGet(null, "health", 200);
   }
 }
