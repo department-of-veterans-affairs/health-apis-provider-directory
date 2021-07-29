@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class DataQueryIT {
   static Stream<Arguments> queries() {
     var testIds = systemDefinition().publicIds();
-    return Stream.of(arguments("Location/" + testIds.location(), 200));
+    return Stream.of(arguments("r4/Location/" + testIds.location(), 200));
     // arguments("Condition?patient=" + testIds.patient(), 200),
     // arguments("Patient/" + testIds.patient(), 200),
     // arguments("Practitioner/" + testIds.practitioner(), 200)
@@ -36,6 +36,6 @@ public class DataQueryIT {
 
   @Test
   void unsupportedResource() {
-    doGet(null, "Appointment?patient=1011537977V693883", 404);
+    doGet(null, "r4/Appointment?patient=1011537977V693883", 404);
   }
 }
