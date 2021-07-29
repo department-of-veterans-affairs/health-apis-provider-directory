@@ -23,9 +23,6 @@ public class DataQueryIT {
     // Location, Organization, Practitioner, PractitionerRole
   }
 
-  // SystemDefinition def = SystemDefinitions.systemDefinition();
-  // ServiceDefinition r4 = def.r4();
-  // String apiPath = r4.apiPath();
   @BeforeAll
   static void setup() {
     assumeEnvironmentNotIn(Environment.LOCAL);
