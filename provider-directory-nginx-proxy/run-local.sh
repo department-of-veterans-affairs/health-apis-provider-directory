@@ -120,4 +120,3 @@ useDefaultNginxConf() {
 
 init
 main $@
-
