@@ -18,7 +18,10 @@ public final class SystemDefinitions {
   }
 
   private static Ids labIds() {
-    return Ids.builder().practitioner("I2-HRJI2MVST2IQSPR7U5SACWIWZA000000").build();
+    return Ids.builder()
+        .location("I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000")
+        .practitioner("I2-HRJI2MVST2IQSPR7U5SACWIWZA000000")
+        .build();
   }
 
   private static SystemDefinition local() {
@@ -30,7 +33,10 @@ public final class SystemDefinitions {
   }
 
   private static Ids localIds() {
-    return Ids.builder().practitioner("I2-TVUBUQIWCJ6NIPURPDPGIYLLLU000000").build();
+    return Ids.builder()
+        .location("I2-K7WNFKZA3JCXL3CLT6D2HP7RRU000000")
+        .practitioner("I2-TVUBUQIWCJ6NIPURPDPGIYLLLU000000")
+        .build();
   }
 
   private static SystemDefinition production() {
@@ -42,7 +48,10 @@ public final class SystemDefinitions {
   }
 
   private static Ids productionIds() {
-    return Ids.builder().practitioner("I2-6NVSMKEGQKNB3KRDXBGE7NRIEY000000").build();
+    return Ids.builder()
+        .location("I2-WEIZUDRRQFULJACUVBXZO7EFOU000000")
+        .practitioner("I2-6NVSMKEGQKNB3KRDXBGE7NRIEY000000")
+        .build();
   }
 
   private static SystemDefinition qa() {
@@ -100,6 +109,8 @@ public final class SystemDefinitions {
   @Value
   @Builder
   static final class Ids {
+    @NonNull String location;
+
     @NonNull String practitioner;
   }
 
