@@ -92,6 +92,30 @@
             {
               "name": "_id",
               "type": "token"
+            },
+            {
+              "name": "address",
+              "type": "string"
+            },
+            {
+              "name": "address-city",
+              "type": "string"
+            },
+            {
+              "name": "address-postalcode",
+              "type": "string"
+            },
+            {
+              "name": "address-state",
+              "type": "string"
+            },
+            {
+              "name": "identifier",
+              "type": "token"
+            },
+            {
+              "name": "name",
+              "type": "string"
             }
           ]
         },
@@ -117,6 +141,30 @@
             {
               "name": "_id",
               "type": "token"
+            },
+            {
+              "name": "address",
+              "type": "string"
+            },
+            {
+              "name": "address-city",
+              "type": "string"
+            },
+            {
+              "name": "address-postalcode",
+              "type": "string"
+            },
+            {
+              "name": "address-state",
+              "type": "string"
+            },
+            {
+              "name": "identifier",
+              "type": "token"
+            },
+            {
+              "name": "name",
+              "type": "string"
             }
           ]
         },
