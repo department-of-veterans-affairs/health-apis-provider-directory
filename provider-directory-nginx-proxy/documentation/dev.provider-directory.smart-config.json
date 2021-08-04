@@ -1,20 +1,20 @@
 {
-  "authorizationEndpoint": "https://sandbox-api.va.gov/oauth2/provider-directory/v1/authorization",
-  "tokenEndpoint": "https://sandbox-api.va.gov/services/provider-directory/v0/r4/token",
-  "scopesSupported": [
+  "authorizationEndpoint" : "https://sandbox-api.va.gov/oauth2/provider-directory/v1/authorization",
+  "tokenEndpoint" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/token",
+  "scopesSupported" : [
     "offline_access",
     "patient/Location.read",
     "patient/Organization.read",
     "patient/Practitioner.read",
     "patient/PractitionerRole.read"
   ],
-  "responseTypeSupported": [
+  "responseTypeSupported" : [
     "code",
     "refresh_token"
   ],
-  "managementEndpoint": "https://sandbox-api.va.gov/oauth2/provider-directory/v1/manage",
-  "revocationEndpoint": "https://sandbox-api.va.gov/oauth2/provider-directory/v1/revoke",
-  "capabilities": [
+  "managementEndpoint" : "https://sandbox-api.va.gov/oauth2/provider-directory/v1/manage",
+  "revocationEndpoint" : "https://sandbox-api.va.gov/oauth2/provider-directory/v1/revoke",
+  "capabilities" : [
     "context-standalone-patient",
     "launch-ehr",
     "permission-offline",
