@@ -1,1 +1,18 @@
-{}
+{
+  "scopesSupported" : [
+    "offline_access",
+    "patient/Location.read",
+    "patient/Organization.read",
+    "patient/Practitioner.read",
+    "patient/PractitionerRole.read"
+  ],
+  "responseTypeSupported" : [
+    "code"
+  ],
+  "capabilities" : [
+    "context-standalone-patient",
+    "launch-ehr",
+    "permission-offline",
+    "permission-patient"
+  ]
+}

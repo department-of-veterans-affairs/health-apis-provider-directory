@@ -1,220 +1,220 @@
 {
-  "id": "health-api-provider-directory-r4-capability",
-  "resourceType": "CapabilityStatement",
-  "version": "0",
-  "name": "API Management Platform | Provider Directory | FHIR R4",
-  "status": "draft",
-  "date": "2021-03-29T10:05:52Z",
-  "publisher": "Department of Veterans Affairs",
-  "contact": [
+  "id" : "health-api-provider-directory-r4-capability",
+  "resourceType" : "CapabilityStatement",
+  "version" : "0",
+  "name" : "API Management Platform | Provider Directory | FHIR R4",
+  "status" : "draft",
+  "date" : "2021-03-29T10:05:52Z",
+  "publisher" : "Department of Veterans Affairs",
+  "contact" : [
     {
-      "name": "API Support",
-      "telecom": [
+      "name" : "API Support",
+      "telecom" : [
         {
-          "system": "email",
-          "value": "api@va.gov"
+          "system" : "email",
+          "value" : "api@va.gov"
         }
       ]
     }
   ],
-  "description": "FHIR R4 Clinical Health APIs.",
-  "kind": "instance",
-  "software": {
-    "name": "health-api-provider-directory-r4"
+  "description" : "FHIR R4 Clinical Health APIs.",
+  "kind" : "instance",
+  "software" : {
+    "name" : "health-api-provider-directory-r4"
   },
-  "fhirVersion": "4.0.0",
-  "format": [
+  "fhirVersion" : "4.0.0",
+  "format" : [
     "application/json",
     "application/fhir+json"
   ],
-  "rest": [
+  "rest" : [
     {
-      "mode": "server",
-      "security": {
-        "extension": [
+      "mode" : "server",
+      "security" : {
+        "extension" : [
           {
-            "url": "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris",
-            "extension": [
+            "url" : "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris",
+            "extension" : [
               {
-                "url": "token",
-                "valueUri": "https://api.va.gov/services/provider-directory/v0/r4/token"
+                "url" : "token",
+                "valueUri" : "https://api.va.gov/services/provider-directory/v0/r4/token"
               },
               {
-                "url": "authorize",
-                "valueUri": "https://api.va.gov/oauth2/provider-directory/v1/authorization"
+                "url" : "authorize",
+                "valueUri" : "https://api.va.gov/oauth2/provider-directory/v1/authorization"
               },
               {
-                "url": "manage",
-                "valueUri": "https://api.va.gov/oauth2/provider-directory/v1/manage"
+                "url" : "manage",
+                "valueUri" : "https://api.va.gov/oauth2/provider-directory/v1/manage"
               },
               {
-                "url": "revoke",
-                "valueUri": "https://api.va.gov/oauth2/provider-directory/v1/revoke"
+                "url" : "revoke",
+                "valueUri" : "https://api.va.gov/oauth2/provider-directory/v1/revoke"
               }
             ]
           }
         ],
-        "cors": true,
-        "service": [
+        "cors" : true,
+        "service" : [
           {
-            "coding": [
+            "coding" : [
               {
-                "system": "https://www.hl7.org/fhir/valueset-restful-security-service.html",
-                "code": "SMART-on-FHIR",
-                "display": "SMART-on-FHIR"
+                "system" : "https://www.hl7.org/fhir/valueset-restful-security-service.html",
+                "code" : "SMART-on-FHIR",
+                "display" : "SMART-on-FHIR"
               }
             ],
-            "text": "SMART-on-FHIR"
+            "text" : "SMART-on-FHIR"
           }
         ],
-        "description": "http://docs.smarthealthit.org/"
+        "description" : "http://docs.smarthealthit.org/"
       },
-      "resource": [
+      "resource" : [
         {
-          "type": "Location",
-          "profile": "http://hl7.org/fhir/us/core/StructureDefinition-us-core-location.html",
-          "interaction": [
+          "type" : "Location",
+          "profile" : "http://hl7.org/fhir/us/core/StructureDefinition-us-core-location.html",
+          "interaction" : [
             {
-              "code": "search-type",
-              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
             },
             {
-              "code": "read",
-              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
             }
           ],
-          "versioning": "no-version",
-          "referencePolicy": [
+          "versioning" : "no-version",
+          "referencePolicy" : [
             "literal",
             "local"
           ],
-          "searchParam": [
+          "searchParam" : [
             {
-              "name": "_id",
-              "type": "token"
+              "name" : "_id",
+              "type" : "token"
             },
             {
-              "name": "address",
-              "type": "string"
+              "name" : "address",
+              "type" : "string"
             },
             {
-              "name": "address-city",
-              "type": "string"
+              "name" : "address-city",
+              "type" : "string"
             },
             {
-              "name": "address-postalcode",
-              "type": "string"
+              "name" : "address-postalcode",
+              "type" : "string"
             },
             {
-              "name": "address-state",
-              "type": "string"
+              "name" : "address-state",
+              "type" : "string"
             },
             {
-              "name": "identifier",
-              "type": "token"
+              "name" : "identifier",
+              "type" : "token"
             },
             {
-              "name": "name",
-              "type": "string"
+              "name" : "name",
+              "type" : "string"
             }
           ]
         },
         {
-          "type": "Organization",
-          "profile": "http://hl7.org/fhir/us/core/StructureDefinition-us-core-organization.html",
-          "interaction": [
+          "type" : "Organization",
+          "profile" : "http://hl7.org/fhir/us/core/StructureDefinition-us-core-organization.html",
+          "interaction" : [
             {
-              "code": "search-type",
-              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
             },
             {
-              "code": "read",
-              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
             }
           ],
-          "versioning": "no-version",
-          "referencePolicy": [
+          "versioning" : "no-version",
+          "referencePolicy" : [
             "literal",
             "local"
           ],
-          "searchParam": [
+          "searchParam" : [
             {
-              "name": "_id",
-              "type": "token"
+              "name" : "_id",
+              "type" : "token"
             },
             {
-              "name": "address",
-              "type": "string"
+              "name" : "address",
+              "type" : "string"
             },
             {
-              "name": "address-city",
-              "type": "string"
+              "name" : "address-city",
+              "type" : "string"
             },
             {
-              "name": "address-postalcode",
-              "type": "string"
+              "name" : "address-postalcode",
+              "type" : "string"
             },
             {
-              "name": "address-state",
-              "type": "string"
+              "name" : "address-state",
+              "type" : "string"
             },
             {
-              "name": "identifier",
-              "type": "token"
+              "name" : "identifier",
+              "type" : "token"
             },
             {
-              "name": "name",
-              "type": "string"
+              "name" : "name",
+              "type" : "string"
             }
           ]
         },
         {
-          "type": "Practitioner",
-          "profile": "http://hl7.org/fhir/us/core/StructureDefinition-us-core-practitioner.html",
-          "interaction": [
+          "type" : "Practitioner",
+          "profile" : "http://hl7.org/fhir/us/core/StructureDefinition-us-core-practitioner.html",
+          "interaction" : [
             {
-              "code": "search-type",
-              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
             },
             {
-              "code": "read",
-              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
             }
           ],
-          "versioning": "no-version",
-          "referencePolicy": [
+          "versioning" : "no-version",
+          "referencePolicy" : [
             "literal",
             "local"
           ],
-          "searchParam": [
+          "searchParam" : [
             {
-              "name": "_id",
-              "type": "token"
+              "name" : "_id",
+              "type" : "token"
             }
           ]
         },
         {
-          "type": "PractitionerRole",
-          "profile": "http://hl7.org/fhir/us/core/StructureDefinition-us-core-practitionerrole.html",
-          "interaction": [
+          "type" : "PractitionerRole",
+          "profile" : "http://hl7.org/fhir/us/core/StructureDefinition-us-core-practitionerrole.html",
+          "interaction" : [
             {
-              "code": "search-type",
-              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
             },
             {
-              "code": "read",
-              "documentation": "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
             }
           ],
-          "versioning": "no-version",
-          "referencePolicy": [
+          "versioning" : "no-version",
+          "referencePolicy" : [
             "literal",
             "local"
           ],
-          "searchParam": [
+          "searchParam" : [
             {
-              "name": "_id",
-              "type": "token"
+              "name" : "_id",
+              "type" : "token"
             }
           ]
         }
