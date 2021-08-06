@@ -17,4 +17,14 @@ public class SmokeIT {
   void healthCheck() {
     doGet(null, "health", 200);
   }
+
+  @Test
+  void capabilityStatement_json() {
+    doGet(null, "r4/metadata", 200);
+  }
+
+  @Test
+  void smartConfig_json() {
+    doGet(null, "r4/.well-known/smart-configuration", 200);
+  }
 }
