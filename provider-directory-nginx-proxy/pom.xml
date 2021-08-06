@@ -4,11 +4,11 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>health-apis-parent</artifactId>
-    <version>8.0.24</version>
+    <version>8.0.25</version>
     <relativePath/>
   </parent>
   <artifactId>provider-directory-nginx-proxy</artifactId>
-  <version>3.0.6-SNAPSHOT</version>
+  <version>3.0.6</version>
   <packaging>pom</packaging>
   <properties>
     <docker-maven-plugin.version>0.34.0</docker-maven-plugin.version>

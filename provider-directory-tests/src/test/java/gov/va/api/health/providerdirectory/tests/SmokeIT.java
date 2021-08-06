@@ -14,13 +14,13 @@ public class SmokeIT {
   }
 
   @Test
-  void healthCheck() {
-    doGet(null, "health", 200);
+  void capabilityStatement_json() {
+    doGet(null, "r4/metadata", 200);
   }
 
   @Test
-  void capabilityStatement_json() {
-    doGet(null, "r4/metadata", 200);
+  void healthCheck() {
+    doGet(null, "health", 200);
   }
 
   @Test

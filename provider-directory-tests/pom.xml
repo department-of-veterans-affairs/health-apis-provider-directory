@@ -4,11 +4,11 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>test-starter</artifactId>
-    <version>8.0.24</version>
+    <version>8.0.25</version>
     <relativePath/>
   </parent>
   <artifactId>provider-directory-tests</artifactId>
-  <version>3.0.6-SNAPSHOT</version>
+  <version>3.0.6</version>
   <packaging>jar</packaging>
   <properties>
     <docker.imageName>health-apis-${project.artifactId}</docker.imageName>
