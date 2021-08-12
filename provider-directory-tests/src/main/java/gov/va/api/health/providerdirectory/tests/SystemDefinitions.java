@@ -20,6 +20,7 @@ public final class SystemDefinitions {
   private static Ids labIds() {
     return Ids.builder()
         .location("I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000")
+        .organization("I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000")
         .practitioner("I2-HRJI2MVST2IQSPR7U5SACWIWZA000000")
         .practitionerRole("I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000")
         .build();
@@ -36,6 +37,7 @@ public final class SystemDefinitions {
   private static Ids localIds() {
     return Ids.builder()
         .location("I2-K7WNFKZA3JCXL3CLT6D2HP7RRU000000")
+        .organization("I2-WOKLYQ64CJR6Q5P26N2VPSP7NY000000")
         .practitioner("I2-TVUBUQIWCJ6NIPURPDPGIYLLLU000000")
         .practitionerRole("I2-FTZ2KYGRVOSZZTGLJ6RNVLHTQA000000")
         .build();
@@ -52,6 +54,7 @@ public final class SystemDefinitions {
   private static Ids productionIds() {
     return Ids.builder()
         .location("I2-WEIZUDRRQFULJACUVBXZO7EFOU000000")
+        .organization("I2-U2YS4YSMVOGA4TNVOJB3RXVIQRQR7OXTDMFNC24L4YSKJKXSTCZA0000")
         .practitioner("I2-A5Q24JYL4AQKD664ASIIGBVYQUXVWZRBWWGVFCS7IBU27TJIZBFQ0000")
         .practitionerRole("I2-QVW4BN5ETDZ2F4OQZQ7H3RAUYU000000")
         .build();
@@ -113,6 +116,8 @@ public final class SystemDefinitions {
   @Builder
   static final class Ids {
     @NonNull String location;
+
+    @NonNull String organization;
 
     @NonNull String practitioner;
 
