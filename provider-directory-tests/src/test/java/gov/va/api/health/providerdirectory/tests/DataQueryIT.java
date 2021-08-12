@@ -19,7 +19,7 @@ public class DataQueryIT {
     return Stream.of(
         arguments("r4/Location/" + testIds.location(), 200),
         arguments("r4/Practitioner/" + testIds.practitioner(), 200),
-        arguments("r4/PractitionerRole/" + testIds.practitionerRole()));
+        arguments("r4/PractitionerRole/" + testIds.practitionerRole(), 200));
     // arguments("Condition?patient=" + testIds.patient(), 200),
     // arguments("Patient/" + testIds.patient(), 200),
     // Location, Organization, Practitioner, PractitionerRole
