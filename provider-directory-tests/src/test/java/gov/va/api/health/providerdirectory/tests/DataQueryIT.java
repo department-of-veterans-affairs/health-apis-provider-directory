@@ -16,10 +16,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class DataQueryIT {
   static Stream<Arguments> queries() {
     var testIds = systemDefinition().publicIds();
-    return Stream.of(arguments("r4/Location/" + testIds.location(), 200));
+    return Stream.of(
+        arguments("r4/Location/" + testIds.location(), 200),
+        arguments("r4/Practitioner/" + testIds.practitioner(), 200));
     // arguments("Condition?patient=" + testIds.patient(), 200),
     // arguments("Patient/" + testIds.patient(), 200),
-    // arguments("Practitioner/" + testIds.practitioner(), 200)
     // Location, Organization, Practitioner, PractitionerRole
   }
 
