@@ -58,7 +58,7 @@ public final class SystemDefinitions {
     String url = "https://blue.qa.lighthouse.va.gov";
     return SystemDefinition.builder()
         .internal(serviceDefinition("internal", url, 443, "/provider-directory/v0/"))
-        .publicIds(productionIds())
+        .publicIds(labIds())
         .build();
   }
 
