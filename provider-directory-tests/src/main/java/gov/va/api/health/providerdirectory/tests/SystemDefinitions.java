@@ -21,6 +21,7 @@ public final class SystemDefinitions {
     return Ids.builder()
         .location("I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000")
         .practitioner("I2-HRJI2MVST2IQSPR7U5SACWIWZA000000")
+        .practitionerRole("I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000")
         .build();
   }
 
@@ -36,6 +37,7 @@ public final class SystemDefinitions {
     return Ids.builder()
         .location("I2-K7WNFKZA3JCXL3CLT6D2HP7RRU000000")
         .practitioner("I2-TVUBUQIWCJ6NIPURPDPGIYLLLU000000")
+        .practitionerRole("I2-FTZ2KYGRVOSZZTGLJ6RNVLHTQA000000")
         .build();
   }
 
@@ -51,6 +53,7 @@ public final class SystemDefinitions {
     return Ids.builder()
         .location("I2-WEIZUDRRQFULJACUVBXZO7EFOU000000")
         .practitioner("I2-A5Q24JYL4AQKD664ASIIGBVYQUXVWZRBWWGVFCS7IBU27TJIZBFQ0000")
+        .practitionerRole("I2-QVW4BN5ETDZ2F4OQZQ7H3RAUYU000000")
         .build();
   }
 
@@ -112,6 +115,8 @@ public final class SystemDefinitions {
     @NonNull String location;
 
     @NonNull String practitioner;
+
+    @NonNull String practitionerRole;
   }
 
   @Value
