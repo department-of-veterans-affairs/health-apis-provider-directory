@@ -26,23 +26,6 @@ public final class SystemDefinitions {
         .build();
   }
 
-  private static SystemDefinition local() {
-    String url = "http://localhost";
-    return SystemDefinition.builder()
-        .internal(serviceDefinition("internal", url, 8121, "/provider-directory/v0"))
-        .publicIds(localIds())
-        .build();
-  }
-
-  private static Ids localIds() {
-    return Ids.builder()
-        .location("I2-K7WNFKZA3JCXL3CLT6D2HP7RRU000000")
-        .organization("I2-WOKLYQ64CJR6Q5P26N2VPSP7NY000000")
-        .practitioner("I2-TVUBUQIWCJ6NIPURPDPGIYLLLU000000")
-        .practitionerRole("I2-FTZ2KYGRVOSZZTGLJ6RNVLHTQA000000")
-        .build();
-  }
-
   private static SystemDefinition production() {
     String url = "https://api.va.gov";
     return SystemDefinition.builder()
@@ -100,7 +83,7 @@ public final class SystemDefinitions {
       case LAB:
         return lab();
       case LOCAL:
-        return local();
+        throw new UnsupportedOperationException("LOCAL is unsupported");
       case QA:
         return qa();
       case STAGING:
