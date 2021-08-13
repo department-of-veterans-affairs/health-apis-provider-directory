@@ -24,6 +24,11 @@ public class SmokeIT {
   }
 
   @Test
+  void openapi() {
+    doGet(null, "r4/openapi.json", 200);
+  }
+
+  @Test
   void smartConfig_json() {
     doGet(null, "r4/.well-known/smart-configuration", 200);
   }
