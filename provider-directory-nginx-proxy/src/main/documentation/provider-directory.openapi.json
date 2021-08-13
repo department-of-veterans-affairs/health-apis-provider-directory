@@ -2,7 +2,7 @@
   "openapi" : "3.0.1",
   "info" : {
     "title" : "US Core R4",
-    "description" : "In adherence to changes per the [21st Century Cures Act](https://www.federalregister.gov/documents/2020/05/01/2020-07419/21st-century-cures-act-interoperability-information-blocking-and-the-onc-health-it-certification#h-13), the Veteran Health API profile follows the US Core Implementation Guide. Per these regulations, we will be adding new FHIR resources to this tab as they are available.\n\nThis service is compliant with the FHIR US Core Implementation Guide. This service does not provide or replace the consultation, guidance, or care of a health care professional or other qualified provider. This service provides a supplement for informational and educational purposes only. Health care professionals and other qualified providers should continue to consult authoritative records when making decisions.",
+    "description" : "\n\n ## Background\n\n This API supports queries for VA providers and related information. The API uses [HL7’s Fast Healthcare Interoperability Resources (FHIR)](https://www.hl7.org/fhir/overview.html) resources and follows the [DaVinci PDEX Plan Net](http://hl7.org/fhir/us/davinci-pdex-plan-net/index.html). FHIR solutions are built from a standard set of modular components called resources, which can be assembled and implemented according to a variety of methods.\n\n ## Technical overview\n\n Provider Directory API allows queries that return records in [FHIR](https://www.hl7.org/fhir/overview.html) format. It pulls resources from [Corporate Data Warehouse (CDW)](https://www.hsrd.research.va.gov/for_researchers/vinci/cdw.cfm), which are available 24-48 hours after entry.\n\n ## Authorization\n\n API requests are authorized through a symmetric API token, provided in the `apikey` HTTP header.\n\n ## Test Data\n\n Sandbox environment is populated with synthetic data that mimics real provider information.",
     "contact" : {
       "name" : "developer.va.gov"
     },
@@ -249,7 +249,12 @@
               }
             }
           }
-        }
+        },
+        "security" : [
+          {
+            "apikey" : [ ]
+          }
+        ]
       }
     },
     "/metadata" : {
@@ -291,7 +296,12 @@
               }
             }
           }
-        }
+        },
+        "security" : [
+          {
+            "apikey" : [ ]
+          }
+        ]
       }
     },
     "/Organization" : {
@@ -411,7 +421,12 @@
               }
             }
           }
-        }
+        },
+        "security" : [
+          {
+            "apikey" : [ ]
+          }
+        ]
       }
     },
     "/Organization/{id}" : {
@@ -464,7 +479,12 @@
               }
             }
           }
-        }
+        },
+        "security" : [
+          {
+            "apikey" : [ ]
+          }
+        ]
       }
     },
     "/Practitioner" : {
@@ -605,7 +625,12 @@
               }
             }
           }
-        }
+        },
+        "security" : [
+          {
+            "apikey" : [ ]
+          }
+        ]
       }
     },
     "/Practitioner/{id}" : {
@@ -689,7 +714,12 @@
               }
             }
           }
-        }
+        },
+        "security" : [
+          {
+            "apikey" : [ ]
+          }
+        ]
       }
     },
     "/PractitionerRole" : {
@@ -777,7 +807,12 @@
               }
             }
           }
-        }
+        },
+        "security" : [
+          {
+            "apikey" : [ ]
+          }
+        ]
       }
     },
     "/PractitionerRole/{id}" : {
@@ -830,7 +865,12 @@
               }
             }
           }
-        }
+        },
+        "security" : [
+          {
+            "apikey" : [ ]
+          }
+        ]
       }
     }
   },
