@@ -379,7 +379,7 @@
               "format" : "int32",
               "default" : 1
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : 1
           },
           {
             "name" : "_count",
@@ -390,7 +390,7 @@
               "format" : "int32",
               "default" : 30
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : 30
           }
         ],
         "responses" : {
@@ -871,7 +871,7 @@
               "format" : "int32",
               "default" : 1
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : 1
           },
           {
             "name" : "_count",
@@ -882,7 +882,7 @@
               "format" : "int32",
               "default" : 30
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : 30
           }
         ],
         "responses" : {
