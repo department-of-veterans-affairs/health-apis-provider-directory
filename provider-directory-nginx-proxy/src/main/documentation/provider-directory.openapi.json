@@ -25,6 +25,11 @@
     }
   ],
   "paths" : {
+	  
+	  
+	  
+	  
+	  
     "/Location" : {
       "get" : {
         "tags" : [
@@ -40,7 +45,8 @@
             "description" : "The logical id of the resource. Once assigned, this value never changes.",
             "schema" : {
               "type" : "string"
-            }
+            },
+			"example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
           },
           {
             "name" : "identifier",
@@ -48,15 +54,19 @@
             "description" : "The logical identifier of the resource. Once assigned, this value never changes.",
             "schema" : {
               "type" : "string"
-            }
+            },
+			"example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
           },
+		  
+		  
           {
             "name" : "address",
             "in" : "query",
             "description" : "Indicates the physical location of the record expressed using postal conventions (as opposed to GPS or other location definition formats).",
             "schema" : {
               "type" : "string"
-            }
+            },
+			"example" : "3300 Washtenaw Avenue"
           },
           {
             "name" : "address-city",
@@ -64,7 +74,8 @@
             "description" : "Indicates the geographical city where the location resides.",
             "schema" : {
               "type" : "string"
-            }
+            },
+			"example" : "Ann Arbor"
           },
           {
             "name" : "address-state",
@@ -72,7 +83,8 @@
             "description" : "Indicates the geographical state where the location resides.",
             "schema" : {
               "type" : "string"
-            }
+            },
+			"example" : "MI"
           },
           {
             "name" : "address-postalcode",
@@ -80,7 +92,8 @@
             "description" : "Indicates the postal code that designates the region where the location resides.",
             "schema" : {
               "type" : "string"
-            }
+            },
+			"example" : "48104"
           },
           {
             "name" : "name",
@@ -88,7 +101,8 @@
             "description" : "Indicates the name of the location as it is referenced by humans.",
             "schema" : {
               "type" : "string"
-            }
+            },
+			"example" : "Health Level Seven International"
           },
           {
             "name" : "page",
@@ -98,7 +112,8 @@
               "type" : "integer",
               "format" : "int32",
               "default" : 1
-            }
+            },
+			"example" : 1
           },
           {
             "name" : "_count",
@@ -108,12 +123,13 @@
               "type" : "integer",
               "format" : "int32",
               "default" : 30
-            }
+            },
+			"example" : 30
           }
         ],
         "responses" : {
           "200" : {
-            "description" : "Record found",
+            "description" : "Success",
             "content" : {
               "application/fhir+json" : {
                 "schema" : {
@@ -125,9 +141,29 @@
           "400" : {
             "description" : "Bad request",
             "content" : {
-              "application/fhir+json" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Missing or invalid API key",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GatewayError"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Unauthorized API key",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GatewayError"
                 }
               }
             }
@@ -135,7 +171,27 @@
           "404" : {
             "description" : "Not found",
             "content" : {
-              "application/fhir+json" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Rate limit exceeded",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GatewayError"
+                }
+              }
+            }
+          }
+		  "500" : {
+            "description" : "Server Error",
+            "content" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/OperationOutcome"
                 }
@@ -143,8 +199,17 @@
             }
           }
         }
+	    "security" : [
+          {
+            "apikey" : [ ]
+          }
+        ]
       }
     },
+	
+	
+	
+	
     "/Location/{id}" : {
       "get" : {
         "tags" : [
@@ -2118,7 +2183,22 @@
         },
         "description" : "http://hl7.org/fhir/R4/extensibility.html#extension"
       },
-      "HoursOfOperation" : {
+      
+	  "GatewayError" : {
+        "required" : [
+          "message"
+        ],
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "No API key found in request"
+          }
+        },
+        "description" : "An API Gateway error response, e.g. for authorization failures or rate limit exceeded."
+      },
+	  
+	  "HoursOfOperation" : {
         "type" : "object",
         "properties" : {
           "id" : {
