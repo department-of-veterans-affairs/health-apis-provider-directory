@@ -314,7 +314,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000"
           },
           {
             "name" : "identifier",
@@ -323,7 +323,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000"
           },
           {
             "name" : "address",
@@ -332,7 +332,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "3300 Washtenaw Avenue"
           },
           {
             "name" : "address-city",
@@ -341,7 +341,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "Ann Arbor"
           },
           {
             "name" : "address-state",
@@ -350,7 +350,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "MI"
           },
           {
             "name" : "address-postalcode",
@@ -359,7 +359,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "48104"
           },
           {
             "name" : "name",
@@ -368,7 +368,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "Health Level Seven International"
           },
           {
             "name" : "page",
@@ -489,7 +489,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000"
           }
         ],
         "responses" : {
@@ -842,7 +842,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000"
           },
           {
             "name" : "practitioner.identifier",
@@ -851,7 +851,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "I2-HRJI2MVST2IQSPR7U5SACWIWZA000000"
           },
           {
             "name" : "practitioner.name",
@@ -860,7 +860,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "DOE922"
           },
           {
             "name" : "page",
@@ -981,7 +981,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000"
+            "example" : "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000"
           }
         ],
         "responses" : {
