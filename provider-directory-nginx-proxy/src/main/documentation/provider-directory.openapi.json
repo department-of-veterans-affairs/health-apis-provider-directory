@@ -298,93 +298,6 @@
         ]
       }
     },
-    "/metadata" : {
-      "get" : {
-        "tags" : [
-          "Metadata"
-        ],
-        "summary" : "Capability Statement",
-        "description" : "http://hl7.org/fhir/R4/capabilitystatement.html",
-        "operationId" : "metadata",
-        "responses" : {
-          "200" : {
-            "description" : "Success",
-            "content" : {
-              "application/fhir+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CapabilityStatement"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad request",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/OperationOutcome"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Missing or invalid API key",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GatewayError"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Unauthorized API key",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GatewayError"
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/OperationOutcome"
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Rate limit exceeded",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GatewayError"
-                }
-              }
-            }
-          },
-          "500" : {
-            "description" : "Server Error",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/OperationOutcome"
-                }
-              }
-            }
-          }
-        },
-        "security" : [
-          {
-            "apikey" : [ ]
-          }
-        ]
-      }
-    },
     "/Organization" : {
       "get" : {
         "tags" : [
@@ -2497,7 +2410,7 @@
         "properties" : {
           "message" : {
             "type" : "string",
-            "example" : "No API key found in request"
+            "example" : "There is an error"
           }
         },
         "description" : "An API Gateway error response, e.g. for authorization failures or rate limit exceeded."
