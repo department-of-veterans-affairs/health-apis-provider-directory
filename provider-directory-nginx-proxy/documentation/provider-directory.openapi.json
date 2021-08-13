@@ -10,7 +10,7 @@
   },
   "externalDocs" : {
     "description" : "DaVinci PDEX Plan Net Implementation Guide",
-    "url" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/"
+    "url" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/index.html"
   },
   "servers" : [
     {
