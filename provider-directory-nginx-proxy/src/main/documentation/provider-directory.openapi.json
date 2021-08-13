@@ -3,20 +3,23 @@
   "info" : {
     "title" : "US Core R4",
     "description" : "In adherence to changes per the [21st Century Cures Act](https://www.federalregister.gov/documents/2020/05/01/2020-07419/21st-century-cures-act-interoperability-information-blocking-and-the-onc-health-it-certification#h-13), the Veteran Health API profile follows the US Core Implementation Guide. Per these regulations, we will be adding new FHIR resources to this tab as they are available.\n\nThis service is compliant with the FHIR US Core Implementation Guide. This service does not provide or replace the consultation, guidance, or care of a health care professional or other qualified provider. This service provides a supplement for informational and educational purposes only. Health care professionals and other qualified providers should continue to consult authoritative records when making decisions.",
-    "version" : "v1"
+    "contact" : {
+      "name" : "developer.va.gov"
+    },
+    "version" : "v0"
   },
   "externalDocs" : {
-    "description" : "US Core Implementation Guide",
-    "url" : "https://build.fhir.org/ig/HL7/US-Core-R4/index.html"
+    "description" : "DaVinci PDEX Plan Net Implementation Guide",
+    "url" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/"
   },
   "servers" : [
     {
-      "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/",
+      "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4",
       "description" : "Sandbox",
       "variables" : { }
     },
     {
-      "url" : "https://api.va.gov/services/fhir/v0/r4/",
+      "url" : "https://api.va.gov/services/provider-directory/v0/r4",
       "description" : "Production",
       "variables" : { }
     }
@@ -28,7 +31,7 @@
           "Location"
         ],
         "summary" : "Location Search",
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-location.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Location.html",
         "operationId" : "locationSearch",
         "parameters" : [
           {
@@ -148,7 +151,7 @@
           "Location"
         ],
         "summary" : "Location Read",
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-location.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Location.html",
         "operationId" : "locationRead",
         "parameters" : [
           {
@@ -243,7 +246,7 @@
           "Organization"
         ],
         "summary" : "Organization Search",
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-organization.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Organization.html",
         "operationId" : "organizationSearch",
         "parameters" : [
           {
@@ -363,7 +366,7 @@
           "Organization"
         ],
         "summary" : "Organization Read",
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-organization.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Organization.html",
         "operationId" : "organizationRead",
         "parameters" : [
           {
@@ -416,7 +419,7 @@
           "Practitioner"
         ],
         "summary" : "Practitioner Search",
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-practitioner.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Practitioner.html",
         "operationId" : "practitionerSearch",
         "parameters" : [
           {
@@ -557,7 +560,7 @@
           "Practitioner"
         ],
         "summary" : "Practitioner Read",
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-practitioner.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Practitioner.html",
         "operationId" : "practitionerRead",
         "parameters" : [
           {
@@ -640,8 +643,8 @@
         "tags" : [
           "PractitionerRole"
         ],
-        "summary" : "Practitioner Role Search",
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-practitionerrole.html",
+        "summary" : "PractitionerRole Search",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-PractitionerRole.html",
         "operationId" : "practitionerRoleSearch",
         "parameters" : [
           {
@@ -729,7 +732,7 @@
           "PractitionerRole"
         ],
         "summary" : "PractitionerRole Read",
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-practitionerrole.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-PractitionerRole.html",
         "operationId" : "practitionerRoleRead",
         "parameters" : [
           {
@@ -2478,7 +2481,7 @@
             }
           }
         },
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-location.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Location.html",
         "example" : {
           "resourceType" : "Location",
           "id" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000",
@@ -3084,7 +3087,7 @@
             }
           }
         },
-        "description" : "http://hl7.org/fhir/us/carin-bb/2020Feb/StructureDefinition-CARIN-BB-Organization.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Organization.html",
         "example" : {
           "resourceType" : "Organization",
           "id" : "I2-ZJURFG76GQN5LW7WP56TXADUFM000000",
@@ -3540,7 +3543,7 @@
             }
           }
         },
-        "description" : " http://hl7.org/fhir/us/core/StructureDefinition-us-core-practitioner.html"
+        "description" : " http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Practitioner.html"
       },
       "PractitionerAvailableTime" : {
         "type" : "object",
@@ -3886,7 +3889,7 @@
             }
           }
         },
-        "description" : "https://build.fhir.org/ig/HL7/US-Core-R4/StructureDefinition-us-core-practitionerrole.html",
+        "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-PractitionerRole.html",
         "example" : {
           "resourceType" : "PractitionerRole",
           "id" : "I2-3NOHFSBEAZEKYRMDWVWB7LAFJNCKM3SFLR2CYELHDC7DZ5X3BKGA0000",
@@ -5023,6 +5026,13 @@
           }
         },
         "description" : "https://www.hl7.org/fhir/R4/metadatatypes.html#UsageContext"
+      }
+    },
+    "securitySchemes" : {
+      "apikey" : {
+        "type" : "apiKey",
+        "name" : "apikey",
+        "in" : "header"
       }
     }
   }
