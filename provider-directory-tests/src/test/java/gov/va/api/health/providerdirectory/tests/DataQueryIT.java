@@ -7,9 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import gov.va.api.health.r4.api.resources.Location;
-import gov.va.api.health.r4.api.resources.Organization;
-import gov.va.api.health.r4.api.resources.Practitioner;
-import gov.va.api.health.r4.api.resources.PractitionerRole;
 import gov.va.api.health.sentinel.Environment;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,22 +41,6 @@ public class DataQueryIT {
         doGet(null, "r4/Location/" + ids.location(), 200).expectValid(Location.class);
     assertThat(locationResponse.identifier().size()).isEqualTo(1);
     assertThat(locationResponse.identifier().get(0).system()).contains(FHIR_STRING);
-
-    var organizationResponse =
-        doGet(null, "r4/Organization/" + ids.location(), 200).expectValid(Organization.class);
-    assertThat(organizationResponse.identifier().size()).isEqualTo(1);
-    assertThat(organizationResponse.identifier().get(0).system()).contains(FHIR_STRING);
-
-    var practitionerResponse =
-        doGet(null, "r4/Practitioner/" + ids.location(), 200).expectValid(Practitioner.class);
-    assertThat(practitionerResponse.identifier().size()).isEqualTo(1);
-    assertThat(practitionerResponse.identifier().get(0).system()).contains(FHIR_STRING);
-
-    var practitionerRoleResponse =
-        doGet(null, "r4/PractitionerRole/" + ids.location(), 200)
-            .expectValid(PractitionerRole.class);
-    assertThat(practitionerRoleResponse.identifier().size()).isEqualTo(1);
-    assertThat(practitionerRoleResponse.identifier().get(0).system()).contains(FHIR_STRING);
   }
 
   @ParameterizedTest

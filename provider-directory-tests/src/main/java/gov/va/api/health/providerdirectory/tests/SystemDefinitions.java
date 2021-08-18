@@ -19,7 +19,7 @@ public final class SystemDefinitions {
 
   private static Ids labIds() {
     return Ids.builder()
-        .location("I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000")
+        .location("I2-2FPCKUIXVR7RJLLG34XVWGZERM000000")
         .organization("I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000")
         .practitioner("I2-HRJI2MVST2IQSPR7U5SACWIWZA000000")
         .practitionerRole("I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000")
