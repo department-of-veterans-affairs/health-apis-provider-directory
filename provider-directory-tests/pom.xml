@@ -12,12 +12,18 @@
   <packaging>jar</packaging>
   <properties>
     <docker.imageName>health-apis-${project.artifactId}</docker.imageName>
+    <fhir-resources.version>7.0.7</fhir-resources.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>gov.va.api.health</groupId>
       <artifactId>sentinel</artifactId>
       <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>gov.va.api.health</groupId>
+      <artifactId>us-core-r4</artifactId>
+      <version>${fhir-resources.version}</version>
     </dependency>
   </dependencies>
   <profiles>
