@@ -3,8 +3,10 @@ package gov.va.api.health.providerdirectory.tests;
 import static gov.va.api.health.providerdirectory.tests.Requests.doGet;
 import static gov.va.api.health.providerdirectory.tests.SystemDefinitions.systemDefinition;
 import static gov.va.api.health.sentinel.EnvironmentAssumptions.assumeEnvironmentNotIn;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
+import gov.va.api.health.r4.api.resources.Location;
 import gov.va.api.health.sentinel.Environment;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,6 +28,18 @@ public class DataQueryIT {
   @BeforeAll
   static void setup() {
     assumeEnvironmentNotIn(Environment.LOCAL);
+  }
+
+  @Test
+  void doNotReplaceNamingSystemUrl() {
+    var clinicIdentifierUrl =
+        "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-clinic-identifier";
+
+    var ids = systemDefinition().publicIds();
+
+    var location = doGet(null, "r4/Location/" + ids.location(), 200).expectValid(Location.class);
+    assertThat(location.identifier()).hasSize(1);
+    assertThat(location.identifier().get(0).system()).isEqualTo(clinicIdentifierUrl);
   }
 
   @ParameterizedTest
