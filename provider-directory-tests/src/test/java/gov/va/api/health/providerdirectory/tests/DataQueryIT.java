@@ -32,15 +32,14 @@ public class DataQueryIT {
 
   @Test
   void doNotReplaceNamingSystemUrl() {
-    final String FHIR_STRING =
+    var clinicIdentifierUrl =
         "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-clinic-identifier";
 
     var ids = systemDefinition().publicIds();
 
-    var locationResponse =
-        doGet(null, "r4/Location/" + ids.location(), 200).expectValid(Location.class);
-    assertThat(locationResponse.identifier().size()).isEqualTo(1);
-    assertThat(locationResponse.identifier().get(0).system()).contains(FHIR_STRING);
+    var location = doGet(null, "r4/Location/" + ids.location(), 200).expectValid(Location.class);
+    assertThat(location.identifier()).hasSize(1);
+    assertThat(location.identifier().get(0).system()).isEqualTo(clinicIdentifierUrl);
   }
 
   @ParameterizedTest
