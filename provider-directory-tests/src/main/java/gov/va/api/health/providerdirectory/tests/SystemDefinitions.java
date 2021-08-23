@@ -10,9 +10,10 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class SystemDefinitions {
   private static SystemDefinition lab() {
-    String url = "https://sandbox-api.va.gov";
+    // String url = "https://sandbox-api.va.gov";
+    String url = "https://blue.lab.lighthouse.va.gov";
     return SystemDefinition.builder()
-        .internal(serviceDefinition("internal", url, 443, "/services/provider-directory/v0/"))
+        .internal(serviceDefinition("internal", url, 443, "/provider-directory/v0/"))
         .publicIds(labIds())
         .build();
   }
