@@ -4,6 +4,4 @@ Main application.
 
 ### Build
 
-Full build:
-
 `mvn clean install`
