@@ -15,7 +15,7 @@ OpenAPI documentation on the
 The API Gateway handles API key authentication and rate-limiting before traffic is received by this application.
 
 - **Provider Directory** proxies requests for appropriate resources to `Data Query`
-- **Data Query** provides FHIR-compliant data for provider directory resources
+- **Data Query** is the underlying FHIR application that processes the requests
 - **Datamart** is a database within the Corporate Data Warehouse that provides
   read-only data for Data Query (originating from VistA)
 
