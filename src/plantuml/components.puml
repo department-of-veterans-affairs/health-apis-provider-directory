@@ -1,0 +1,20 @@
+@startuml
+
+skinparam {
+  handwritten true
+  shadowing false
+  monochrome true
+}
+
+actor Consumer
+cloud "API Gateway\nLoad Balancer\nIngress Controllers" as ALB
+
+rectangle "Provider Directory" as PD
+rectangle "Data Query" as DQ
+database Datamart <<CDW>> as DATAMART
+
+Consumer -> ALB
+ALB -> PD
+PD --> DQ
+DQ - DATAMART:< read only
+@enduml
