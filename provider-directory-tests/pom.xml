@@ -4,15 +4,15 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>test-starter</artifactId>
-    <version>8.0.26</version>
+    <version>8.0.27</version>
     <relativePath/>
   </parent>
   <artifactId>provider-directory-tests</artifactId>
-  <version>3.0.14-SNAPSHOT</version>
+  <version>3.0.14</version>
   <packaging>jar</packaging>
   <properties>
     <docker.imageName>health-apis-${project.artifactId}</docker.imageName>
-    <fhir-resources.version>8.0.11</fhir-resources.version>
+    <fhir-resources.version>8.0.17</fhir-resources.version>
   </properties>
   <dependencies>
     <dependency>
