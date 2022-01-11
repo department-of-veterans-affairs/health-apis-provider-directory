@@ -9,7 +9,8 @@ RUN mkdir -p /tmp/aws \
 
 #INSTALL NGINX
 
-RUN retry yum install -y -q nginx \
+RUN yum module enable -y -q nginx:1.16 \
+  && retry yum install -y -q nginx \
   && yum clean all
 
 EXPOSE 8121
