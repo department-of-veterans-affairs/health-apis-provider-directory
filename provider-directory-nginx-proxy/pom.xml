@@ -8,7 +8,7 @@
     <relativePath/>
   </parent>
   <artifactId>provider-directory-nginx-proxy</artifactId>
-  <version>3.0.16-SNAPSHOT</version>
+  <version>3.0.16</version>
   <packaging>pom</packaging>
   <properties>
     <docker-maven-plugin.version>0.34.0</docker-maven-plugin.version>
