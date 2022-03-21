@@ -9,7 +9,7 @@ RUN mkdir -p /tmp/aws \
 
 #INSTALL NGINX
 
-RUN yum module enable -y -q nginx:1.16 \
+RUN yum module enable -y -q nginx:1.20.1 \
   && retry yum install -y -q nginx \
   && yum clean all
 
