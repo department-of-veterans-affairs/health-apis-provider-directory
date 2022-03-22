@@ -7,7 +7,7 @@
     <version>8.0.27</version>
   </parent>
   <artifactId>provider-directory-parent</artifactId>
-  <version>3.0.19</version>
+  <version>3.0.20-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
     <module>provider-directory-nginx-proxy</module>
