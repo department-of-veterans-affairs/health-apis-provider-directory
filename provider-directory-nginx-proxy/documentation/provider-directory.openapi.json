@@ -59,7 +59,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "3300 Washtenaw Avenue"
+            "example" : "151 KNOLLCROFT ROAD"
           },
           {
             "name" : "address-city",
@@ -68,7 +68,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "Ann Arbor"
+            "example" : "LYONS"
           },
           {
             "name" : "address-state",
@@ -77,7 +77,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "MI"
+            "example" : "NJ"
           },
           {
             "name" : "address-postalcode",
@@ -86,7 +86,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "48104"
+            "example" : "07939"
           },
           {
             "name" : "name",
@@ -95,7 +95,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "Health Level Seven International"
+            "example" : "VISUAL IMPAIRMENT SVCS OUTPATIENT REHAB (VISOR)"
           },
           {
             "name" : "page",
@@ -332,7 +332,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "3300 Washtenaw Avenue"
+            "example" : "2360 East Pershing Boulevard"
           },
           {
             "name" : "address-city",
@@ -341,7 +341,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "Ann Arbor"
+            "example" : "CHEYENNE"
           },
           {
             "name" : "address-state",
@@ -350,7 +350,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "MI"
+            "example" : "WY"
           },
           {
             "name" : "address-postalcode",
@@ -359,7 +359,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "48104"
+            "example" : "82001-5356"
           },
           {
             "name" : "name",
@@ -368,7 +368,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "Health Level Seven International"
+            "example" : "CHEYENNE VA MEDICAL"
           },
           {
             "name" : "page",
@@ -596,7 +596,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "http://hl7.org/fhir/sid/us-npi|1932127842"
+            "example" : "I2-HRJI2MVST2IQSPR7U5SACWIWZA000000"
           },
           {
             "name" : "family",
