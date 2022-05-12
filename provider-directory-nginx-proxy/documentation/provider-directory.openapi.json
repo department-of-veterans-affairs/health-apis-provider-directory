@@ -2779,9 +2779,6 @@
           }
         },
         "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Location.html",
-        
-        
-        
         "example" : {
           "resourceType" : "Location",
           "id" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000",
@@ -2827,17 +2824,6 @@
             "display" : "LYONS VA MEDICAL CENTER"
           }
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       },
       "LocationBundle" : {
         "required" : [
@@ -2906,11 +2892,6 @@
             "$ref" : "#/components/schemas/Signature"
           }
         },
-        
-        
-        
-        
-        
         "example" : {
           "resourceType" : "Bundle",
           "type" : "searchset",
@@ -2980,15 +2961,6 @@
             }
           ]
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
       },
       "LocationEntry" : {
         "type" : "object",
@@ -3413,80 +3385,45 @@
           }
         },
         "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Organization.html",
-        
-        
-        
-        
-        
         "example" : {
-
-
-
-  "resourceType": "Organization",
-  "id": "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
-  "identifier": [{
-      "system": "http://hl7.org/fhir/sid/us-npi",
-      "value": "1164471991"
-    }, {
-      "use": "usual",
-      "type": {
-        "coding": [{
-            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-            "code": "FI",
-            "display": "Facility ID"
-          }
-        ],
-        "text": "Facility ID"
-      },
-      "system": "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-facility-identifier",
-      "value": "vha_442"
-    }
-  ],
-  "active": true,
-  "name": "CHEYENNE VA MEDICAL",
-  "address": [{
-      "text": "2360 E PERSHING BLVD 2360 East Pershing Boulevard CHEYENNE WY 82001-5356",
-      "line": ["2360 E PERSHING BLVD", "2360 East Pershing Boulevard"],
-      "city": "CHEYENNE",
-      "state": "WY",
-      "postalCode": "82001-5356"
-    }
-  ]
-
-
-
-
-
-
-
+          "resourceType" : "Organization",
+          "id" : "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+          "identifier" : [
+            {
+              "system" : "http://hl7.org/fhir/sid/us-npi",
+              "value" : "1164471991"
+            },
+            {
+              "use" : "usual",
+              "type" : {
+                "coding" : [
+                  {
+                    "system" : "http://terminology.hl7.org/CodeSystem/v2-0203",
+                    "code" : "FI",
+                    "display" : "Facility ID"
+                  }
+                ],
+                "text" : "Facility ID"
+              },
+              "system" : "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-facility-identifier",
+              "value" : "vha_442"
+            }
+          ],
+          "active" : true,
+          "name" : "CHEYENNE VA MEDICAL",
+          "address" : [
+            {
+              "text" : "2360 E PERSHING BLVD 2360 East Pershing Boulevard CHEYENNE WY 82001-5356",
+              "line" : [
+                "2360 E PERSHING BLVD",
+                "2360 East Pershing Boulevard"
+              ],
+              "city" : "CHEYENNE",
+              "state" : "WY",
+              "postalCode" : "82001-5356"
+            }
+          ]
         }
-        
-        
-        
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       },
       "OrganizationBundle" : {
         "required" : [
@@ -3556,92 +3493,70 @@
           }
         },
         "example" : {
-          
-          
-          
-          
-          
-  "resourceType": "Bundle",
-  "type": "searchset",
-  "total": 1,
-  "link": [{
-      "relation": "first",
-      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=15&page=1"
-    }, {
-      "relation": "self",
-      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=15&page=1"
-    }, {
-      "relation": "last",
-      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=15&page=1"
-    }
-  ],
-  "entry": [{
-      "fullUrl": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
-        "identifier": [{
-            "system": "http://hl7.org/fhir/sid/us-npi",
-            "value": "1164471991"
-          }, {
-            "use": "usual",
-            "type": {
-              "coding": [{
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-                  "code": "FI",
-                  "display": "Facility ID"
-                }
-              ],
-              "text": "Facility ID"
+          "resourceType" : "Bundle",
+          "type" : "searchset",
+          "total" : 1,
+          "link" : [
+            {
+              "relation" : "first",
+              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=15&page=1"
             },
-            "system": "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-facility-identifier",
-            "value": "vha_442"
-          }
-        ],
-        "active": true,
-        "name": "CHEYENNE VA MEDICAL",
-        "address": [{
-            "text": "2360 E PERSHING BLVD 2360 East Pershing Boulevard CHEYENNE WY 82001-5356",
-            "line": ["2360 E PERSHING BLVD", "2360 East Pershing Boulevard"],
-            "city": "CHEYENNE",
-            "state": "WY",
-            "postalCode": "82001-5356"
-          }
-        ]
-      },
-      "search": {
-        "mode": "match"
-      }
-    }
-  ]
-          
-          
-          
-          
-          
-
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
+            {
+              "relation" : "self",
+              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=15&page=1"
+            },
+            {
+              "relation" : "last",
+              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=15&page=1"
+            }
+          ],
+          "entry" : [
+            {
+              "fullUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+              "resource" : {
+                "resourceType" : "Organization",
+                "id" : "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+                "identifier" : [
+                  {
+                    "system" : "http://hl7.org/fhir/sid/us-npi",
+                    "value" : "1164471991"
+                  },
+                  {
+                    "use" : "usual",
+                    "type" : {
+                      "coding" : [
+                        {
+                          "system" : "http://terminology.hl7.org/CodeSystem/v2-0203",
+                          "code" : "FI",
+                          "display" : "Facility ID"
+                        }
+                      ],
+                      "text" : "Facility ID"
+                    },
+                    "system" : "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-facility-identifier",
+                    "value" : "vha_442"
+                  }
+                ],
+                "active" : true,
+                "name" : "CHEYENNE VA MEDICAL",
+                "address" : [
+                  {
+                    "text" : "2360 E PERSHING BLVD 2360 East Pershing Boulevard CHEYENNE WY 82001-5356",
+                    "line" : [
+                      "2360 E PERSHING BLVD",
+                      "2360 East Pershing Boulevard"
+                    ],
+                    "city" : "CHEYENNE",
+                    "state" : "WY",
+                    "postalCode" : "82001-5356"
+                  }
+                ]
+              },
+              "search" : {
+                "mode" : "match"
+              }
+            }
+          ]
         }
       },
       "OrganizationContact" : {
@@ -3832,10 +3747,6 @@
           }
         }
       },
-      
-      
-      
-      
       "Practitioner" : {
         "required" : [
           "identifier",
@@ -3943,111 +3854,89 @@
           }
         },
         "description" : " http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Practitioner.html",
-        
-        
-        
-        
-        
-       "example" : {
-  "resourceType": "Practitioner",
-  "id": "I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
-  "identifier": [{
-      "use": "usual",
-      "type": {
-        "coding": [{
-            "system": "http://hl7.org/fhir/v2/0203",
-            "code": "MR"
-          }
-        ]
-      },
-      "system": "http://va.gov/mpi",
-      "value": "1015517260V990420",
-      "assigner": {
-        "display": "Master Patient Index"
-      }
-    }, {
-      "system": "http://hl7.org/fhir/sid/us-npi",
-      "value": "1932127842"
-    }
-  ],
-  "active": true,
-  "name": [{
-      "family": "DOE922",
-      "given": ["JANE460"],
-      "prefix": ["DR."],
-      "suffix": ["MD"]
-    }
-  ],
-  "telecom": [{
-      "system": "phone",
-      "value": "555-555-1137",
-      "use": "work"
-    }, {
-      "system": "phone",
-      "value": "555-4055",
-      "use": "home"
-    }, {
-      "system": "pager",
-      "value": "5-541",
-      "use": "mobile"
-    }
-  ],
-  "address": [{
-      "line": ["555 E 5TH ST", "SUITE B"],
-      "city": "CHEYENNE",
-      "state": "WYOMING",
-      "postalCode": "82001",
-      "period": {
-        "start": "2010-01-01",
-        "end": "2015-04-02"
-      }
-    }
-  ],
-  "gender": "female",
-  "birthDate": "1964-02-23",
-  "qualification": [{
-      "code": {
-        "text": "MD"
-      }
-    }
-  ]
+        "example" : {
+          "resourceType" : "Practitioner",
+          "id" : "I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+          "identifier" : [
+            {
+              "use" : "usual",
+              "type" : {
+                "coding" : [
+                  {
+                    "system" : "http://hl7.org/fhir/v2/0203",
+                    "code" : "MR"
+                  }
+                ]
+              },
+              "system" : "http://va.gov/mpi",
+              "value" : "1015517260V990420",
+              "assigner" : {
+                "display" : "Master Patient Index"
+              }
+            },
+            {
+              "system" : "http://hl7.org/fhir/sid/us-npi",
+              "value" : "1932127842"
+            }
+          ],
+          "active" : true,
+          "name" : [
+            {
+              "family" : "DOE922",
+              "given" : [
+                "JANE460"
+              ],
+              "prefix" : [
+                "DR."
+              ],
+              "suffix" : [
+                "MD"
+              ]
+            }
+          ],
+          "telecom" : [
+            {
+              "system" : "phone",
+              "value" : "555-555-1137",
+              "use" : "work"
+            },
+            {
+              "system" : "phone",
+              "value" : "555-4055",
+              "use" : "home"
+            },
+            {
+              "system" : "pager",
+              "value" : "5-541",
+              "use" : "mobile"
+            }
+          ],
+          "address" : [
+            {
+              "line" : [
+                "555 E 5TH ST",
+                "SUITE B"
+              ],
+              "city" : "CHEYENNE",
+              "state" : "WYOMING",
+              "postalCode" : "82001",
+              "period" : {
+                "start" : "2010-01-01",
+                "end" : "2015-04-02"
+              }
+            }
+          ],
+          "gender" : "female",
+          "birthDate" : "1964-02-23",
+          "qualification" : [
+            {
+              "code" : {
+                "text" : "MD"
+              }
+            }
+          ]
         }
-        
-        
-        
-        
-        
-        
-        
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       },
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       "PractitionerAvailableTime" : {
         "type" : "object",
         "properties" : {
@@ -4095,18 +3984,6 @@
           }
         }
       },
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       "PractitionerBundle" : {
         "required" : [
           "resourceType",
@@ -4174,152 +4051,116 @@
             "$ref" : "#/components/schemas/Signature"
           }
         },
-        
-        
-        
-        
-        
-        
-        
-        
-       "example" : {
-         
-         
-         
-         
-  "resourceType": "Bundle",
-  "type": "searchset",
-  "total": 1,
-  "link": [{
-      "relation": "first",
-      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
-    }, {
-      "relation": "self",
-      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
-    }, {
-      "relation": "last",
-      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
-    }
-  ],
-  "entry": [{
-      "fullUrl": "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
-        "identifier": [{
-            "use": "usual",
-            "type": {
-              "coding": [{
-                  "system": "http://hl7.org/fhir/v2/0203",
-                  "code": "MR"
-                }
-              ]
+        "example" : {
+          "resourceType" : "Bundle",
+          "type" : "searchset",
+          "total" : 1,
+          "link" : [
+            {
+              "relation" : "first",
+              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
             },
-            "system": "http://va.gov/mpi",
-            "value": "1015517260V990420",
-            "assigner": {
-              "display": "Master Patient Index"
+            {
+              "relation" : "self",
+              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
+            },
+            {
+              "relation" : "last",
+              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
             }
-          }, {
-            "system": "http://hl7.org/fhir/sid/us-npi",
-            "value": "1932127842"
-          }
-        ],
-        "active": true,
-        "name": [{
-            "family": "DOE922",
-            "given": ["JANE460"],
-            "prefix": ["DR."],
-            "suffix": ["MD"]
-          }
-        ],
-        "telecom": [{
-            "system": "phone",
-            "value": "555-555-1137",
-            "use": "work"
-          }, {
-            "system": "phone",
-            "value": "555-4055",
-            "use": "home"
-          }, {
-            "system": "pager",
-            "value": "5-541",
-            "use": "mobile"
-          }
-        ],
-        "address": [{
-            "line": ["555 E 5TH ST", "SUITE B"],
-            "city": "CHEYENNE",
-            "state": "WYOMING",
-            "postalCode": "82001",
-            "period": {
-              "start": "2010-01-01",
-              "end": "2015-04-02"
+          ],
+          "entry" : [
+            {
+              "fullUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+              "resource" : {
+                "resourceType" : "Practitioner",
+                "id" : "I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+                "identifier" : [
+                  {
+                    "use" : "usual",
+                    "type" : {
+                      "coding" : [
+                        {
+                          "system" : "http://hl7.org/fhir/v2/0203",
+                          "code" : "MR"
+                        }
+                      ]
+                    },
+                    "system" : "http://va.gov/mpi",
+                    "value" : "1015517260V990420",
+                    "assigner" : {
+                      "display" : "Master Patient Index"
+                    }
+                  },
+                  {
+                    "system" : "http://hl7.org/fhir/sid/us-npi",
+                    "value" : "1932127842"
+                  }
+                ],
+                "active" : true,
+                "name" : [
+                  {
+                    "family" : "DOE922",
+                    "given" : [
+                      "JANE460"
+                    ],
+                    "prefix" : [
+                      "DR."
+                    ],
+                    "suffix" : [
+                      "MD"
+                    ]
+                  }
+                ],
+                "telecom" : [
+                  {
+                    "system" : "phone",
+                    "value" : "555-555-1137",
+                    "use" : "work"
+                  },
+                  {
+                    "system" : "phone",
+                    "value" : "555-4055",
+                    "use" : "home"
+                  },
+                  {
+                    "system" : "pager",
+                    "value" : "5-541",
+                    "use" : "mobile"
+                  }
+                ],
+                "address" : [
+                  {
+                    "line" : [
+                      "555 E 5TH ST",
+                      "SUITE B"
+                    ],
+                    "city" : "CHEYENNE",
+                    "state" : "WYOMING",
+                    "postalCode" : "82001",
+                    "period" : {
+                      "start" : "2010-01-01",
+                      "end" : "2015-04-02"
+                    }
+                  }
+                ],
+                "gender" : "female",
+                "birthDate" : "1964-02-23",
+                "qualification" : [
+                  {
+                    "code" : {
+                      "text" : "MD"
+                    }
+                  }
+                ]
+              },
+              "search" : {
+                "mode" : "match"
+              }
             }
-          }
-        ],
-        "gender": "female",
-        "birthDate": "1964-02-23",
-        "qualification": [{
-            "code": {
-              "text": "MD"
-            }
-          }
-        ]
-      },
-      "search": {
-        "mode": "match"
-      }
-    }
-  ]
-          
-          
-          
-          
-          
-          
+          ]
         }
-        
-        
-        
-        
-        
-        
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       },
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       "PractitionerEntry" : {
         "type" : "object",
         "properties" : {
@@ -4432,13 +4273,6 @@
           }
         }
       },
-      
-      
-      
-      
-      
-      
-      
       "PractitionerRole" : {
         "required" : [
           "organization",
@@ -4557,133 +4391,91 @@
           }
         },
         "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-PractitionerRole.html",
-        
-        
-        
-        
-        
-        
-        
-        
         "example" : {
-
-
-
-  "resourceType": "PractitionerRole",
-  "id": "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
-  "active": true,
-  "practitioner": {
-    "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
-    "display": "DOE922,JANE460"
-  },
-  "organization": {
-    "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
-    "display": "CHEYENNE VA MEDICAL"
-  },
-  "code": [{
-      "coding": [{
-          "system": "http://hl7.org/fhir/practitioner-role",
-          "code": "PHYSICIAN",
-          "display": "PSYCHOLOGIST"
+          "resourceType" : "PractitionerRole",
+          "id" : "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
+          "active" : true,
+          "practitioner" : {
+            "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+            "display" : "DOE922,JANE460"
+          },
+          "organization" : {
+            "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+            "display" : "CHEYENNE VA MEDICAL"
+          },
+          "code" : [
+            {
+              "coding" : [
+                {
+                  "system" : "http://hl7.org/fhir/practitioner-role",
+                  "code" : "PHYSICIAN",
+                  "display" : "PSYCHOLOGIST"
+                }
+              ],
+              "text" : "PSYCHOLOGIST"
+            }
+          ],
+          "specialty" : [
+            {
+              "coding" : [
+                {
+                  "system" : "http://nucc.org/provider-taxonomy",
+                  "code" : "V111500"
+                }
+              ]
+            },
+            {
+              "coding" : [
+                {
+                  "system" : "http://nucc.org/provider-taxonomy",
+                  "code" : "V111000"
+                }
+              ]
+            },
+            {
+              "coding" : [
+                {
+                  "system" : "http://nucc.org/provider-taxonomy",
+                  "code" : "V110900"
+                }
+              ]
+            },
+            {
+              "coding" : [
+                {
+                  "system" : "http://nucc.org/provider-taxonomy",
+                  "code" : "207Q00000X"
+                }
+              ]
+            }
+          ],
+          "location" : [
+            {
+              "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
+              "display" : "ZZCHY LASTNAME MEDICAL"
+            }
+          ],
+          "healthcareService" : [
+            {
+              "display" : "MEDICAL SERVICE"
+            }
+          ],
+          "telecom" : [
+            {
+              "system" : "phone",
+              "value" : "555-555-1137"
+            },
+            {
+              "system" : "phone",
+              "value" : "555-4055"
+            },
+            {
+              "system" : "pager",
+              "value" : "5-541"
+            }
+          ]
         }
-      ],
-      "text": "PSYCHOLOGIST"
-    }
-  ],
-  "specialty": [{
-      "coding": [{
-          "system": "http://nucc.org/provider-taxonomy",
-          "code": "V111500"
-        }
-      ]
-    }, {
-      "coding": [{
-          "system": "http://nucc.org/provider-taxonomy",
-          "code": "V111000"
-        }
-      ]
-    }, {
-      "coding": [{
-          "system": "http://nucc.org/provider-taxonomy",
-          "code": "V110900"
-        }
-      ]
-    }, {
-      "coding": [{
-          "system": "http://nucc.org/provider-taxonomy",
-          "code": "207Q00000X"
-        }
-      ]
-    }
-  ],
-  "location": [{
-      "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
-      "display": "ZZCHY LASTNAME MEDICAL"
-    }
-  ],
-  "healthcareService": [{
-      "display": "MEDICAL SERVICE"
-    }
-  ],
-  "telecom": [{
-      "system": "phone",
-      "value": "555-555-1137"
-    }, {
-      "system": "phone",
-      "value": "555-4055"
-    }, {
-      "system": "pager",
-      "value": "5-541"
-    }
-  ]
-
-
-
-
-
-        }
-        
-        
-        
-        
-        
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       },
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       "PractitionerRoleBundle" : {
         "required" : [
           "resourceType",
@@ -4751,128 +4543,117 @@
             "$ref" : "#/components/schemas/Signature"
           }
         },
-        
-        
         "example" : {
-          
-          
-
-          
-            "resourceType": "Bundle",
-  "type": "searchset",
-  "total": 1,
-  "link": [{
-      "relation": "first",
-      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
-    }, {
-      "relation": "self",
-      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
-    }, {
-      "relation": "last",
-      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
-    }
-  ],
-  "entry": [{
-      "fullUrl": "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole/I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
-      "resource": {
-        "resourceType": "PractitionerRole",
-        "id": "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
-        "active": true,
-        "practitioner": {
-          "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
-          "display": "DOE922,JANE460"
-        },
-        "organization": {
-          "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
-          "display": "CHEYENNE VA MEDICAL"
-        },
-        "code": [{
-            "coding": [{
-                "system": "http://hl7.org/fhir/practitioner-role",
-                "code": "PHYSICIAN",
-                "display": "PSYCHOLOGIST"
+          "resourceType" : "Bundle",
+          "type" : "searchset",
+          "total" : 1,
+          "link" : [
+            {
+              "relation" : "first",
+              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
+            },
+            {
+              "relation" : "self",
+              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
+            },
+            {
+              "relation" : "last",
+              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
+            }
+          ],
+          "entry" : [
+            {
+              "fullUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole/I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
+              "resource" : {
+                "resourceType" : "PractitionerRole",
+                "id" : "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
+                "active" : true,
+                "practitioner" : {
+                  "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+                  "display" : "DOE922,JANE460"
+                },
+                "organization" : {
+                  "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+                  "display" : "CHEYENNE VA MEDICAL"
+                },
+                "code" : [
+                  {
+                    "coding" : [
+                      {
+                        "system" : "http://hl7.org/fhir/practitioner-role",
+                        "code" : "PHYSICIAN",
+                        "display" : "PSYCHOLOGIST"
+                      }
+                    ],
+                    "text" : "PSYCHOLOGIST"
+                  }
+                ],
+                "specialty" : [
+                  {
+                    "coding" : [
+                      {
+                        "system" : "http://nucc.org/provider-taxonomy",
+                        "code" : "V111500"
+                      }
+                    ]
+                  },
+                  {
+                    "coding" : [
+                      {
+                        "system" : "http://nucc.org/provider-taxonomy",
+                        "code" : "V111000"
+                      }
+                    ]
+                  },
+                  {
+                    "coding" : [
+                      {
+                        "system" : "http://nucc.org/provider-taxonomy",
+                        "code" : "V110900"
+                      }
+                    ]
+                  },
+                  {
+                    "coding" : [
+                      {
+                        "system" : "http://nucc.org/provider-taxonomy",
+                        "code" : "207Q00000X"
+                      }
+                    ]
+                  }
+                ],
+                "location" : [
+                  {
+                    "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
+                    "display" : "ZZCHY LASTNAME MEDICAL"
+                  }
+                ],
+                "healthcareService" : [
+                  {
+                    "display" : "MEDICAL SERVICE"
+                  }
+                ],
+                "telecom" : [
+                  {
+                    "system" : "phone",
+                    "value" : "555-555-1137"
+                  },
+                  {
+                    "system" : "phone",
+                    "value" : "555-4055"
+                  },
+                  {
+                    "system" : "pager",
+                    "value" : "5-541"
+                  }
+                ]
+              },
+              "search" : {
+                "mode" : "match"
               }
-            ],
-            "text": "PSYCHOLOGIST"
-          }
-        ],
-        "specialty": [{
-            "coding": [{
-                "system": "http://nucc.org/provider-taxonomy",
-                "code": "V111500"
-              }
-            ]
-          }, {
-            "coding": [{
-                "system": "http://nucc.org/provider-taxonomy",
-                "code": "V111000"
-              }
-            ]
-          }, {
-            "coding": [{
-                "system": "http://nucc.org/provider-taxonomy",
-                "code": "V110900"
-              }
-            ]
-          }, {
-            "coding": [{
-                "system": "http://nucc.org/provider-taxonomy",
-                "code": "207Q00000X"
-              }
-            ]
-          }
-        ],
-        "location": [{
-            "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
-            "display": "ZZCHY LASTNAME MEDICAL"
-          }
-        ],
-        "healthcareService": [{
-            "display": "MEDICAL SERVICE"
-          }
-        ],
-        "telecom": [{
-            "system": "phone",
-            "value": "555-555-1137"
-          }, {
-            "system": "phone",
-            "value": "555-4055"
-          }, {
-            "system": "pager",
-            "value": "5-541"
-          }
-        ]
-      },
-      "search": {
-        "mode": "match"
-      }
-    }
-  ]
-          
-          
-          
-          
-          
-          
-          
+            }
+          ]
         }
-        
-        
-        
-        
-        
-        
-
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
       },
       "PractitionerRoleEntry" : {
         "type" : "object",
