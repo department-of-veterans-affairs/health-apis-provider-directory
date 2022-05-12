@@ -95,7 +95,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "VISUAL IMPAIRMENT SVCS OUTPATIENT REHAB (VISOR)"
+            "example" : "VISUAL IMPAIRMENT SVCS OUTPATIENT REHAB"
           },
           {
             "name" : "page",
@@ -332,7 +332,7 @@
             "schema" : {
               "type" : "string"
             },
-            "example" : "2360 East Pershing Boulevard"
+            "example" : "2360 E PERSHING BLVD"
           },
           {
             "name" : "address-city",
@@ -2783,7 +2783,7 @@
           "resourceType" : "Location",
           "id" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000",
           "status" : "active",
-          "name" : "VISUAL IMPAIRMENT SVCS OUTPATIENT REHAB (VISOR)",
+          "name" : "VISUAL IMPAIRMENT SVCS OUTPATIENT REHAB",
           "description" : "VISUAL IMPAIRMENT SVCS OUTPATIENT REHAB (VISOR)",
           "mode" : "instance",
           "type" : [
@@ -2917,7 +2917,7 @@
                 "resourceType" : "Location",
                 "id" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000",
                 "status" : "active",
-                "name" : "VISUAL IMPAIRMENT SVCS OUTPATIENT REHAB (VISOR)",
+                "name" : "VISUAL IMPAIRMENT SVCS OUTPATIENT REHAB",
                 "description" : "VISUAL IMPAIRMENT SVCS OUTPATIENT REHAB (VISOR)",
                 "mode" : "instance",
                 "type" : [
@@ -3413,10 +3413,9 @@
           "name" : "CHEYENNE VA MEDICAL",
           "address" : [
             {
-              "text" : "2360 E PERSHING BLVD 2360 East Pershing Boulevard CHEYENNE WY 82001-5356",
+              "text" : "2360 E PERSHING BLVD CHEYENNE WY 82001-5356",
               "line" : [
-                "2360 E PERSHING BLVD",
-                "2360 East Pershing Boulevard"
+                "2360 E PERSHING BLVD"
               ],
               "city" : "CHEYENNE",
               "state" : "WY",
@@ -3541,10 +3540,9 @@
                 "name" : "CHEYENNE VA MEDICAL",
                 "address" : [
                   {
-                    "text" : "2360 E PERSHING BLVD 2360 East Pershing Boulevard CHEYENNE WY 82001-5356",
+                    "text" : "2360 E PERSHING BLVD CHEYENNE WY 82001-5356",
                     "line" : [
-                      "2360 E PERSHING BLVD",
-                      "2360 East Pershing Boulevard"
+                      "2360 E PERSHING BLVD"
                     ],
                     "city" : "CHEYENNE",
                     "state" : "WY",
