@@ -2820,7 +2820,7 @@
             "text" : "BUILDING 7"
           },
           "managingOrganization" : {
-            "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-TYIC2AW2NXNADER4SKRKJQZWRE000000",
+            "reference" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Organization/I2-TYIC2AW2NXNADER4SKRKJQZWRE000000",
             "display" : "LYONS VA MEDICAL CENTER"
           }
         }
@@ -2899,20 +2899,20 @@
           "link" : [
             {
               "relation" : "self",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Location?_id=I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000&page=1&_count=30"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Location?_id=I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000&page=1&_count=30"
             },
             {
               "relation" : "first",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Location?_id=I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000&page=1&_count=30"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Location?_id=I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000&page=1&_count=30"
             },
             {
               "relation" : "last",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Location?_id=I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000&page=1&_count=30"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Location?_id=I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000&page=1&_count=30"
             }
           ],
           "entry" : [
             {
-              "fullUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Location/I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000",
+              "fullUrl" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Location/I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000",
               "resource" : {
                 "resourceType" : "Location",
                 "id" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000",
@@ -2954,7 +2954,7 @@
                   "text" : "BUILDING 7"
                 },
                 "managingOrganization" : {
-                  "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-TYIC2AW2NXNADER4SKRKJQZWRE000000",
+                  "reference" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Organization/I2-TYIC2AW2NXNADER4SKRKJQZWRE000000",
                   "display" : "LYONS VA MEDICAL CENTER"
                 }
               }
@@ -3405,7 +3405,7 @@
                 ],
                 "text" : "Facility ID"
               },
-              "system" : "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-facility-identifier",
+              "system" : "https://api.va.gov/services/provider-directory/v0/r4/NamingSystem/va-facility-identifier",
               "value" : "vha_442"
             }
           ],
@@ -3499,20 +3499,20 @@
           "link" : [
             {
               "relation" : "first",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=30&page=1"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=30&page=1"
             },
             {
               "relation" : "self",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=30&page=1"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=30&page=1"
             },
             {
               "relation" : "last",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=30&page=1"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=30&page=1"
             }
           ],
           "entry" : [
             {
-              "fullUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+              "fullUrl" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
               "resource" : {
                 "resourceType" : "Organization",
                 "id" : "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
@@ -3533,7 +3533,7 @@
                       ],
                       "text" : "Facility ID"
                     },
-                    "system" : "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-facility-identifier",
+                    "system" : "https://api.va.gov/services/provider-directory/v0/r4/NamingSystem/va-facility-identifier",
                     "value" : "vha_442"
                   }
                 ],
@@ -4058,20 +4058,20 @@
           "link" : [
             {
               "relation" : "first",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
             },
             {
               "relation" : "self",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
             },
             {
               "relation" : "last",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Practitioner?_id=I2-HRJI2MVST2IQSPR7U5SACWIWZA000000&_count=30&page=1"
             }
           ],
           "entry" : [
             {
-              "fullUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+              "fullUrl" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
               "resource" : {
                 "resourceType" : "Practitioner",
                 "id" : "I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
@@ -4396,11 +4396,11 @@
           "id" : "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
           "active" : true,
           "practitioner" : {
-            "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+            "reference" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
             "display" : "DOE922,JANE460"
           },
           "organization" : {
-            "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+            "reference" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
             "display" : "CHEYENNE VA MEDICAL"
           },
           "code" : [
@@ -4451,7 +4451,7 @@
           ],
           "location" : [
             {
-              "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
+              "reference" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
               "display" : "ZZCHY LASTNAME MEDICAL"
             }
           ],
@@ -4550,30 +4550,30 @@
           "link" : [
             {
               "relation" : "first",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
             },
             {
               "relation" : "self",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
             },
             {
               "relation" : "last",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
+              "url" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
             }
           ],
           "entry" : [
             {
-              "fullUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole/I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
+              "fullUrl" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/PractitionerRole/I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
               "resource" : {
                 "resourceType" : "PractitionerRole",
                 "id" : "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
                 "active" : true,
                 "practitioner" : {
-                  "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+                  "reference" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
                   "display" : "DOE922,JANE460"
                 },
                 "organization" : {
-                  "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+                  "reference" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
                   "display" : "CHEYENNE VA MEDICAL"
                 },
                 "code" : [
@@ -4624,7 +4624,7 @@
                 ],
                 "location" : [
                   {
-                    "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
+                    "reference" : "https://sandbox-api.va.gov/services/provider-directory/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
                     "display" : "ZZCHY LASTNAME MEDICAL"
                   }
                 ],
