@@ -4432,6 +4432,13 @@
           }
         }
       },
+      
+      
+      
+      
+      
+      
+      
       "PractitionerRole" : {
         "required" : [
           "organization",
@@ -4550,61 +4557,133 @@
           }
         },
         "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-PractitionerRole.html",
+        
+        
+        
+        
+        
+        
+        
+        
         "example" : {
-          "resourceType" : "PractitionerRole",
-          "id" : "I2-3NOHFSBEAZEKYRMDWVWB7LAFJNCKM3SFLR2CYELHDC7DZ5X3BKGA0000",
-          "active" : true,
-          "practitioner" : {
-            "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-54WJZ6YHNQICAV4YZRI54BVVCA000000",
-            "display" : "Dr John248 Smith811, MD"
-          },
-          "organization" : {
-            "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-TQFMJ6CCI4V425PUMWP2GRESZM000000",
-            "display" : "LYONS VA MEDICAL CENTER"
-          },
-          "code" : [
-            {
-              "coding" : [
-                {
-                  "system" : "http://nucc.org/provider-taxonomy",
-                  "code" : "15",
-                  "display" : "OPTOMETRIST"
-                }
-              ],
-              "text" : "OPTOMETRIST"
-            }
-          ],
-          "specialty" : [
-            {
-              "coding" : [
-                {
-                  "system" : "http://nucc.org/provider-taxonomy",
-                  "code" : "207Q00000X",
-                  "display" : "Family Medicine"
-                }
-              ],
-              "text" : "Family Medicine"
-            }
-          ],
-          "telecom" : [
-            {
-              "system" : "phone",
-              "value" : "333-333-3333"
-            }
-          ],
-          "availableTime" : [
-            {
-              "daysOfWeek" : [
-                "mon",
-                "wed",
-                "fri"
-              ],
-              "availableStartTime" : "08:00:00",
-              "availableEndTime" : "15:00:00"
-            }
-          ]
+
+
+
+  "resourceType": "PractitionerRole",
+  "id": "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
+  "active": true,
+  "practitioner": {
+    "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+    "display": "DOE922,JANE460"
+  },
+  "organization": {
+    "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+    "display": "CHEYENNE VA MEDICAL"
+  },
+  "code": [{
+      "coding": [{
+          "system": "http://hl7.org/fhir/practitioner-role",
+          "code": "PHYSICIAN",
+          "display": "PSYCHOLOGIST"
         }
+      ],
+      "text": "PSYCHOLOGIST"
+    }
+  ],
+  "specialty": [{
+      "coding": [{
+          "system": "http://nucc.org/provider-taxonomy",
+          "code": "V111500"
+        }
+      ]
+    }, {
+      "coding": [{
+          "system": "http://nucc.org/provider-taxonomy",
+          "code": "V111000"
+        }
+      ]
+    }, {
+      "coding": [{
+          "system": "http://nucc.org/provider-taxonomy",
+          "code": "V110900"
+        }
+      ]
+    }, {
+      "coding": [{
+          "system": "http://nucc.org/provider-taxonomy",
+          "code": "207Q00000X"
+        }
+      ]
+    }
+  ],
+  "location": [{
+      "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
+      "display": "ZZCHY LASTNAME MEDICAL"
+    }
+  ],
+  "healthcareService": [{
+      "display": "MEDICAL SERVICE"
+    }
+  ],
+  "telecom": [{
+      "system": "phone",
+      "value": "555-555-1137"
+    }, {
+      "system": "phone",
+      "value": "555-4055"
+    }, {
+      "system": "pager",
+      "value": "5-541"
+    }
+  ]
+
+
+
+
+
+        }
+        
+        
+        
+        
+        
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
       },
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       "PractitionerRoleBundle" : {
         "required" : [
           "resourceType",
@@ -4672,84 +4751,128 @@
             "$ref" : "#/components/schemas/Signature"
           }
         },
+        
+        
         "example" : {
-          "resourceType" : "Bundle",
-          "type" : "searchset",
-          "total" : 1,
-          "link" : [
-            {
-              "relation" : "self",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?practitioner.identifier=I2-54WJZ6YHNQICAV4YZRI54BVVCA000000&page=1&_count=15"
-            },
-            {
-              "relation" : "first",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?practitioner.identifier=I2-54WJZ6YHNQICAV4YZRI54BVVCA000000&page=1&_count=15"
-            },
-            {
-              "relation" : "last",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?practitioner.identifier=I2-54WJZ6YHNQICAV4YZRI54BVVCA000000&page=1&_count=15"
-            }
-          ],
-          "entry" : [
-            {
-              "fullUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole/I2-3NOHFSBEAZEKYRMDWVWB7LAFJNCKM3SFLR2CYELHDC7DZ5X3BKGA0000",
-              "resource" : {
-                "resourceType" : "PractitionerRole",
-                "id" : "I2-3NOHFSBEAZEKYRMDWVWB7LAFJNCKM3SFLR2CYELHDC7DZ5X3BKGA0000",
-                "active" : true,
-                "practitioner" : {
-                  "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-54WJZ6YHNQICAV4YZRI54BVVCA000000",
-                  "display" : "Dr John248 Smith811, MD"
-                },
-                "organization" : {
-                  "reference" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-TQFMJ6CCI4V425PUMWP2GRESZM000000",
-                  "display" : "LYONS VA MEDICAL CENTER"
-                },
-                "code" : [
-                  {
-                    "coding" : [
-                      {
-                        "system" : "http://nucc.org/provider-taxonomy",
-                        "code" : "15",
-                        "display" : "OPTOMETRIST"
-                      }
-                    ],
-                    "text" : "OPTOMETRIST"
-                  }
-                ],
-                "specialty" : [
-                  {
-                    "coding" : [
-                      {
-                        "system" : "http://nucc.org/provider-taxonomy",
-                        "code" : "207Q00000X",
-                        "display" : "Family Medicine"
-                      }
-                    ],
-                    "text" : "Family Medicine"
-                  }
-                ],
-                "telecom" : [
-                  {
-                    "system" : "phone",
-                    "value" : "333-333-3333"
-                  }
-                ],
-                "availableTime" : [
-                  {
-                    "daysOfWeek" : [
-                      "mon",
-                      "wed",
-                      "fri"
-                    ],
-                    "availableStartTime" : "08:00:00",
-                    "availableEndTime" : "15:00:00"
-                  }
-                ]
+          
+          
+
+          
+            "resourceType": "Bundle",
+  "type": "searchset",
+  "total": 1,
+  "link": [{
+      "relation": "first",
+      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
+    }, {
+      "relation": "self",
+      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
+    }, {
+      "relation": "last",
+      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole?_id=I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000&_count=30&page=1"
+    }
+  ],
+  "entry": [{
+      "fullUrl": "https://sandbox-api.va.gov/services/fhir/v0/r4/PractitionerRole/I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "I2-6KYHN4VYERE5OHKPXWAPAU5BO4000000",
+        "active": true,
+        "practitioner": {
+          "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Practitioner/I2-HRJI2MVST2IQSPR7U5SACWIWZA000000",
+          "display": "DOE922,JANE460"
+        },
+        "organization": {
+          "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+          "display": "CHEYENNE VA MEDICAL"
+        },
+        "code": [{
+            "coding": [{
+                "system": "http://hl7.org/fhir/practitioner-role",
+                "code": "PHYSICIAN",
+                "display": "PSYCHOLOGIST"
               }
-            }
-          ]
+            ],
+            "text": "PSYCHOLOGIST"
+          }
+        ],
+        "specialty": [{
+            "coding": [{
+                "system": "http://nucc.org/provider-taxonomy",
+                "code": "V111500"
+              }
+            ]
+          }, {
+            "coding": [{
+                "system": "http://nucc.org/provider-taxonomy",
+                "code": "V111000"
+              }
+            ]
+          }, {
+            "coding": [{
+                "system": "http://nucc.org/provider-taxonomy",
+                "code": "V110900"
+              }
+            ]
+          }, {
+            "coding": [{
+                "system": "http://nucc.org/provider-taxonomy",
+                "code": "207Q00000X"
+              }
+            ]
+          }
+        ],
+        "location": [{
+            "reference": "https://sandbox-api.va.gov/services/fhir/v0/r4/Location/I2-3JYDMXC6RXTU4H25KRVXATSEJQ000000",
+            "display": "ZZCHY LASTNAME MEDICAL"
+          }
+        ],
+        "healthcareService": [{
+            "display": "MEDICAL SERVICE"
+          }
+        ],
+        "telecom": [{
+            "system": "phone",
+            "value": "555-555-1137"
+          }, {
+            "system": "phone",
+            "value": "555-4055"
+          }, {
+            "system": "pager",
+            "value": "5-541"
+          }
+        ]
+      },
+      "search": {
+        "mode": "match"
+      }
+    }
+  ]
+          
+          
+          
+          
+          
+          
+          
         }
+        
+        
+        
+        
+        
+        
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
       },
       "PractitionerRoleEntry" : {
         "type" : "object",
