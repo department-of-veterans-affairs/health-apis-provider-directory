@@ -2779,6 +2779,9 @@
           }
         },
         "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Location.html",
+        
+        
+        
         "example" : {
           "resourceType" : "Location",
           "id" : "I2-4KG3N5YUSPTWD3DAFMLMRL5V5U000000",
@@ -2824,6 +2827,17 @@
             "display" : "LYONS VA MEDICAL CENTER"
           }
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
       },
       "LocationBundle" : {
         "required" : [
@@ -2892,6 +2906,11 @@
             "$ref" : "#/components/schemas/Signature"
           }
         },
+        
+        
+        
+        
+        
         "example" : {
           "resourceType" : "Bundle",
           "type" : "searchset",
@@ -2961,6 +2980,15 @@
             }
           ]
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
       },
       "LocationEntry" : {
         "type" : "object",
@@ -3385,40 +3413,80 @@
           }
         },
         "description" : "http://hl7.org/fhir/us/davinci-pdex-plan-net/StructureDefinition-plannet-Organization.html",
+        
+        
+        
+        
+        
         "example" : {
-          "resourceType" : "Organization",
-          "id" : "I2-ZJURFG76GQN5LW7WP56TXADUFM000000",
-          "identifier" : [
-            {
-              "system" : "http://hl7.org/fhir/sid/us-npi",
-              "value" : "1205983228"
-            }
-          ],
-          "active" : true,
-          "name" : "NEW AMSTERDAM CBOC",
-          "telecom" : [
-            {
-              "system" : "phone",
-              "value" : "800 555-7710"
-            },
-            {
-              "system" : "phone",
-              "value" : "800 555-7710"
-            }
-          ],
-          "address" : [
-            {
-              "text" : "10 MONROE AVE, SUITE 6B PO BOX 4160 NEW AMSTERDAM OH 44444-4160",
-              "line" : [
-                "10 MONROE AVE, SUITE 6B",
-                "PO BOX 4160"
-              ],
-              "city" : "NEW AMSTERDAM",
-              "state" : "OH",
-              "postalCode" : "44444-4160"
-            }
-          ]
+
+
+
+  "resourceType": "Organization",
+  "id": "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+  "identifier": [{
+      "system": "http://hl7.org/fhir/sid/us-npi",
+      "value": "1164471991"
+    }, {
+      "use": "usual",
+      "type": {
+        "coding": [{
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "FI",
+            "display": "Facility ID"
+          }
+        ],
+        "text": "Facility ID"
+      },
+      "system": "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-facility-identifier",
+      "value": "vha_442"
+    }
+  ],
+  "active": true,
+  "name": "CHEYENNE VA MEDICAL",
+  "address": [{
+      "text": "2360 E PERSHING BLVD 2360 East Pershing Boulevard CHEYENNE WY 82001-5356",
+      "line": ["2360 E PERSHING BLVD", "2360 East Pershing Boulevard"],
+      "city": "CHEYENNE",
+      "state": "WY",
+      "postalCode": "82001-5356"
+    }
+  ]
+
+
+
+
+
+
+
         }
+        
+        
+        
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
       },
       "OrganizationBundle" : {
         "required" : [
@@ -3488,62 +3556,92 @@
           }
         },
         "example" : {
-          "resourceType" : "Bundle",
-          "type" : "searchset",
-          "total" : 1,
-          "link" : [
-            {
-              "relation" : "self",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-ZJURFG76GQN5LW7WP56TXADUFM000000&page=1&_count=15"
+          
+          
+          
+          
+          
+  "resourceType": "Bundle",
+  "type": "searchset",
+  "total": 1,
+  "link": [{
+      "relation": "first",
+      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=15&page=1"
+    }, {
+      "relation": "self",
+      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=15&page=1"
+    }, {
+      "relation": "last",
+      "url": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000&_count=15&page=1"
+    }
+  ],
+  "entry": [{
+      "fullUrl": "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "I2-AKOTGEFSVKFJOPUKHIVJAH5VQU000000",
+        "identifier": [{
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "1164471991"
+          }, {
+            "use": "usual",
+            "type": {
+              "coding": [{
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "FI",
+                  "display": "Facility ID"
+                }
+              ],
+              "text": "Facility ID"
             },
-            {
-              "relation" : "first",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-ZJURFG76GQN5LW7WP56TXADUFM000000&page=1&_count=15"
-            },
-            {
-              "relation" : "last",
-              "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization?_id=I2-ZJURFG76GQN5LW7WP56TXADUFM000000&page=1&_count=15"
-            }
-          ],
-          "entry" : [
-            {
-              "fullUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/Organization/I2-ZJURFG76GQN5LW7WP56TXADUFM000000",
-              "resource" : {
-                "resourceType" : "Organization",
-                "id" : "I2-ZJURFG76GQN5LW7WP56TXADUFM000000",
-                "identifier" : [
-                  {
-                    "system" : "http://hl7.org/fhir/sid/us-npi",
-                    "value" : "1205983228"
-                  }
-                ],
-                "active" : true,
-                "name" : "NEW AMSTERDAM CBOC",
-                "telecom" : [
-                  {
-                    "system" : "phone",
-                    "value" : "800 555-7710"
-                  },
-                  {
-                    "system" : "phone",
-                    "value" : "800 555-7710"
-                  }
-                ],
-                "address" : [
-                  {
-                    "text" : "10 MONROE AVE, SUITE 6B PO BOX 4160 NEW AMSTERDAM OH 44444-4160",
-                    "line" : [
-                      "10 MONROE AVE, SUITE 6B",
-                      "PO BOX 4160"
-                    ],
-                    "city" : "NEW AMSTERDAM",
-                    "state" : "OH",
-                    "postalCode" : "44444-4160"
-                  }
-                ]
-              }
-            }
-          ]
+            "system": "https://api.va.gov/services/fhir/v0/r4/NamingSystem/va-facility-identifier",
+            "value": "vha_442"
+          }
+        ],
+        "active": true,
+        "name": "CHEYENNE VA MEDICAL",
+        "address": [{
+            "text": "2360 E PERSHING BLVD 2360 East Pershing Boulevard CHEYENNE WY 82001-5356",
+            "line": ["2360 E PERSHING BLVD", "2360 East Pershing Boulevard"],
+            "city": "CHEYENNE",
+            "state": "WY",
+            "postalCode": "82001-5356"
+          }
+        ]
+      },
+      "search": {
+        "mode": "match"
+      }
+    }
+  ]
+          
+          
+          
+          
+          
+
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
         }
       },
       "OrganizationContact" : {
