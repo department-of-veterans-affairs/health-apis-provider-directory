@@ -1,3 +1,7 @@
+# This repo has been archived
+
+Provider Directory Functionality is now handled by [yanartas](https://github.com/department-of-veterans-affairs/health-apis-yanartas).
+
 # health-apis-provider-directory
 
 An [NGINX](https://www.nginx.com) server for
